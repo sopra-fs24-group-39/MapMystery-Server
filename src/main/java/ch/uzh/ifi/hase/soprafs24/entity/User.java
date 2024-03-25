@@ -1,9 +1,12 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
-
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
-
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+
 
 /**
  * Internal User Representation
@@ -12,68 +15,139 @@ import java.io.Serializable;
  * Every variable will be mapped into a database field with the @Column
  * annotation
  * - nullable = false -> this cannot be left empty
- * - unique = true -> this value must be unqiue across the database -> composes
+ * - unique = true -> this value must be unique across the database -> composes
  * the primary key
  */
 @Entity
 @Table(name = "USER")
 public class User implements Serializable {
 
-  private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
-  @Id
-  @GeneratedValue
-  private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-  @Column(nullable = false)
-  private String name;
+    private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-  @Column(nullable = false, unique = true)
-  private String username;
 
-  @Column(nullable = false, unique = true)
-  private String token;
+    @Column(nullable = false, unique = true)
+    private String username;
 
-  @Column(nullable = false)
-  private UserStatus status;
+    @Column(nullable = false, unique = true)
+    private String token;
 
-  public Long getId() {
-    return id;
-  }
+    @Column(nullable = false)
+    private String status;
 
-  public void setId(Long id) {
-    this.id = id;
-  }
+    @Column(nullable = false)
+    private String useremail;
 
-  public String getName() {
-    return name;
-  }
+    @Column(nullable = false)
+    private String password;
 
-  public void setName(String name) {
-    this.name = name;
-  }
+    // TODO: needs to be changed to type Date according to class diagram
+    @Column(nullable = false)
+    private String creationdate;
 
-  public String getUsername() {
-    return username;
-  }
+    // TODO: needs to be changed to type tuple according to class diagram
+    @Column
+    private String score;
 
-  public void setUsername(String username) {
-    this.username = username;
-  }
+    @Transient // Marking this as transient to avoid persistence issues, adjust according to your JPA implementation details
+    private List<User> friends;
 
-  public String getToken() {
-    return token;
-  }
+    @Column
+    private int currentpoints;
 
-  public void setToken(String token) {
-    this.token = token;
-  }
+    private String generateToken() {
+      return Jwts.builder()
+        .setSubject(this.username)
+        .signWith(SignatureAlgorithm.HS512, "secrete_key")
+        .compact();
+    }
 
-  public UserStatus getStatus() {
-    return status;
-  }
+    public Long getId() {
+        return id;
+    }
 
-  public void setStatus(UserStatus status) {
-    this.status = status;
-  }
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken() {
+        this.token = this.generateToken();
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public String getUseremail() {
+        return useremail;
+    }
+
+    public void setUseremail(String useremail) {
+        this.useremail = useremail;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+      this.password = encoder.encode(password);
+    }
+  
+    public boolean checkPassword(String pw) {
+        return encoder.matches(pw, this.password);
+    }
+
+    public String getCreationdate() {
+        return creationdate;
+    }
+
+    public void setCreationdate(String creationdate) {
+        this.creationdate = creationdate;
+    }
+
+    public String getScore() {
+        return score;
+    }
+
+    public void setScore(String score) {
+        this.score = score;
+    }
+
+    public List<User> getFriends() {
+        return friends;
+    }
+
+    public void setFriends(List<User> friends) {
+        this.friends = friends;
+    }
+
+    public int getCurrentpoints() {
+        return currentpoints;
+    }
+
+    public void setCurrentpoints(int currentpoints) {
+        this.currentpoints = currentpoints;
+    }
 }
