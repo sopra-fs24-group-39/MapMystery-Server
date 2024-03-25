@@ -10,6 +10,16 @@ public class UserPutDTO {
   private String status = "UNDEF";
   private String creationdate = null;
 
+  private String email = null;
+
+    public String getEmail(){
+        return this.email;
+    }
+
+    public void setEmail(String Email){
+        this.email = Email;
+    }
+
   public Long getUserId(){
     return userId;
   }
