@@ -46,11 +46,13 @@ public class UserController {
     // This Endpoint handles the updates of a profile, current version will support the update of
     // the email-address, password, username & boolean whether the user wants his profile to be displayed in rankings
 
+    // This currently can also handle the update of the status, though it might be useful to create a seperate DTO instance, since the two things are called seperately
+
     @PutMapping("/users/{user_Id")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void updateUser(@PathVariable("user_Id") Long user_Id, @RequestBody UserPutDTO userPutDTO) {
-        // fetch all users in the internal representation
+
         User user = userService.getUser( user_Id);
         User temp_user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
         userService.updateUser(user, temp_user);

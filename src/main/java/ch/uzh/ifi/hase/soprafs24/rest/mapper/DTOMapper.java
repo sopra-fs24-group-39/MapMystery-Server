@@ -28,6 +28,8 @@ public interface DTOMapper {
 
   // This handles the updates of a profile, current version will support the update of
   // the email-address, password, username & boolean whether the user wants his profile to be displayed in rankings
+
+  // This currently can also handle the update of the status, though it might be useful to create a seperate DTI instance, since the two things are called seperately
   @Mapping(source = "username", target = "username")
   @Mapping(source = "password", target = "password")
   @Mapping(source = "status", target = "status")
