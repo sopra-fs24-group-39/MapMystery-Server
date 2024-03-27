@@ -46,6 +46,9 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
+    @Column
+    private String password;
+
     // TODO: needs to be changed to type Date according to class diagram
     @Column(nullable = false)
     private String creationdate;
@@ -59,6 +62,9 @@ public class User implements Serializable {
 
     @Column
     private int currentpoints;
+
+    @Column
+    private Boolean featured_in_rankings = true;
 
     private String generateToken() {
       return Jwts.builder()
@@ -81,6 +87,22 @@ public class User implements Serializable {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public String getEmail() {
+        return this.useremail;
+    }
+
+    public void setEmail(String email) {
+        this.useremail = email;
+    }
+
+    public Boolean getFeatured_in_rankings() {
+        return this.featured_in_rankings;
+    }
+
+    public void setFeatured_in_rankings(Boolean featured_in_rankings) {
+        this.featured_in_rankings = featured_in_rankings;
     }
 
     public String getToken() {
@@ -150,4 +172,31 @@ public class User implements Serializable {
     public void setCurrentpoints(int currentpoints) {
         this.currentpoints = currentpoints;
     }
+
+    public void update(User user_with_new_data){
+        if (user_with_new_data.getPassword() != null && !user_with_new_data.getPassword().isEmpty()) {
+            this.setPassword(user_with_new_data.getPassword());
+        }
+
+        if (user_with_new_data.getUsername() != null && !user_with_new_data.getUsername().isEmpty()) {
+            this.setUsername(user_with_new_data.getUsername());
+        }
+
+        if (user_with_new_data.getStatus() != "UNDEF" && !user_with_new_data.getStatus().isEmpty()) {
+            this.setStatus(user_with_new_data.getStatus());
+        }
+
+        if (user_with_new_data.getEmail() != null && !user_with_new_data.getEmail().isEmpty()) {
+            this.setEmail(user_with_new_data.getEmail());
+        }
+
+        if (user_with_new_data.getFeatured_in_rankings() != null && user_with_new_data.getFeatured_in_rankings() != null) {
+            this.setFeatured_in_rankings(user_with_new_data.getFeatured_in_rankings());
+        }
+
+
+        }
+
+    }
 }
+

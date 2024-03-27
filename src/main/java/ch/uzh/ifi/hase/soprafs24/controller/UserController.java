@@ -49,16 +49,12 @@ public class UserController {
     @PutMapping("/users/{user_Id")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserGetDTO> updateUser(@PathVariable("user_Id") Long user_Id, @RequestBody UserPutDTO userPutDTO) {
+    public void updateUser(@PathVariable("user_Id") Long user_Id, @RequestBody UserPutDTO userPutDTO) {
         // fetch all users in the internal representation
-        List<User> users = userService.getUsers();
-        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+        User user = userService.getUser( user_Id);
+        User temp_user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
+        userService.updateUser(user, temp_user);
 
-        // convert each user to the API representation
-        for (User user : users) {
-            userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
-        }
-        return userGetDTOs;
     }
 
   @PostMapping("/users")

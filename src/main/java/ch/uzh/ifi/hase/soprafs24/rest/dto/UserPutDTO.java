@@ -1,41 +1,30 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
+// This handles the updates of a profile, current version will support the update of
+// the email-address, password, username & boolean whether the user wants his profile to be displayed in rankings
 
 public class UserPutDTO {
 
-  private Long userId = null;
-  private String token = null;
   private String password = null;
   private String username = null;
   private String status = "UNDEF";
-  private String creationdate = null;
-
   private String email = null;
+  private  Boolean featured_in_rankings = null;
 
-    public String getEmail(){
+
+  public String getEmail(){
         return this.email;
     }
-
-    public void setEmail(String Email){
+  public void setEmail(String Email){
         this.email = Email;
     }
 
-  public Long getUserId(){
-    return userId;
-  }
-
-  public void setUserId(long UserId){
-    this.userId = UserId;
-  }
-
-  public String getToken() {
-    return token;
-  }
-
-  public void setToken(String token) {
-    this.token = token;
-  }
-
+  public Boolean getFeatured_in_rankings(){
+        return this.featured_in_rankings;
+    }
+  public void setFeatured_in_rankings(Boolean featured_in_rankings){
+        this.featured_in_rankings = featured_in_rankings;
+    }
   public String getPassword() {
     return password;
   }
@@ -61,14 +50,5 @@ public class UserPutDTO {
     assert "OFFLINE".equals(status) || "ONLINE".equals(status) || "UNDEF".equals(status);
     this.status = status;
   }
-
-  public String getCreationdate(){
-    return creationdate;
-  }
-
-  public void setCreationdate(String creationdate){
-    this.creationdate = creationdate;
-  }
-
 
 }
