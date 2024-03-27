@@ -52,6 +52,7 @@ public class UserService {
     return newUser;
   }
   public void updateUser(User to_be_updated_user, User user_with_new_data){
+      // TO DO: Implement Uniqueness check on the username, email?
       to_be_updated_user.update(user_with_new_data);
       userRepository.save(to_be_updated_user);
   }
