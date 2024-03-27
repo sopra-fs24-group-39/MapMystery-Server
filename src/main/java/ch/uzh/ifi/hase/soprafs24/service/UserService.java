@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * User Service
@@ -49,6 +50,14 @@ public class UserService {
 
     log.debug("Created Information for User: {}", newUser);
     return newUser;
+  }
+  public void updateUser(User to_be_updated_user, User user_with_new_data){
+      to_be_updated_user.update(user_with_new_data);
+      userRepository.save(to_be_updated_user);
+  }
+  public User getUser(long user_Id){
+      Optional<User> optionalUser = userRepository.findById(user_Id);
+      return optionalUser.orElseThrow(() -> new RuntimeException("User not found with id: " + user_Id));
   }
 
   /**
