@@ -30,7 +30,6 @@ public class User implements Serializable {
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
-
     @Column(nullable = false, unique = true)
     private String username;
 
@@ -44,9 +43,6 @@ public class User implements Serializable {
     private String useremail;
 
     @Column(nullable = false)
-    private String password;
-
-    @Column
     private String password;
 
     // TODO: needs to be changed to type Date according to class diagram
@@ -193,10 +189,6 @@ public class User implements Serializable {
         if (user_with_new_data.getFeatured_in_rankings() != null && user_with_new_data.getFeatured_in_rankings() != null) {
             this.setFeatured_in_rankings(user_with_new_data.getFeatured_in_rankings());
         }
-
-
-        }
-
     }
 }
 
