@@ -26,7 +26,7 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Long Id;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
@@ -46,10 +46,12 @@ public class User implements Serializable {
     private String password;
 
     // TODO: needs to be changed to type Date according to class diagram
+    // Then the DTOs must also be changed
     @Column(nullable = false)
     private String creationdate;
 
     // TODO: needs to be changed to type tuple according to class diagram
+    // then the DTOs must also be changed
     @Column
     private String score;
 
@@ -70,11 +72,11 @@ public class User implements Serializable {
     }
 
     public Long getId() {
-        return id;
+        return Id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setId(Long Id) {
+        this.Id = Id;
     }
 
     public String getUsername() {

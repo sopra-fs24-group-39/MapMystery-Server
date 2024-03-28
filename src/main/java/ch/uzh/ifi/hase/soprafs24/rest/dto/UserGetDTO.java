@@ -4,25 +4,36 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto;
 public class UserGetDTO {
 
   private Long id;
-  private String name;
+  private String token;
+  private String password;
   private String username;
-  private String status;
+  private String status = "UNDEF";
+  private String creationdate;
 
   public Long getId() {
     return id;
   }
 
-  public void setId(Long id) {
-    this.id = id;
+  public void setId(long UserId) {
+    this.id = UserId;
   }
 
-  public String getName() {
-    return name;
+  public String getToken() {
+    return token;
   }
 
-  public void setName(String name) {
-    this.name = name;
+  public void setToken(String token) {
+    this.token = token;
   }
+  
+  public String getPassword() {
+    return password;
+  }
+
+  public void setPassword(String password) {
+    this.password = password;
+  }
+
 
   public String getUsername() {
     return username;
@@ -37,6 +48,15 @@ public class UserGetDTO {
   }
 
   public void setStatus(String status) {
+    assert "OFFLINE".equals(status) || "ONLINE".equals(status) || "UNDEF".equals(status);
     this.status = status;
+  }
+
+  public String getCreationdate(){
+    return creationdate;
+  }
+
+  public void setCreationdate(String creationdate){
+    this.creationdate = creationdate;
   }
 }
