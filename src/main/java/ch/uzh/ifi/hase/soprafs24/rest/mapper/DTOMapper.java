@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.CredPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
@@ -24,21 +25,22 @@ public interface DTOMapper {
   DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
   @Mapping(source = "username", target = "username")
+  @Mapping(source = "id", target = "id")
   User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
-  // This handles the updates of a profile, current version will support the update of
-  // the email-address, password, username & boolean whether the user wants his profile to be displayed in rankings
 
-  // This currently can also handle the update of the status, though it might be useful to create a seperate DTI instance, since the two things are called seperately
-  @Mapping(source = "username", target = "username")
-  @Mapping(source = "password", target = "password")
-  @Mapping(source = "status", target = "status")
-  @Mapping(source = "email", target = "email")
-  @Mapping(source = "featured_in_rankings", target = "featured_in_rankings")
-  User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
+  @Mapping(source = "id", target = "id",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  @Mapping(source = "password", target = "password",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  @Mapping(source = "username", target = "username",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  @Mapping(source = "creationdate", target="creationdate",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  User convertUserPutDTOToEntity(UserPutDTO user);
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "username", target = "username")
   @Mapping(source = "status", target = "status")
   UserGetDTO convertEntityToUserGetDTO(User user);
+
+  @Mapping(source="username",target="username")
+  @Mapping(source="password",target="password")
+  User convertCredPostDTOtoEntity(CredPostDTO credentials);
 }

@@ -75,7 +75,6 @@ public class UserControllerTest {
     user.setStatus("OFFLINE");
 
     UserPostDTO userPostDTO = new UserPostDTO();
-    userPostDTO.setName("Test User");
     userPostDTO.setUsername("testUsername");
 
     given(userService.createUser(Mockito.any())).willReturn(user);

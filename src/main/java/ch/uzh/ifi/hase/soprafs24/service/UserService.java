@@ -80,4 +80,8 @@ public class UserService {
           String.format(baseErrorMessage, "username and the name", "are"));
     }
   }
+  
+  public User getUser(String username){
+    return this.userRepository.findByUsername(username);
+  }
 }
