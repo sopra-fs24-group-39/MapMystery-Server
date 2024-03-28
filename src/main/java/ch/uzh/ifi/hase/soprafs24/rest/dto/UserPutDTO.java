@@ -14,8 +14,8 @@ public class UserPutDTO {
   private String password = null;
   private String username = null;
   private String status = "UNDEF";
-  private String email = null;
   private String creationdate = null;
+  private String userEmail = null;
   private String score;
   private List<UserPutDTO> friends;
   private int currentpoints;
@@ -35,6 +35,14 @@ public class UserPutDTO {
 
   public void setToken(String token){
     this.token = token;
+  }
+
+  public void setCreationdate(String creationdate){
+    this.creationdate = creationdate;
+  }
+
+  public String getCreationdate(){
+    return creationdate;
   }
 
   public String getScore(){
@@ -61,19 +69,11 @@ public class UserPutDTO {
     this.currentpoints = currentpoints;
   }
 
-  public String getCreationdate(){
-    return creationdate;
+  public String getUserEmail(){
+      return this.userEmail;
   }
-
-  public void setCreationdate(String creationdate){
-    this.creationdate = creationdate;
-  }
-
-  public String getEmail(){
-      return this.email;
-  }
-  public void setEmail(String Email){
-      this.email = Email;
+  public void setUserEmail(String userEmail){
+      this.userEmail = userEmail;
   }
 
   public Boolean getFeatured_in_rankings(){

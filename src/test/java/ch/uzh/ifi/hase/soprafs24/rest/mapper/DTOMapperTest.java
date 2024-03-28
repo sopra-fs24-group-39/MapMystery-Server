@@ -2,7 +2,8 @@ package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
+
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -16,11 +17,11 @@ public class DTOMapperTest {
   @Test
   public void testCreateUser_fromUserPostDTO_toUser_success() {
     // create UserPostDTO
-    UserPostDTO userPostDTO = new UserPostDTO();
+    UserPutDTO userPostDTO = new UserPutDTO();
     userPostDTO.setUsername("username");
 
     // MAP -> Create user
-    User user = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
+    User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPostDTO);
 
     // check content
    assertEquals(userPostDTO.getUsername(), user.getUsername());
@@ -32,7 +33,7 @@ public class DTOMapperTest {
     User user = new User();
     user.setUsername("firstname@lastname");
     user.setStatus("OFFLINE");
-    user.setToken();
+    user.setToken(user.generateToken());
 
     // MAP -> Create UserGetDTO
     UserGetDTO userGetDTO = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);

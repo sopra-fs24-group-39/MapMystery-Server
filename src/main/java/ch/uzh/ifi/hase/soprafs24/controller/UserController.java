@@ -133,7 +133,7 @@ public class UserController {
       assert oldData.getToken().equals(token);
 
 
-      User userInput = DTOMapper.INSTANCE.convertUserPutDTOToEntity(NewUserData);
+      User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(NewUserData);
 
       userService.updateUser(oldData, userInput);
 

@@ -1,7 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -71,10 +71,10 @@ public class UserControllerTest {
     User user = new User();
     user.setId(1L);
     user.setUsername("testUsername");
-    user.setToken();
+    user.setToken(user.generateToken());
     user.setStatus("OFFLINE");
 
-    UserPostDTO userPostDTO = new UserPostDTO();
+    UserPutDTO userPostDTO = new UserPutDTO();
     userPostDTO.setUsername("testUsername");
 
     given(userService.createUser(Mockito.any())).willReturn(user);

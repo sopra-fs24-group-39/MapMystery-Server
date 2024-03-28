@@ -40,7 +40,7 @@ public class User implements Serializable {
     private String status;
 
     @Column(nullable = false)
-    private String useremail;
+    private String userEmail;
 
     @Column(nullable = false)
     private String password;
@@ -64,7 +64,7 @@ public class User implements Serializable {
     @Column
     private Boolean featured_in_rankings = true;
 
-    private String generateToken() {
+    public String generateToken() {
       return Jwts.builder()
         .setSubject(this.username)
         .signWith(SignatureAlgorithm.HS512, "secrete_key")
@@ -87,12 +87,12 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public String getEmail() {
-        return this.useremail;
+    public String getUserEmail() {
+        return this.userEmail;
     }
 
-    public void setEmail(String email) {
-        this.useremail = email;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public Boolean getFeatured_in_rankings() {
@@ -107,8 +107,8 @@ public class User implements Serializable {
         return token;
     }
 
-    public void setToken() {
-        this.token = this.generateToken();
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getStatus() {
@@ -117,14 +117,6 @@ public class User implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getUseremail() {
-        return useremail;
-    }
-
-    public void setUseremail(String useremail) {
-        this.useremail = useremail;
     }
 
     public String getPassword() {
@@ -184,8 +176,8 @@ public class User implements Serializable {
             this.setStatus(user_with_new_data.getStatus());
         }
 
-        if (user_with_new_data.getEmail() != null && !user_with_new_data.getEmail().isEmpty()) {
-            this.setEmail(user_with_new_data.getEmail());
+        if (user_with_new_data.getUserEmail() != null && !user_with_new_data.getUserEmail().isEmpty()) {
+            this.setUserEmail(user_with_new_data.getUserEmail());
         }
 
         if (user_with_new_data.getFeatured_in_rankings() != null && user_with_new_data.getFeatured_in_rankings() != null) {
