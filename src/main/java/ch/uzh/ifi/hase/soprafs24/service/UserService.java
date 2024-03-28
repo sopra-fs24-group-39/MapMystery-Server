@@ -42,7 +42,7 @@ public class UserService {
     checkIfUserExists(newUser);
     // saves the given entity but data is only persisted in the database once
     // flush() is called
-    newUser.setToken();
+    newUser.setToken(newUser.generateToken());
     newUser.setStatus("OFFLINE");
     newUser = userRepository.save(newUser);
     //important, token can only be set after ID was given!
