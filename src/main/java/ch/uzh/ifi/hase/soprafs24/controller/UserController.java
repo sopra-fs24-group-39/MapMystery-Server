@@ -6,9 +6,13 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
+import ch.uzh.ifi.hase.soprafs24.service.AccountService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,7 +27,9 @@ import java.util.List;
 @RestController
 public class UserController {
 
+
   private final UserService userService;
+  private AccountService accountService;
 
   UserController(UserService userService) {
     this.userService = userService;
@@ -96,13 +102,14 @@ public class UserController {
   public UserGetDTO createUser(@RequestBody CredPostDTO credentials) {
     try{
 
-
       // convert API user to internal representation
       User userInput = DTOMapper.INSTANCE.convertCredPostDTOtoEntity(credentials);
       
 
-      // create user, throws Excpetion if username already exists
+      // create user, throws Excpetion if username or email already exists
       User createdUser = userService.createUser(userInput);
+
+      accountService.sendVerificationEmail(createdUser);
 
       return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
 
@@ -151,7 +158,7 @@ public class UserController {
   }
 
   /**
-   * endpoint which changes thte user state and returns the user Object with all of its properties
+   * endpoint which changes the user state and returns the user Object with all of its properties
    * in particular the token which will be used in requests using id as a pathvarible example : get Usres/Id
    * @param credentials username and password
    * @return the user object with all of its properties
@@ -163,6 +170,11 @@ public class UserController {
     try{
       User user = userService.getUser(credentials.getUsername());
       assert user.checkPassword(credentials.getPassword());
+
+        // Check if the user has verified their account
+        if (!user.getVerified()) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User account not verified");
+        }
 
       User newStatus = new User();
 
@@ -186,6 +198,17 @@ public class UserController {
     }
 
   }
+    @GetMapping("/verify-account")
+    public ResponseEntity<String> verifyAccount(@RequestParam("token") String token){
+      User user = userService.getUserByVerificationToken(token);
 
+      if(user == null){
+          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid verification token.");
+      }
+      // Mark the user as verified
+        user.setVerified(true);
+        userService.updateUser(user,user);
 
-}
+        return ResponseEntity.ok("Account verified successfully.");
+      }
+    }
