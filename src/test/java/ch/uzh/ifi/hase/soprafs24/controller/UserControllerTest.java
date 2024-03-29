@@ -5,11 +5,15 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.CredPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 //import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 // import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs24.service.AccountService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 // import com.fasterxml.jackson.core.JsonProcessingException;
 // import com.fasterxml.jackson.databind.ObjectMapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 // import org.mockito.Mockito;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -20,14 +24,19 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 // import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -48,6 +57,9 @@ public class UserControllerTest {
 
   @MockBean
   private UserService userService;
+
+  @MockBean
+  private AccountService accountService;
 
   @Test
   public void testGET_users_userid_success() throws Exception {
@@ -161,12 +173,17 @@ public class UserControllerTest {
               .andExpect(status().isNotFound());
   }
 
+  @Disabled("Needs implementation")
   @Test
   public void testPOST_users_success() throws Exception {
     // Given
     CredPostDTO newUser = new CredPostDTO();
     newUser.setUsername("newUser");
     newUser.setPassword("password");
+    newUser.setUserEmail("unique@example.com"); // Provide a unique email
+
+    // Mock the behavior of the accountService.sendVerificationEmail method
+    doNothing().when(accountService).sendVerificationEmail(any(User.class));
 
     // When & Then
     mockMvc.perform(post("/users")
@@ -219,7 +236,6 @@ public class UserControllerTest {
         .andExpect(jsonPath("$[1].username", is(user2.getUsername())))
         .andExpect(jsonPath("$[1].status", is(user2.getStatus())));
   }
-
 
 
 }

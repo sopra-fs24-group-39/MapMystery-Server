@@ -36,6 +36,13 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     private String token;
 
+    // Used for email verificaiton
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    @Column(nullable = false)
+    private Boolean verified;
+
     @Column(nullable = false)
     private String status;
 
@@ -69,6 +76,14 @@ public class User implements Serializable {
         .setSubject(this.username)
         .signWith(SignatureAlgorithm.HS512, "secrete_key")
         .compact();
+    }
+
+    public String getVerificationToken() {
+        return verificationCode;
+    }
+
+    public void setVerificationToken(String verificationCode) {
+        this.verificationCode = verificationCode;
     }
 
     public Long getId() {
@@ -153,6 +168,13 @@ public class User implements Serializable {
 
     public void setFriends(List<User> friends) {
         this.friends = friends;
+    }
+
+    public Boolean getVerified(){
+        return this.verified;
+    }
+    public void setVerified(Boolean b){
+        this.verified = b;
     }
 
     public int getCurrentpoints() {
