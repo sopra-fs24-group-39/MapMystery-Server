@@ -202,10 +202,16 @@ public class UserController {
   public Map<String, Object> userLogin(@RequestBody CredPostDTO credentials){
     try{
       User user = userService.getUser(credentials.getUsername());
-      assert user.checkPassword(credentials.getPassword());
 
-      // TODO: not working yet
-      // assert user.getVerified();
+      if(!user.checkPassword(credentials.getPassword())){
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"password is wrong");
+      }
+
+      // TODO : verification somehow not working
+      // if (!user.getVerified()) {
+      //   throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Account is not verified");
+      // }
+    
 
       User newStatus = new User();
 
