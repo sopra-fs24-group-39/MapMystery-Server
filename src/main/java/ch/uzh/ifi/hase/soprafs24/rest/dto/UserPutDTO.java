@@ -10,13 +10,13 @@ import java.util.List;
 public class UserPutDTO {
 
   private Long id = null;
-  private String token = null;
   private String password = null;
   private String username = null;
   private String status = "UNDEF";
   private String creationdate = null;
   private String userEmail = null;
   private String score;
+  private boolean verified;
   private List<UserPutDTO> friends;
   private int currentpoints;
   private  Boolean featured_in_rankings = null;
@@ -27,14 +27,6 @@ public class UserPutDTO {
 
   public void setId(Long Id){
     this.id = Id;
-  }
-
-  public String getToken(){
-    return this.token;
-  }
-
-  public void setToken(String token){
-    this.token = token;
   }
 
   public void setCreationdate(String creationdate){
@@ -51,6 +43,14 @@ public class UserPutDTO {
 
   public void setScore(String score){
     this.score = score;
+  }
+
+  public Boolean getVerified(){
+    return this.verified;
+}
+
+  public void setVerified(Boolean state){
+    this.verified = state;
   }
 
   public List<UserPutDTO> getFriends(){

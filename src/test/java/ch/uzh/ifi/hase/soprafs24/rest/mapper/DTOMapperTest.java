@@ -33,7 +33,6 @@ public class DTOMapperTest {
     User user = new User();
     user.setUsername("firstname@lastname");
     user.setStatus("OFFLINE");
-    user.setToken(user.generateToken());
 
     // MAP -> Create UserGetDTO
     UserGetDTO userGetDTO = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);

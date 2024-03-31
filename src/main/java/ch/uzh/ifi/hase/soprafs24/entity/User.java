@@ -33,9 +33,6 @@ public class User implements Serializable {
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false, unique = true)
-    private String token;
-
     // Used for email verificaiton
     @Column(name = "verification_code", length = 64)
     private String verificationCode;
@@ -54,7 +51,6 @@ public class User implements Serializable {
 
     // TODO: needs to be changed to type Date according to class diagram
     // Then the DTOs must also be changed
-    @Column(nullable = false)
     private String creationdate;
 
     // TODO: needs to be changed to type tuple according to class diagram
@@ -71,7 +67,7 @@ public class User implements Serializable {
     @Column
     private Boolean featured_in_rankings = true;
 
-    public String generateToken() {
+    private String generateToken() {
       return Jwts.builder()
         .setSubject(this.username)
         .signWith(SignatureAlgorithm.HS512, "secrete_key")
@@ -119,11 +115,7 @@ public class User implements Serializable {
     }
 
     public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
+        return this.generateToken();
     }
 
     public String getStatus() {
@@ -173,8 +165,9 @@ public class User implements Serializable {
     public Boolean getVerified(){
         return this.verified;
     }
-    public void setVerified(Boolean b){
-        this.verified = b;
+    
+    public void setVerified(Boolean state){
+        this.verified = state;
     }
 
     public int getCurrentpoints() {
@@ -206,5 +199,7 @@ public class User implements Serializable {
             this.setFeatured_in_rankings(user_with_new_data.getFeatured_in_rankings());
         }
     }
+
+    
 }
 

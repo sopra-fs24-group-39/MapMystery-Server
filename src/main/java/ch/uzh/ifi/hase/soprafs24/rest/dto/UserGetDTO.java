@@ -2,6 +2,8 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
 import java.util.List;
 
+import javax.persistence.Column;
+
 // This handles the updates of a profile, current version will support the update of
 // the email-address, password, username & boolean whether the user wants his profile to be displayed in rankings
 
@@ -10,7 +12,6 @@ import java.util.List;
 public class UserGetDTO {
 
   private Long id = null;
-  private String token = null;
   private String password = null;
   private String username = null;
   private String status = "UNDEF";
@@ -19,6 +20,7 @@ public class UserGetDTO {
   private String score;
   private List<UserGetDTO> friends;
   private int currentpoints;
+  private Boolean verified;
   private  Boolean featured_in_rankings = null;
 
   public Long getId(){
@@ -29,12 +31,12 @@ public class UserGetDTO {
     this.id = Id;
   }
 
-  public String getToken(){
-    return this.token;
+  public Boolean getVerified(){
+    return this.verified;
   }
 
-  public void setToken(String token){
-    this.token = token;
+  public void setVerified(Boolean state){
+    this.verified = state;
   }
 
   public void setCreationdate(String creationdate){

@@ -27,29 +27,30 @@ public interface DTOMapper {
   @Mapping(source = "username", target = "username",  nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(source = "password", target = "password",  nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(source = "creationdate", target = "creationdate",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-  @Mapping(source = "token", target = "token",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(source = "status", target = "status",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(source = "userEmail",target = "userEmail",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(source = "score", target = "score",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(source = "friends", target = "friends",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(source = "currentpoints",target = "currentpoints",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   @Mapping(source = "featured_in_rankings",target = "featured_in_rankings",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  @Mapping(source = "verified",target = "verified",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   User convertUserPutDTOtoEntity(UserPutDTO user);
 
   @Mapping(source = "id", target = "id")
   @Mapping(source = "username", target = "username")
   @Mapping(source = "password", target = "password")
   @Mapping(source = "creationdate", target = "creationdate")
-  @Mapping(source = "token", target = "token")
   @Mapping(source = "status", target = "status")
   @Mapping(source = "userEmail",target = "userEmail")
   @Mapping(source = "score", target = "score")
   @Mapping(source = "friends", target = "friends")
   @Mapping(source = "currentpoints",target = "currentpoints")
   @Mapping(source = "featured_in_rankings",target = "featured_in_rankings")
+  @Mapping(source = "verified",target = "verified")
   UserGetDTO convertEntityToUserGetDTO(User user);
 
   @Mapping(source="username",target="username")
   @Mapping(source="password",target="password")
+  @Mapping(source="userEmail",target="userEmail")
   User convertCredPostDTOtoEntity(CredPostDTO credentials);
 }
