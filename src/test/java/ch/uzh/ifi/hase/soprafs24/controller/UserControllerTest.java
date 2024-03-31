@@ -37,6 +37,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -69,9 +70,8 @@ public class UserControllerTest {
     user.setStatus("OFFLINE");
     user.setPassword("null");
     long userId = 1L; // Assuming IDs are long
-    String token = "blah";
     user.setId(userId);
-    user.setToken(token);
+    String token = user.getToken();
 
     // Mocking UserService to return a specific user when getUser() is called
     given(userService.getUser(userId)).willReturn(user);
@@ -95,10 +95,9 @@ public class UserControllerTest {
     user.setUsername("firstname@lastname");
     user.setStatus("OFFLINE");
     long userId = 1L;
-    String token = "blah";
+    String token = user.getToken();
 
     user.setId(userId);
-    user.setToken(token);
 
     // Mocking UserService to return a specific user when getUser() is called
     given(userService.getUser(userId)).willThrow(new RuntimeException("user not found by id"));
@@ -117,7 +116,6 @@ public class UserControllerTest {
   public void testPUT_users_userid_success() throws Exception {
       // Given
       long userId = 1L;
-      String token = "blah";
 
       UserPutDTO updatedUserData = new UserPutDTO();
       updatedUserData.setUsername("updatedUser");
@@ -128,7 +126,7 @@ public class UserControllerTest {
       existingUser.setId(userId);
       existingUser.setUsername("existingUser");
       existingUser.setStatus("OFFLINE");
-      existingUser.setToken(token);
+      String token = existingUser.getToken();
 
       given(userService.getUser(userId)).willReturn(existingUser);
       // No need to mock userService.updateUser() as it does not return a value, but ensure it does not throw exceptions
@@ -147,7 +145,6 @@ public class UserControllerTest {
   public void testPUT_users_userid_failure() throws Exception {
       // Given
       long userId = 1L;
-      String token = "blah";
       UserPutDTO updatedUserData = new UserPutDTO();
       updatedUserData.setUsername("updatedUser");
       updatedUserData.setPassword("newPassword");
@@ -158,7 +155,7 @@ public class UserControllerTest {
       existingUser.setId(userId);
       existingUser.setUsername("existingUser");
       existingUser.setStatus("OFFLINE");
-      existingUser.setToken(token);
+      String token = existingUser.getToken();
 
       given(userService.getUser(userId)).willThrow(new RuntimeException("user not found by id"));
       // No need to mock userService.updateUser() as it does not return a value, but ensure it does not throw exceptions
@@ -173,7 +170,6 @@ public class UserControllerTest {
               .andExpect(status().isNotFound());
   }
 
-  @Disabled("Needs implementation")
   @Test
   public void testPOST_users_success() throws Exception {
     // Given
@@ -237,5 +233,49 @@ public class UserControllerTest {
         .andExpect(jsonPath("$[1].status", is(user2.getStatus())));
   }
 
+
+  @Test
+    public void testDELETE_users_userid_success() throws Exception {
+        // Given
+        long userId = 1L;
+
+        User existingUser = new User();
+        existingUser.setId(userId);
+        existingUser.setUsername("existingUser");
+        existingUser.setStatus("OFFLINE");
+        String token = existingUser.getToken();
+
+        given(userService.getUser(userId)).willReturn(existingUser);
+
+        MockHttpServletRequestBuilder Request = delete("/users/{userId}", userId)
+          .header("Authorization",token)
+          .contentType(MediaType.APPLICATION_JSON);
+
+        // When & Then
+        mockMvc.perform(Request)
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void testDELETE_users_userid_failure() throws Exception {
+        // Given
+        long userId = 1L;
+
+        User existingUser = new User();
+        existingUser.setId(userId);
+        existingUser.setUsername("existingUser");
+        existingUser.setStatus("OFFLINE");
+        String token = existingUser.getToken();
+
+        given(userService.getUser(userId)).willReturn(null);
+
+        MockHttpServletRequestBuilder Request = delete("/users/{userId}", userId)
+          .header("Authorization",token)
+          .contentType(MediaType.APPLICATION_JSON);
+
+        // When & Then
+        mockMvc.perform(Request)
+                .andExpect(status().isNotFound());
+    }
 
 }

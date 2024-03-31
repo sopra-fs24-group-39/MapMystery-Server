@@ -38,6 +38,7 @@ public class AccountService {
                 "Please click the following link to verify your account: " + verificationLink;
         emailSenderService.sendEmail(user.getUserEmail(), "Account Verification", emailBody);
 
+
     }
 
 }

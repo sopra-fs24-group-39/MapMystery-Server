@@ -1,3 +1,8 @@
+/**
+ * Author: David Sanchez
+ */
+
+
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
@@ -15,15 +20,11 @@ import org.springframework.web.server.ResponseStatusException;
 
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/**
- * User Controller
- * This class is responsible for handling all REST request that are related to
- * the user.
- * The controller will receive the request and delegate the execution to the
- * UserService and finally return the result.
- */
+
 @RestController
 public class UserController {
 
@@ -31,8 +32,9 @@ public class UserController {
   private final UserService userService;
   private AccountService accountService;
 
-  UserController(UserService userService) {
+  UserController(UserService userService, AccountService accountService) {
     this.userService = userService;
+    this.accountService = accountService;
   }
 
   /**
@@ -42,7 +44,7 @@ public class UserController {
   @GetMapping("/users")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public List<UserGetDTO> getAllUsers() {
+  public List<UserGetDTO> allUsersGet() {
 
     try{
       // fetch all users in the internal representation
@@ -56,7 +58,7 @@ public class UserController {
       return userGetDTOs;
     }
     catch(Exception e){
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occured");
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occured "+e.getMessage());
     }
     
   }
@@ -70,7 +72,7 @@ public class UserController {
   @GetMapping("/users/{userId}")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public UserGetDTO getUser(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
+  public UserGetDTO userGet(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
 
     try{
       User user = userService.getUser(userId);
@@ -79,47 +81,78 @@ public class UserController {
       return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     } 
     catch (AssertionError e){
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid!");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid! "+e.getMessage());
     }
     catch (RuntimeException e){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found", userId));
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found "+e.getMessage(), userId));
     }
     catch (Exception e){
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured");
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured "+e.getMessage() );
     }
   
   }
 
   /**
    * 
-   * @param credentials Username and password for the user to be created
+   * @param userId pathvariable of request, the unique Id of user
+   * @param token of the user for authentication
+   */
+  @DeleteMapping("/users/{userId}")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public void userDeletion(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
+
+    try{
+      User user = userService.getUser(userId);
+      assert user.getToken().equals(token);
+
+      userService.deleteUser(user);
+    } 
+    catch (AssertionError e){
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid! "+e.getMessage());
+    }
+    catch (RuntimeException e){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found "+e.getMessage(), userId));
+    }
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured "+e.getMessage());
+    }
+  
+  }
+
+  /**
+   * 
+   * @param credentials Username and password and emailfor the user to be created
    * @return returns the user with all of its properties, in particular the token which will be needed for
    * future requests with an id for example Users/userId where userId is the pathvariable
    */
   @PostMapping("/users")
   @ResponseStatus(HttpStatus.CREATED)
   @ResponseBody
-  public UserGetDTO createUser(@RequestBody CredPostDTO credentials) {
+  public UserGetDTO userCeration(@RequestBody CredPostDTO credentials) {
     try{
 
       // convert API user to internal representation
       User userInput = DTOMapper.INSTANCE.convertCredPostDTOtoEntity(credentials);
-      
 
       // create user, throws Excpetion if username or email already exists
       User createdUser = userService.createUser(userInput);
 
-      accountService.sendVerificationEmail(createdUser);
+      try {
+        accountService.sendVerificationEmail(createdUser);
+      }
+      catch (Exception e){
+        throw new RuntimeException("E-mail verification failed "+e.getMessage());
+      }
 
       return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
 
-      // convert internal representation of user back to API
     }
     catch (RuntimeException e){
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "add user failed because username already exists");
+      throw new ResponseStatusException(HttpStatus.CONFLICT, "add user failed because username already exists or E-Mail does not exist "+e.getMessage());
     }
     catch (Exception e){
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured");
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured "+e.getMessage());
     }
   }
 
@@ -166,29 +199,36 @@ public class UserController {
   @PutMapping("/users/login")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public UserGetDTO userLogin(@RequestBody CredPostDTO credentials){
+  public Map<String, Object> userLogin(@RequestBody CredPostDTO credentials){
     try{
       User user = userService.getUser(credentials.getUsername());
       assert user.checkPassword(credentials.getPassword());
 
-        // Check if the user has verified their account
-        if (!user.getVerified()) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN, "User account not verified");
-        }
+      // TODO: not working yet
+      // assert user.getVerified();
 
       User newStatus = new User();
 
       newStatus.setStatus("ONLINE");
 
       userService.updateUser(user,newStatus);
+
       
       // the token needed for subsequent requests is in the authUser object
       UserGetDTO authUser = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
-      return authUser;
+
+      String token = user.getToken();
+      
+      //prepearing response
+      Map<String, Object> response = new HashMap<>();
+      response.put("user", authUser);
+      response.put("token", token);
+
+      return response;
 
     }
     catch (AssertionError e){
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Wrong password for login");
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Wrong password for login or Account is not verified");
     }
     catch (RuntimeException e){
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User was not found with given userid");
@@ -198,17 +238,18 @@ public class UserController {
     }
 
   }
-    @GetMapping("/verify-account")
-    public ResponseEntity<String> verifyAccount(@RequestParam("token") String token){
-      User user = userService.getUserByVerificationToken(token);
 
-      if(user == null){
-          return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid verification token.");
-      }
-      // Mark the user as verified
-        user.setVerified(true);
-        userService.updateUser(user,user);
+  @GetMapping("/verify-account")
+  public ResponseEntity<String> verifyAccount(@RequestParam("token") String token){
+    User user = userService.getUserByVerificationToken(token);
 
-        return ResponseEntity.ok("Account verified successfully.");
-      }
+    if(user == null){
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid verification token.");
     }
+    // Mark the user as verified
+    user.setVerified(true);
+    userService.updateUser(user,user);
+
+    return ResponseEntity.ok("Account verified successfully.");
+  }
+}
