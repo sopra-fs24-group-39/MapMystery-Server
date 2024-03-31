@@ -38,7 +38,7 @@ public class User implements Serializable {
     private String verificationCode;
 
     @Column(nullable = false)
-    private Boolean verified;
+    private Boolean verified=false;
 
     @Column(nullable = false)
     private String status;
