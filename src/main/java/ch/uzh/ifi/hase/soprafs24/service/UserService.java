@@ -101,7 +101,12 @@ public class UserService {
 
   }
 
-  
+  /**
+   * 
+   * @param userToBeCreated the user whose password should be checked if it
+   * satisfies all password requirements
+   * throws errors should the password not satisfy some requirements
+   */
   public void checkPassword(User userToBeCreated){
     String pwd = userToBeCreated.getPassword();
 
