@@ -26,30 +26,35 @@ public class User implements Serializable {
 
     @Id
     @GeneratedValue
-    private Long id;
+    private Long Id;
 
     private static final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 
     @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false, unique = true)
-    private String token;
+    // Used for email verificaiton
+    @Column(name = "verification_code", length = 64)
+    private String verificationCode;
+
+    @Column(nullable = false)
+    private Boolean verified=false;
 
     @Column(nullable = false)
     private String status;
 
     @Column(nullable = false)
-    private String useremail;
+    private String userEmail;
 
     @Column(nullable = false)
     private String password;
 
     // TODO: needs to be changed to type Date according to class diagram
-    @Column(nullable = false)
+    // Then the DTOs must also be changed
     private String creationdate;
 
     // TODO: needs to be changed to type tuple according to class diagram
+    // then the DTOs must also be changed
     @Column
     private String score;
 
@@ -69,12 +74,20 @@ public class User implements Serializable {
         .compact();
     }
 
-    public Long getId() {
-        return id;
+    public String getVerificationToken() {
+        return verificationCode;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setVerificationToken(String verificationCode) {
+        this.verificationCode = verificationCode;
+    }
+
+    public Long getId() {
+        return Id;
+    }
+
+    public void setId(Long Id) {
+        this.Id = Id;
     }
 
     public String getUsername() {
@@ -85,12 +98,12 @@ public class User implements Serializable {
         this.username = username;
     }
 
-    public String getEmail() {
-        return this.useremail;
+    public String getUserEmail() {
+        return this.userEmail;
     }
 
-    public void setEmail(String email) {
-        this.useremail = email;
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
     }
 
     public Boolean getFeatured_in_rankings() {
@@ -102,11 +115,7 @@ public class User implements Serializable {
     }
 
     public String getToken() {
-        return token;
-    }
-
-    public void setToken() {
-        this.token = this.generateToken();
+        return this.generateToken();
     }
 
     public String getStatus() {
@@ -115,14 +124,6 @@ public class User implements Serializable {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getUseremail() {
-        return useremail;
-    }
-
-    public void setUseremail(String useremail) {
-        this.useremail = useremail;
     }
 
     public String getPassword() {
@@ -161,6 +162,14 @@ public class User implements Serializable {
         this.friends = friends;
     }
 
+    public Boolean getVerified(){
+        return this.verified;
+    }
+    
+    public void setVerified(Boolean state){
+        this.verified = state;
+    }
+
     public int getCurrentpoints() {
         return currentpoints;
     }
@@ -182,13 +191,15 @@ public class User implements Serializable {
             this.setStatus(user_with_new_data.getStatus());
         }
 
-        if (user_with_new_data.getEmail() != null && !user_with_new_data.getEmail().isEmpty()) {
-            this.setEmail(user_with_new_data.getEmail());
+        if (user_with_new_data.getUserEmail() != null && !user_with_new_data.getUserEmail().isEmpty()) {
+            this.setUserEmail(user_with_new_data.getUserEmail());
         }
 
         if (user_with_new_data.getFeatured_in_rankings() != null && user_with_new_data.getFeatured_in_rankings() != null) {
             this.setFeatured_in_rankings(user_with_new_data.getFeatured_in_rankings());
         }
     }
+
+    
 }
 

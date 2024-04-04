@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
+import com.fasterxml.jackson.databind.deser.DataFormatReaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +11,12 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import ch.uzh.ifi.hase.soprafs24.service.EmailSenderService;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * User Service
@@ -40,25 +44,32 @@ public class UserService {
 
   public User createUser(User newUser) {
     checkIfUserExists(newUser);
+    checkPassword(newUser);
     // saves the given entity but data is only persisted in the database once
     // flush() is called
-    newUser.setToken();
+    String currentDate = java.time.LocalDate.now().toString();
+    newUser.setCreationdate(currentDate);
     newUser.setStatus("OFFLINE");
+    newUser.setVerified(false);
     newUser = userRepository.save(newUser);
     //important, token can only be set after ID was given!
     userRepository.flush();
 
-    log.debug("Created Information for User: {}", newUser);
     return newUser;
   }
+
+
   public void updateUser(User to_be_updated_user, User user_with_new_data){
-      // TO DO: Implement Uniqueness check on the username, email?
-      to_be_updated_user.update(user_with_new_data);
-      userRepository.save(to_be_updated_user);
+    // TO DO: Implement Uniqueness check on the username, email?
+    to_be_updated_user.update(user_with_new_data);
+    userRepository.save(to_be_updated_user);
+    userRepository.flush();
   }
+
+
   public User getUser(long user_Id){
-      Optional<User> optionalUser = userRepository.findById(user_Id);
-      return optionalUser.orElseThrow(() -> new RuntimeException("User not found with id: " + user_Id));
+    Optional<User> optionalUser = userRepository.findById(user_Id);
+    return optionalUser.orElseThrow(() -> new RuntimeException("User not found with id: " + user_Id));
   }
 
   /**
@@ -71,13 +82,85 @@ public class UserService {
    * @throws org.springframework.web.server.ResponseStatusException
    * @see User
    */
+
   private void checkIfUserExists(User userToBeCreated) {
+      // Ensure email is unique
+      // Ensure username is unique
     User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
+    User userByEmail = userRepository.findByUserEmail(userToBeCreated.getUserEmail());
 
     String baseErrorMessage = "The %s provided %s not unique. Therefore, the user could not be created!";
     if (userByUsername != null) {
       throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-          String.format(baseErrorMessage, "username and the name", "are"));
+          String.format(baseErrorMessage, "username", "is"));
+    }
+    if (userByEmail != null){
+        throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                String.format(baseErrorMessage, "email","is"));
+    }
+
+  }
+
+  /**
+   * 
+   * @param userToBeCreated the user whose password should be checked if it
+   * satisfies all password requirements
+   * throws errors should the password not satisfy some requirements
+   */
+  public void checkPassword(User userToBeCreated){
+    String pwd = userToBeCreated.getPassword();
+
+
+    Pattern uppCase = Pattern.compile("[A-Z]");
+    Matcher uppCaseMatch = uppCase.matcher(pwd);
+    boolean HasUpperCase = uppCaseMatch.find();
+
+
+    // Check for at least one numerical digit
+    Pattern numericalPattern = Pattern.compile("[0-9]");
+    Matcher numericalMatcher = numericalPattern.matcher(pwd);
+    boolean hasNumerical = numericalMatcher.find();
+
+    // Check for at least one special character
+    Pattern specialCharPattern = Pattern.compile("[^A-Za-z0-9]");
+    Matcher specialCharMatcher = specialCharPattern.matcher(pwd);
+    boolean hasSpecialChar = specialCharMatcher.find();
+
+
+    if (!HasUpperCase){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+      String.format("The password doesn't contain an Upper Case Letter [A-Z]"));
+    }
+    if (!hasNumerical){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+      String.format("The password doesn't contain a numerical character [0-9]"));
+    }
+    if (!hasSpecialChar){
+      throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+      String.format("The password doesn't contain special Character."));
+    }
+
+
+
+  }
+
+  
+  public User getUser(String username){
+    return this.userRepository.findByUsername(username);
+  }
+
+  public User getUserByVerificationToken(String verificationCode) {
+    return this.userRepository.findByVerificationCode(verificationCode);
+  }
+
+  public void deleteUser(User user){
+    try {
+      this.userRepository.delete(user);
+    }
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"User could not be deleted");
     }
   }
+
+
 }

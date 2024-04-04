@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
+import java.util.List;
+
 // This handles the updates of a profile, current version will support the update of
 // the email-address, password, username & boolean whether the user wants his profile to be displayed in rankings
 
@@ -7,26 +9,81 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
 public class UserPutDTO {
 
+  private Long id = null;
   private String password = null;
   private String username = null;
   private String status = "UNDEF";
-  private String email = null;
+  private String creationdate = null;
+  private String userEmail = null;
+  private String score;
+  private boolean verified;
+  private List<UserPutDTO> friends;
+  private int currentpoints;
   private  Boolean featured_in_rankings = null;
 
+  public Long getId(){
+    return this.id;
+  }
 
-  public String getEmail(){
-        return this.email;
-    }
-  public void setEmail(String Email){
-        this.email = Email;
-    }
+  public void setId(Long Id){
+    this.id = Id;
+  }
+
+  public void setCreationdate(String creationdate){
+    this.creationdate = creationdate;
+  }
+
+  public String getCreationdate(){
+    return creationdate;
+  }
+
+  public String getScore(){
+    return this.score;
+  }
+
+  public void setScore(String score){
+    this.score = score;
+  }
+
+  public Boolean getVerified(){
+    return this.verified;
+}
+
+  public void setVerified(Boolean state){
+    this.verified = state;
+  }
+
+  public List<UserPutDTO> getFriends(){
+    return this.friends;
+  }
+
+  public void setFreinds(List<UserPutDTO> friends){
+    this.friends = friends;
+  }
+
+  public int getCurrentpoints(){
+    return this.currentpoints;
+  }
+
+  public void setCurrentpoints(int currentpoints){
+    this.currentpoints = currentpoints;
+  }
+
+  public String getUserEmail(){
+      return this.userEmail;
+  }
+  public void setUserEmail(String userEmail){
+      this.userEmail = userEmail;
+  }
 
   public Boolean getFeatured_in_rankings(){
-        return this.featured_in_rankings;
-    }
+      return this.featured_in_rankings;
+  }
   public void setFeatured_in_rankings(Boolean featured_in_rankings){
-        this.featured_in_rankings = featured_in_rankings;
-    }
+      this.featured_in_rankings = featured_in_rankings;
+  }
+
+
   public String getPassword() {
     return password;
   }

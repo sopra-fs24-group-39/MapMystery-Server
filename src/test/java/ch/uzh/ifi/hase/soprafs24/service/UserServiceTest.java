@@ -30,6 +30,7 @@ public class UserServiceTest {
     testUser = new User();
     testUser.setId(1L);
     testUser.setUsername("testUsername");
+    testUser.setPassword("9Ko{$");
 
     // when -> any object is being save in the userRepository -> return the dummy
     // testUser
@@ -76,5 +77,6 @@ public class UserServiceTest {
     // is thrown
     assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
   }
+
 
 }
