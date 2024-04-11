@@ -12,6 +12,8 @@
 - Verification link -> database update
 - Secure password requirements
 #### What will I do this week?
+- API Integration for Data Fetching
+- Get mapping
 #### What are the obstacles to progress?
 ### David:
 #### What did I do last week?
