@@ -6,6 +6,11 @@
 #### What are the obstacles to progress?
 ### Samuel:
 #### What did I do last week?
+- created Email account
+- JAVA Email sender implementation
+- Verification email + creation email sent
+- Verification link -> database update
+- Secure password requirements
 #### What will I do this week?
 #### What are the obstacles to progress?
 ### David:
