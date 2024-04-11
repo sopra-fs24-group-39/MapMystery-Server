@@ -14,6 +14,10 @@
 #### What will I do this week?
 - API Integration for Data Fetching
 - Get mapping
+- Game Object
+- Tally Points for players
+- Function to get coordinates
+-  
 #### What are the obstacles to progress?
 ### David:
 #### What did I do last week?
