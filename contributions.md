@@ -39,6 +39,7 @@ web sockets
 #### What are the obstacles to progress?
 ### Tim:
 #### What did I do last week?
+(issues: #10, #14, #15, #16, #17)
 - created Title component
 - created Logo component
 - created base element component
@@ -51,17 +52,14 @@ web sockets
 - created and populated settings page
 - created and populated friends page
 - created and populated rankings page
-
-Still to do (Week = Friday to Friday)
 - add content to the base element in settings
 - add content to the base element in rankings
 - add content to the base element in friends
-- create a chat component in various forms (open, closed, button).
-- create a dropdown menu and integrate it with the profile picture so that it appears when pressed.
-- fix small things like cursor = pointer in navbar
 #### What will I do this week?
 - Components for the Game modes
 - Lobbyies
-- Start working on the Google Maps API
+- create a chat component in various forms (open, closed, button).
+- create a dropdown menu and integrate it with the profile picture so that it appears when pressed.
+- fix small things like cursor = pointer in navbar
 #### What are the obstacles to progress?
 - none
