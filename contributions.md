@@ -2,8 +2,16 @@
 ## M3 05.04.2024 - 12.04.2024:
 ### Nils:
 #### What did I do last week?
+- Created the buttons
+- Navbar skeleton
+- An outline of the main page
 #### What will I do this week?
+- Create the frontend draft for Login and Registration
+- Connect the Login/Registry to the backend
 #### What are the obstacles to progress?
+- Staying as close to the design draft as possible
+- Getting along with all the CSS design
+- Trying to keep the code clean, readable and easy to understand
 ### Samuel:
 #### What did I do last week?
 - created Email account
