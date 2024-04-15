@@ -35,8 +35,14 @@ web sockets
 #### What are the obstacles to progress?
 ### Joshua:
 #### What did I do last week?
+- Profile Updating Endpoint
+- Rankings Visibility Toggle
+- Fundamentals for the Google Street View API Implementation
 #### What will I do this week?
+- Integrate & configure the Google API calls for the Frontend
+- Uniqueness check for email and username when updating / creating a profile
 #### What are the obstacles to progress?
+- Deciding on which functionalities should be carried out by the server or by the client
 ### Tim:
 #### What did I do last week?
 (issues: #10, #14, #15, #16, #17)
