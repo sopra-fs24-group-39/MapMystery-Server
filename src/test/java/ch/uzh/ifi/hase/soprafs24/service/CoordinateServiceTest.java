@@ -23,7 +23,7 @@ public class CoordinateServiceTest {
 
     }
 
-    //@Disabled("Calls Google API")
+    @Disabled("Calls Google API")
     @Test
     void testRealImage() throws InterruptedException {
         GameService gameService = new GameService(new RestTemplateBuilder().build());
