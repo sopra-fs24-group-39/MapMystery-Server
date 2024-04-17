@@ -1,9 +1,11 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+
 import ch.uzh.ifi.hase.soprafs24.service.AccountService;
 import ch.uzh.ifi.hase.soprafs24.service.EmailSenderService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
+
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
@@ -11,8 +13,8 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Value;
 
-import java.util.UUID;
 
+import java.util.UUID;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 

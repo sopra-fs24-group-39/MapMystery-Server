@@ -58,6 +58,8 @@ public class User implements Serializable {
     @Column
     private String score;
 
+    private int score;
+
     @Transient // Marking this as transient to avoid persistence issues, adjust according to your JPA implementation details
     private List<User> friends;
 
@@ -146,11 +148,19 @@ public class User implements Serializable {
         this.creationdate = creationdate;
     }
 
+
     public String getScore() {
         return score;
     }
 
     public void setScore(String score) {
+
+    }
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
         this.score = score;
     }
 
