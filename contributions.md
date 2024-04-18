@@ -77,7 +77,7 @@ web sockets
 ### Joshua:
 #### What did I do last week?
 - Google Street View API call (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/43)
-- Frontend Implementation of the Game (https://github.com/sopra-fs24-group-39/MapMystery-Client/issues/24)
+- Frontend Implementation of the Game (https://github.com/sopra-fs24-group-39/MapMystery-client/issues/24)
 #### What will I do this week?
 - Create an interactive Map so that one can take a guess of the current location
 ### Tim:
