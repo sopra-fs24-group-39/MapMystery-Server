@@ -70,3 +70,14 @@ web sockets
 - fix small things like cursor = pointer in navbar
 #### What are the obstacles to progress?
 - none
+## M3 12.04.2024 - 12.19.2024:
+### Nils:
+### Samuel:
+### David:
+### Joshua:
+#### What did I do last week?
+- Google Street View API call (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/43)
+- Frontend Implementation of the Game (https://github.com/sopra-fs24-group-39/MapMystery-Client/issues/24)
+#### What will I do this week?
+- Create an interactive Map so that one can take a guess of the current location
+### Tim:
