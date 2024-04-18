@@ -39,15 +39,18 @@ public class LobbyControllerTest {
   private MockMvc mockMvc;
 
   @MockBean
-  private LobbyService lobbyService;
-
-  @MockBean
   private UserService userService;
 
-  @Mock
-  private SimpMessagingTemplate messagingTemplate;
-  @InjectMocks
-  private Lobby lob = new Lobby(messagingTemplate);
+  @MockBean
+  private LobbyService lobbyService;
+
+  private Lobby lob;
+
+  @BeforeEach
+  public void setup(){
+    lob = new Lobby();
+  }
+
 
   @Test
   public void testJoinLobbySuccess() throws Exception {

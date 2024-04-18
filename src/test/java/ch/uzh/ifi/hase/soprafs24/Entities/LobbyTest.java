@@ -2,6 +2,8 @@ package ch.uzh.ifi.hase.soprafs24.Entities;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -20,8 +22,11 @@ public class LobbyTest {
     private User user4;
     @Mock
     private SimpMessagingTemplate messagingTemplate;
+
     @InjectMocks
-    private Lobby lobby = new Lobby(messagingTemplate);
+    private LobbyService lobbyService = new LobbyService();
+
+    private Lobby lobby = new Lobby();
 
 
     @BeforeEach
@@ -76,7 +81,7 @@ public class LobbyTest {
     @Test
     public void advanceRound_success() throws Exception {
         lobby.addPlayer(user1);
-        lobby.advanceRound(1L);
+        lobbyService.advanceRound(user1.getId(),lobby);
         assertEquals(2, lobby.getCurrRound().get(1L));
     }
 
@@ -84,7 +89,7 @@ public class LobbyTest {
     public void advanceRound_checkEndGame() throws Exception {
         lobby.addPlayer(user1);
         for (int i = 0; i < 5; i++) {
-            lobby.advanceRound(1L);
+            lobbyService.advanceRound(user1.getId(),lobby);
         }
         assertEquals("finished", lobby.getState());
     }
@@ -93,7 +98,7 @@ public class LobbyTest {
     public void checkNextRound_falseForMismatch() throws Exception {
         lobby.addPlayer(user1);
         lobby.addPlayer(user2);
-        lobby.advanceRound(1L);
+        lobbyService.advanceRound(user1.getId(),lobby);
         assertFalse(lobby.checkNextRound());
     }
 

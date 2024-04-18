@@ -25,6 +25,7 @@ import org.springframework.http.HttpStatus;
  
   private final UserService userService;
   private final LobbyService lobbyService;
+
  
   LobbyController(UserService userService,LobbyService lobbyService) {
     this.userService = userService;
@@ -46,8 +47,19 @@ import org.springframework.http.HttpStatus;
       assert user.getToken().equals(token);
 
       Long lobbyId = lobbyService.putToSomeLobby(user);
+
       if (lobbyId == -1){
-        throw new Exception("All lobbies are full!");
+        Long numLobbies = lobbyService.getLobbyCount();
+        int lobLimit = lobbyService.getLobbyLimit();
+
+        if (numLobbies < lobLimit){
+          Lobby lob = lobbyService.createLobby();
+          lobbyId = lob.getId();
+        } 
+        else 
+        {
+          throw new Exception("all lobbies are full");
+        }
       }
 
       Map<String,Long> response = new HashMap<>();
@@ -94,7 +106,7 @@ import org.springframework.http.HttpStatus;
         throw new Exception("lobby not found");
        };
        lob.setScore(score, userId);
-       lob.advanceRound(userId);
+       lobbyService.advanceRound(userId,lob);
       
        
        
