@@ -56,13 +56,20 @@ web sockets
     - created searchbar component
     - created tab selection component
     - added background to base container
-- created and populated landing page
-- created and populated settings page
-- created and populated friends page
-- created and populated rankings page
-- add content to the base element in settings
-- add content to the base element in rankings
-- add content to the base element in friends
+- Settings Page [#14](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/14)
+    - created and populated settings page
+    - added content to the base element in settings
+
+- Landing Page [#17](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/17)
+    - created and populated landing page
+
+- Rankings Page [#16](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/16)
+    - created and populated rankings page
+    - add content to the base element in rankings
+
+- Friends Page [#15](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/15)
+    - created and populated friends page
+    - add content to the base element in friends
 #### What will I do this week?
 - Components for the Game modes
 - Lobbyies
