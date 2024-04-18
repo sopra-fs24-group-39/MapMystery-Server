@@ -29,7 +29,8 @@
 #### What are the obstacles to progress?
 ### David:
 #### What did I do last week?
-api endpoints for user entity 
+created and tested lobbyclass (#https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/26)
+created and tested lobbycontroller #https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/27
 #### What will I do this week?
 web sockets
 #### What are the obstacles to progress?
