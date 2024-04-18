@@ -47,14 +47,15 @@ web sockets
 ### Tim:
 #### What did I do last week?
 (issues: #10, #14, #15, #16, #17)
-- created Title component
-- created Logo component
-- created base element component
-- added generated profile pictures based on username
-- changed things navigation bar (added Profile Picture and Logo)
-- created searchbar component
-- created tab selection component
-- added background to base container
+- Components (https://github.com/sopra-fs24-group-39/MapMystery-client/issues/10)
+    - created Title component
+    - created Logo component
+    - created base element component
+    - added generated profile pictures based on username
+    - changed things navigation bar (added Profile Picture and Logo)
+    - created searchbar component
+    - created tab selection component
+    - added background to base container
 - created and populated landing page
 - created and populated settings page
 - created and populated friends page
