@@ -78,10 +78,10 @@ import org.springframework.http.HttpStatus;
     * needed for security reasons
     * @return returns only the status codes
     */
-    @PutMapping("/Game/{gameId}")
+    @PutMapping("/Lobby/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void sendGuess(@PathVariable long gameId,@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
+    public void sendGuess(@PathVariable long lobbyId,@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
   
      try{
        User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
@@ -89,7 +89,7 @@ import org.springframework.http.HttpStatus;
 
        Long userId = user.getId();
        int score = user.getScore();
-       Lobby lob = lobbyService.getLobby(gameId);
+       Lobby lob = lobbyService.getLobby(lobbyId);
        if( lob == null){
         throw new Exception("lobby not found");
        };

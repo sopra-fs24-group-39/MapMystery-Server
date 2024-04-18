@@ -4,20 +4,28 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
+
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
 public class LobbyTest {
-    private Lobby lobby;
     private User user1;
     private User user2;
     private User user3;
     private User user4;
+    @Mock
+    private SimpMessagingTemplate messagingTemplate;
+    @InjectMocks
+    private Lobby lobby = new Lobby(messagingTemplate);
+
 
     @BeforeEach
     public void setup() {
-        lobby = new Lobby();
         user1 = new User(); user1.setId(1L);
         user2 = new User(); user2.setId(2L);
         user3 = new User(); user3.setId(3L);

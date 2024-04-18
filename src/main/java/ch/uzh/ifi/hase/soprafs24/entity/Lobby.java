@@ -8,12 +8,17 @@
  import java.util.Map;
  import java.util.HashMap;
  import java.util.List;
- import javax.persistence.GeneratedValue;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 
  
  @Entity
  @Table(name = "LOBBY")
  public class Lobby {
+  @Transient
+  private final SimpMessagingTemplate messagingTemplate;
+
    @Id
    @GeneratedValue
    private Long lobbyId;
@@ -40,13 +45,12 @@
    @Column(name = "points")
    private Map<Long, Integer> points = new HashMap<>();
    
-   
- 
-   public Lobby(){
-     this.players = new ArrayList<>();
-     this.state = "open";
-     
-   }
+   @Autowired
+    public Lobby(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+        this.players = new ArrayList<>();
+        this.state = "open";
+    }
  
    public Long getId(){
      return lobbyId;
@@ -77,7 +81,7 @@
      if (this.state == "open" && numberOfMembers +1 >= this.playerLimit) {
        this.state = "playing";
        try{
-         initGame();
+        //  initGame();
        }
        catch (Exception e){
          throw new Exception(e.getMessage());
@@ -93,17 +97,35 @@
      try {
        boolean removed = this.players.remove(user);
        if (!removed) {
-         throw new Exception("User not found in members list");
+         throw new Exception("User not found in players list");
        }
      } catch (Exception e) {
-         throw new Exception("Failed to remove member: " + e.getMessage());
+         throw new Exception("Failed to remove players: " + e.getMessage());
        }
+   }
+
+   /*
+    * @index needs to be less than amount of rounds
+    */
+   private Map<String,String> createCoordResp(int index){
+    Map<String, String> response = new HashMap<>();
+
+    response.put(this.coordinates.get(index).get(0).toString(),"longitude");
+    response.put(this.coordinates.get(index).get(1).toString(),"lattitude");
+    return response;
    }
  
    private void initGame() throws  Exception{
-     
+    String topic = String.format("/topic/Lobby/%s", this.lobbyId);
+    Map<String, String> response = createCoordResp(0);
+
+    messagingTemplate.convertAndSend(topic,response);
    }
  
+    /*
+     * checks if all the players have advanced to the same round which is true
+     * iff when all players have submitted their geuss for the previous round
+     */
    private boolean checkGameState(){
      for (int k = 0; k < this.players.size(); k++){ 
        Long playerId = this.players.get(k).getId();

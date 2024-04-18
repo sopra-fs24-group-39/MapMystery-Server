@@ -2,12 +2,17 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 // import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 // import org.springframework.web.server.ResponseStatusException;
@@ -38,6 +43,11 @@ public class LobbyControllerTest {
 
   @MockBean
   private UserService userService;
+
+  @Mock
+  private SimpMessagingTemplate messagingTemplate;
+  @InjectMocks
+  private Lobby lob = new Lobby(messagingTemplate);
 
   @Test
   public void testJoinLobbySuccess() throws Exception {
@@ -100,8 +110,7 @@ public class LobbyControllerTest {
     long userId = 1L; // Assuming IDs are long
     user.setId(userId);
     String token = user.getToken();
-    Long gameId = 1L;
-    Lobby lob = new Lobby();
+    Long lobbyId = 1L;
     lob.addPlayer(user);
     lob.addPlayer(user);
     lob.addPlayer(user);
@@ -110,7 +119,7 @@ public class LobbyControllerTest {
     given(lobbyService.getLobby(1L)).willReturn(lob);
 
     // when
-    MockHttpServletRequestBuilder request = put("/Game/{gameId}",gameId)
+    MockHttpServletRequestBuilder request = put("/Lobby/{lobbyId}",lobbyId)
     .header("Authorization",token)
     .content(new ObjectMapper().writeValueAsString(user))
     .contentType(MediaType.APPLICATION_JSON);
@@ -131,8 +140,7 @@ public class LobbyControllerTest {
     long userId = 1L; // Assuming IDs are long
     user.setId(userId);
     String token = user.getToken();
-    Long gameId = 1L;
-    Lobby lob = new Lobby();
+    Long lobbyId = 1L;
     lob.addPlayer(user);
     lob.addPlayer(user);
 
@@ -140,7 +148,7 @@ public class LobbyControllerTest {
     given(lobbyService.getLobby(1L)).willReturn(null);
 
     // when
-    MockHttpServletRequestBuilder request = put("/Game/{gameId}",gameId)
+    MockHttpServletRequestBuilder request = put("/Lobby/{lobbyId}",lobbyId)
     .header("Authorization",token)
     .content(new ObjectMapper().writeValueAsString(user))
     .contentType(MediaType.APPLICATION_JSON);
