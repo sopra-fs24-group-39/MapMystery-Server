@@ -91,3 +91,4 @@ web sockets
 #### What are the obstacles to progress?
 - Integrating a functional module into a system
 ### Tim:
+[#30](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/30)
