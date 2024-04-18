@@ -47,7 +47,7 @@ web sockets
 ### Tim:
 #### What did I do last week?
 (issues: #10, #14, #15, #16, #17)
-- Components (https://github.com/sopra-fs24-group-39/MapMystery-client/issues/10)
+- Components [#10](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/10)
     - created Title component
     - created Logo component
     - created base element component
