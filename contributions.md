@@ -80,4 +80,6 @@ web sockets
 - Frontend Implementation of the Game (https://github.com/sopra-fs24-group-39/MapMystery-client/issues/24)
 #### What will I do this week?
 - Create an interactive Map so that one can take a guess of the current location
+#### What are the obstacles to progress?
+- Integrating a functional module into a system
 ### Tim:
