@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.mockito.Mockito.when;

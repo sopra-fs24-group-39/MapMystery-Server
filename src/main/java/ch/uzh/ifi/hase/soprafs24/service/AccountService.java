@@ -1,11 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
-<<<<<<< HEAD
-import ch.uzh.ifi.hase.soprafs24.service.EmailSenderService;
-import ch.uzh.ifi.hase.soprafs24.service.UserService;
-=======
->>>>>>> 10a2c5e5c23f85f6b94695db0ce5ad42f11a620d
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

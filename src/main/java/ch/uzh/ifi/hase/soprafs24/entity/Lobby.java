@@ -7,11 +7,9 @@
  import javax.persistence.*;
  import java.util.Map;
  import java.util.HashMap;
- import java.util.ArrayList;
  import java.util.List;
  import javax.persistence.GeneratedValue;
 
-import org.springframework.data.geo.Point;
  
  @Entity
  @Table(name = "LOBBY")

@@ -2,7 +2,6 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
 import java.util.List;
 
-import javax.persistence.Column;
 
 // This handles the updates of a profile, current version will support the update of
 // the email-address, password, username & boolean whether the user wants his profile to be displayed in rankings

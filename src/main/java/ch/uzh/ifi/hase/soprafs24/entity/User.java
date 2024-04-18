@@ -55,9 +55,8 @@ public class User implements Serializable {
 
     // TODO: needs to be changed to type tuple according to class diagram
     // then the DTOs must also be changed
+   
     @Column
-    private String score;
-
     private int score;
 
     @Transient // Marking this as transient to avoid persistence issues, adjust according to your JPA implementation details
@@ -149,13 +148,8 @@ public class User implements Serializable {
     }
 
 
-    public String getScore() {
-        return score;
-    }
+    
 
-    public void setScore(String score) {
-
-    }
     public int getScore() {
         return score;
     }
