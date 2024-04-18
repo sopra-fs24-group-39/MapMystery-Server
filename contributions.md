@@ -36,8 +36,8 @@ web sockets
 #### What are the obstacles to progress?
 ### Joshua:
 #### What did I do last week?
-- Profile Updating Endpoint  (#https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/30)
-- Rankings Visibility Toggle (#https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/32)
+- Profile Updating Endpoint  (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/30)
+- Rankings Visibility Toggle (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/32)
 - Fundamentals for the Google Street View API Implementation
 #### What will I do this week?
 - Integrate & configure the Google API calls for the Frontend    
