@@ -105,7 +105,7 @@ import org.springframework.http.HttpStatus;
        if( lob == null){
         throw new Exception("lobby not found");
        };
-       lob.setScore(score, userId);
+       lob.setDistance(score, userId);
        lobbyService.advanceRound(userId,lob);
       
        

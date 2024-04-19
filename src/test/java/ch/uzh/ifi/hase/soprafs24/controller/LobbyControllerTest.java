@@ -114,9 +114,9 @@ public class LobbyControllerTest {
     user.setId(userId);
     String token = user.getToken();
     Long lobbyId = 1L;
-    lob.addPlayer(user);
-    lob.addPlayer(user);
-    lob.addPlayer(user);
+    lobbyService.addPlayer(user,lob);
+    lobbyService.addPlayer(user,lob);
+    lobbyService.addPlayer(user,lob);
 
     // Mocking UserService to return a specific user when getUser() is called
     given(lobbyService.getLobby(1L)).willReturn(lob);
@@ -144,8 +144,8 @@ public class LobbyControllerTest {
     user.setId(userId);
     String token = user.getToken();
     Long lobbyId = 1L;
-    lob.addPlayer(user);
-    lob.addPlayer(user);
+    lobbyService.addPlayer(user,lob);
+    lobbyService.addPlayer(user,lob);
 
     // Mocking UserService to return a specific user when getUser() is called
     given(lobbyService.getLobby(1L)).willReturn(null);
