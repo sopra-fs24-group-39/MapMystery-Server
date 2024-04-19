@@ -78,7 +78,7 @@ web sockets
 - fix small things like cursor = pointer in navbar
 #### What are the obstacles to progress?
 - none
-## M3 12.04.2024 - 12.19.2024:
+## M3 12.04.2024 - 19.04.2024:
 ### Nils:
 ### Samuel:
 ### David:
@@ -92,3 +92,4 @@ web sockets
 - Integrating a functional module into a system
 ### Tim:
 [#30](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/30)
+[#29](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/29)
