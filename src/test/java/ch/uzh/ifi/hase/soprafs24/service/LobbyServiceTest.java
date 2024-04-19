@@ -11,9 +11,12 @@ import org.mockito.Mock;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import ch.uzh.ifi.hase.constants.lobbyStates;
+import static org.mockito.Mockito.*;
+
 
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
 
 
 public class LobbyServiceTest {
@@ -21,6 +24,7 @@ public class LobbyServiceTest {
     private User user2;
     private User user3;
     private User user4;
+
     @Mock
     private SimpMessagingTemplate messagingTemplate;
 
@@ -38,6 +42,9 @@ public class LobbyServiceTest {
         user4 = new User(); user4.setId(4L);
         lobby.setPlayerLimit(3);
         lobby.setRounds(5);
+
+        doNothing().when(lobbyService).sendMsg(anyString());
+
     }
 
     @Test

@@ -56,6 +56,10 @@ public class LobbyService {
     return this.lobbyRepository.findByLobbyId(lobbyId);
   }
 
+  public void sendMsg(String msg){
+    this.messagingTemplate.convertAndSend(msg);
+  }
+
   public void addPlayer(User user,Lobby lob) throws Exception{
  
     int numberOfMembers = lob.players.size();
@@ -64,6 +68,7 @@ public class LobbyService {
       lob.players.add(user);
       lob.currRound.put(user.getId(),1);
       lob.distances.put(user.getId(),0);
+      this.sendMsg(user.getUserEmail()+" just joined the lobby");
     } 
     
     if (lob.getState() == lobbyStates.OPEN && numberOfMembers +1 >= lob.getPlayerLimit()) {
