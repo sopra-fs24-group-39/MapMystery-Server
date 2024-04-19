@@ -72,10 +72,9 @@ web sockets
     - add content to the base element in friends
 #### What will I do this week?
 - Components for the Game modes
-- Lobbyies
 - create a chat component in various forms (open, closed, button).
 - create a dropdown menu and integrate it with the profile picture so that it appears when pressed.
-- fix small things like cursor = pointer in navbar
+- fix small things like cursor = pointer in navbar, buttons animation on click, not hover
 #### What are the obstacles to progress?
 - none
 ## M3 12.04.2024 - 19.04.2024:
