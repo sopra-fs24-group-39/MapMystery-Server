@@ -19,6 +19,8 @@ import javax.el.ELException;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.constants.GameModes;
 import ch.uzh.ifi.hase.constants.lobbyStates;
+import org.springframework.web.client.RestTemplate;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 
 /**
  * User Service
@@ -35,6 +37,9 @@ public class LobbyService {
 
   @Autowired
   private SimpMessagingTemplate messagingTemplate;
+
+  private RestTemplate restTemplate = new RestTemplateBuilder().build();
+  private GameService gameService = new GameService(restTemplate);
 
   @Autowired
   private LobbyRepository lobbyRepository;
@@ -170,7 +175,7 @@ public class LobbyService {
   * checks if all the players have advanced to the same round which is true
   * iff when all players have submitted their geuss for the previous round
   */
-  private boolean checkGameState(Lobby lob){
+  public boolean checkGameState(Lobby lob){
     for (int k = 0; k < lob.players.size(); k++){ 
       Long playerId = lob.players.get(k).getId();
       if(lob.currRound.get(playerId) <5){
@@ -181,7 +186,7 @@ public class LobbyService {
     return true;
   }
 
-  private void refreshLobbies(){
+  public void refreshLobbies(){
     List<Lobby> lobbies = this.getAllLobbies();
     
     for( int k = 0; k < lobbies.size();k++){
@@ -279,9 +284,9 @@ public class LobbyService {
 
   public void sendCoord(Long lobbyId) throws Exception{
     try{
-      // // List<Double> coord = this.gameService.get_image_coordinates();
-      // Map<String,String> resp = this.createCoordResp(coord);
-      // this.messagingTemplate.convertAndSend(String.format("/topic/GameMode1/lobby/%s", lobbyId),resp);
+      List<Double> coord = this.gameService.get_image_coordinates();
+      Map<String,String> resp = this.createCoordResp(coord);
+      this.messagingTemplate.convertAndSend(String.format("/topic/GameMode1/lobby/%s", lobbyId),resp);
     }
     catch (Exception e){
       throw new Exception("Game could not initialize, create new lobby");
