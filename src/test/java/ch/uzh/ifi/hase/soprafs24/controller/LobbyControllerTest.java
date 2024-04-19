@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.Lobby;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -15,8 +16,10 @@ import org.springframework.http.MediaType;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
-// import org.springframework.web.server.ResponseStatusException;
 
+import ch.uzh.ifi.hase.constants.GameModes;
+// import org.springframework.web.server.ResponseStatusException;
+import ch.uzh.ifi.hase.constants.GameModes.*;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -25,7 +28,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 /**
  * UserControllerTest
  * This is a WebMvcTest which allows to test the UserController i.e. GET/POST
@@ -64,10 +66,10 @@ public class LobbyControllerTest {
     String token = user.getToken();
 
     // Mocking UserService to return a specific user when getUser() is called
-    given(lobbyService.putToSomeLobby(user)).willReturn(1L);
+    given(lobbyService.putToSomeLobby(user,GameModes.Gamemode1)).willReturn(1L);
 
     // when
-    MockHttpServletRequestBuilder postRequest = post("/Lobby")
+    MockHttpServletRequestBuilder postRequest = post("/Lobby/GameMode1")
     .header("Authorization",token)
     .content(new ObjectMapper().writeValueAsString(user))
     .contentType(MediaType.APPLICATION_JSON);
@@ -89,10 +91,10 @@ public class LobbyControllerTest {
     String token = user.getToken();
 
     // Mocking UserService to return a specific user when getUser() is called
-    given(lobbyService.putToSomeLobby(any())).willReturn(-1L);
+    given(lobbyService.putToSomeLobby(any(),any())).willReturn(-1L);
 
     // when
-    MockHttpServletRequestBuilder postRequest = post("/Lobby")
+    MockHttpServletRequestBuilder postRequest = post("/Lobby/GameMode1")
     .header("Authorization",token)
     .content(new ObjectMapper().writeValueAsString(user))
     .contentType(MediaType.APPLICATION_JSON);
@@ -122,7 +124,7 @@ public class LobbyControllerTest {
     given(lobbyService.getLobby(1L)).willReturn(lob);
 
     // when
-    MockHttpServletRequestBuilder request = put("/Lobby/{lobbyId}",lobbyId)
+    MockHttpServletRequestBuilder request = put("/Lobby/GameMode1/{lobbyId}",lobbyId)
     .header("Authorization",token)
     .content(new ObjectMapper().writeValueAsString(user))
     .contentType(MediaType.APPLICATION_JSON);
@@ -151,7 +153,7 @@ public class LobbyControllerTest {
     given(lobbyService.getLobby(1L)).willReturn(null);
 
     // when
-    MockHttpServletRequestBuilder request = put("/Lobby/{lobbyId}",lobbyId)
+    MockHttpServletRequestBuilder request = put("/Lobby/GameMode1/{lobbyId}",lobbyId)
     .header("Authorization",token)
     .content(new ObjectMapper().writeValueAsString(user))
     .contentType(MediaType.APPLICATION_JSON);

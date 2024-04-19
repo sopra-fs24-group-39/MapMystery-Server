@@ -2,7 +2,7 @@
  * author: david 
  */
 
-package ch.uzh.ifi.hase.soprafs24.entity;
+package ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -10,8 +10,12 @@ import javax.persistence.*;
 import java.util.Map;
 import java.util.HashMap;
 import ch.uzh.ifi.hase.constants.lobbyStates;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.service.GameService;
+import ch.uzh.ifi.hase.constants.GameModes;
  
  @Entity
+ @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
  @Table(name = "LOBBY")
  public class Lobby implements Serializable {
   
@@ -21,18 +25,19 @@ import ch.uzh.ifi.hase.constants.lobbyStates;
   @GeneratedValue
   private Long lobbyId;
 
-  //  TODO: the repository throws an error as soon as the players list grows to 2
-  //  @OneToMany(cascade = CascadeType.ALL)   
-  @Column
-  public ArrayList<User> players = new ArrayList<>();
+  @OneToMany(cascade = CascadeType.ALL)
+  public List<User> players = new ArrayList<User>();
 
   @Column
-  private int playerLimit;
+  protected int playerLimit;
 
   @Column
-  private int rounds;
+  protected GameModes gamemode;
 
   @Column
+  protected int rounds;
+
+  @Column    
   private lobbyStates state = lobbyStates.OPEN;
    
   @ElementCollection
@@ -53,6 +58,14 @@ import ch.uzh.ifi.hase.constants.lobbyStates;
  
   public List<User> getPlayers(){
    return players;
+  }
+
+  public void setGamemode(GameModes gamemode){
+    this.gamemode = gamemode;
+  }
+
+  public GameModes getGamemode(){
+    return this.gamemode;
   }
 
   public int getRounds(){

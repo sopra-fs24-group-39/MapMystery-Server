@@ -7,10 +7,10 @@ import org.springframework.stereotype.Controller;
 import java.util.Map;
 
 @Controller
-public class GameController {
+public class WebSocketController {
 
     @MessageMapping("/send/{lobbyId}")
-    @SendTo("/topic/game/{lobbyId}")
+    @SendTo("/topic/lobby/GameMode1/{lobbyId}")
     public Map<String,String> sendCoordinates(@DestinationVariable String lobbyId, @Payload Map<String,String> coordinates) {
         // Convert coordinates to a String format for message sending
         coordinates.put("lobbyId",lobbyId.toString());

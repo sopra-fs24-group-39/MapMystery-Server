@@ -3,21 +3,26 @@
  */
 
 
- package ch.uzh.ifi.hase.soprafs24.controller;
+package ch.uzh.ifi.hase.soprafs24.controller;
 
- import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
- import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
- import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
- import ch.uzh.ifi.hase.soprafs24.service.UserService;
- import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
+import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.*;
+import ch.uzh.ifi.hase.constants.GameModes;
+import ch.uzh.ifi.hase.constants.GameModes.*;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs24.service.UserService;
+import ch.uzh.ifi.hase.soprafs24.service.GameService;
+import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
+import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.GameMode1;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
- import org.springframework.web.bind.annotation.*;
- import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
  
- import java.util.HashMap;
- import java.util.Map;
+import java.util.HashMap;
+import java.util.Map;
  
  
  @RestController
@@ -37,7 +42,7 @@ import org.springframework.http.HttpStatus;
     * please ensure that its really all attributes
     * @return returns only the status codes
     */
-   @PostMapping("/Lobby")
+   @PostMapping("/Lobby/GameMode1")
    @ResponseStatus(HttpStatus.OK)
    @ResponseBody
    public Map<String, Long> joinLobby(@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
@@ -46,20 +51,12 @@ import org.springframework.http.HttpStatus;
       User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
       assert user.getToken().equals(token);
 
-      Long lobbyId = lobbyService.putToSomeLobby(user);
+      Long lobbyId = lobbyService.putToSomeLobby(user,GameModes.Gamemode1);
 
       if (lobbyId == -1){
-        Long numLobbies = lobbyService.getLobbyCount();
-        int lobLimit = lobbyService.getLobbyLimit();
-
-        if (numLobbies < lobLimit){
-          Lobby lob = lobbyService.createLobby();
-          lobbyId = lob.getId();
-        } 
-        else 
-        {
-          throw new Exception("all lobbies are full");
-        }
+        
+        throw new Exception("all lobbies are full");
+        
       }
 
       Map<String,Long> response = new HashMap<>();
@@ -90,7 +87,7 @@ import org.springframework.http.HttpStatus;
     * needed for security reasons
     * @return returns only the status codes
     */
-    @PutMapping("/Lobby/{lobbyId}")
+    @PutMapping("/Lobby/GameMode1/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void sendGuess(@PathVariable long lobbyId,@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
@@ -105,11 +102,7 @@ import org.springframework.http.HttpStatus;
        if( lob == null){
         throw new Exception("lobby not found");
        };
-       lob.setDistance(score, userId);
-       lobbyService.advanceRound(userId,lob);
-      
-       
-       
+       lobbyService.submitScore(score, userId, lob);
  
      } 
      catch (AssertionError e){

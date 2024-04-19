@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.el.ELException;
+
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.constants.GameModes;
 import ch.uzh.ifi.hase.constants.lobbyStates;
 
 /**
@@ -36,6 +39,9 @@ public class LobbyService {
   @Autowired
   private LobbyRepository lobbyRepository;
 
+  // @Autowired
+  // public GameService gameService;
+
   public List<Lobby> getAllLobbies() {
     return this.lobbyRepository.findAll();
   }
@@ -56,11 +62,40 @@ public class LobbyService {
     return this.lobbyRepository.findByLobbyId(lobbyId);
   }
 
-  public void sendMsg(String msg){
-    this.messagingTemplate.convertAndSend(msg);
+    /**
+     * 
+     * @param user the user who wants to join the lobby
+     * @param lob the lobby
+     * @return the lobby state after adding the user
+     */
+  public lobbyStates joinLobby(User user, Lobby lob) throws Exception{
+    this.addPlayer(user, lob);
+
+    if ( lob.getPlayers().size() == lob.getPlayerLimit()){
+      try{
+        lob.setState(lobbyStates.PLAYING);
+        this.sendCoord(lob.getId());
+        return lobbyStates.PLAYING;
+      }
+      catch (Exception e){
+        lob.setState(lobbyStates.CLOSED);
+        throw new Exception("Game could not initialize, create new lobby");
+      }
+      
+    }
+    else{
+      return lob.getState();
+    }
   }
 
-  public void addPlayer(User user,Lobby lob) throws Exception{
+  /**
+   * 
+   * @param user the player to add to the lobby
+   * @param lob the lobby 
+   * @return lobbyId if successfull -1 otherwise
+   * @throws Exception
+   */
+  public Long addPlayer(User user,Lobby lob) {
  
     int numberOfMembers = lob.players.size();
 
@@ -68,18 +103,17 @@ public class LobbyService {
       lob.players.add(user);
       lob.currRound.put(user.getId(),1);
       lob.distances.put(user.getId(),0);
-      this.sendMsg(user.getUserEmail()+" just joined the lobby");
+      lob.currRound.put(user.getId(), 1);
+      lobbyRepository.saveAndFlush(lob);
+      this.messagingTemplate.convertAndSend(String.format("/topic/GameMode1/lobby/%s", lob.getId()),user.getUserEmail()+" just joined the lobby");
+
+      return lob.getId();
     } 
-    
-    if (lob.getState() == lobbyStates.OPEN && numberOfMembers +1 >= lob.getPlayerLimit()) {
-      lob.setState(lobbyStates.PLAYING);
-      try{
-       //  initGame();
-      }
-      catch (Exception e){
-        throw new Exception(e.getMessage());
-      }
+    else {
+      return -1L;
     }
+    
+    
   } 
 
   public void removePlayer(User user,Lobby lob) throws Exception {
@@ -110,10 +144,16 @@ public class LobbyService {
     return true;
   }
 
-
+  /*
+   * after settting the state to finished
+   * it sends the results to all players
+   */
   public void endGame(Lobby lob){
-    lob.setState(lobbyStates.FINISHED);
+    lob.setState(lobbyStates.CLOSED);
+    this.refreshLobbies();
+    this.messagingTemplate.convertAndSend(String.format("/topic/GameMode1/lobby/%s", lob.getId()),"Game finished");
   }
+
 
   public void advanceRound(Long playerId, Lobby lob){
     int oldRound = lob.currRound.get(playerId);
@@ -147,7 +187,7 @@ public class LobbyService {
     for( int k = 0; k < lobbies.size();k++){
       Lobby lob = lobbies.get(k);
       // we also remove and reinitialize lobbies here!!
-      if(lob.getState() == lobbyStates.FINISHED){
+      if(lob.getState() == lobbyStates.CLOSED){
         lobbyRepository.delete(lob);
       }
     }
@@ -155,8 +195,15 @@ public class LobbyService {
       
   }
 
-  public Lobby createLobby(){
-    Lobby lob = new Lobby();
+  public Lobby createLobby(GameModes gamemode) throws Exception{
+    Lobby lob;
+    if (gamemode == GameModes.Gamemode1){
+      lob = new GameMode1();
+    }
+    else{
+      throw new Exception("no valid gamemode");
+    }
+
     this.lobbyRepository.saveAndFlush(lob);
 
     return lob;
@@ -171,21 +218,21 @@ public class LobbyService {
   }
 
   /**
-   * puts the user to some open lobby
+   * puts the user to some open lobby for the correct gammode
   * @param user
   * @return lobbyId if successful, -1 if not open lobby was found
   */
-  public Long putToSomeLobby(User user){
+  public Long  putToSomeLobby(User user,GameModes gamemode) throws Exception{
+    // this.messagingTemplate.convertAndSend("/topic/lobby/2","hello there");
     this.refreshLobbies();
     List<Lobby> lobbies = this.getAllLobbies();
+
     for ( int k = 0 ; k< lobbies.size();k++){
       Lobby lob = lobbies.get(k);
 
-      if(lob.getState() == lobbyStates.OPEN){
+      if(lob.getState() == lobbyStates.OPEN && lob.getGamemode() == gamemode){
         try{
-          this.addPlayer(user,lob);
-          lob.currRound.put(user.getId(), 1);
-          lobbyRepository.saveAndFlush(lob);
+          this.joinLobby(user,lob);
           return lob.getId();
         }
         catch (Exception e){
@@ -193,9 +240,53 @@ public class LobbyService {
         }
       }
     }
+
+    if ( this.LobbyLimit > lobbies.size()){
+      try{
+
+        Lobby lob = this.createLobby(gamemode);
+        this.joinLobby(user, lob);
+      }
+      catch (Exception e){
+        throw new Exception("User could not join Lobby even though spots are left");
+      }
+
+    }
     return -1L;
   }
 
+  /*
+   * sets the distance achieved in lobby and advancesRound for user
+   * then checks if all players are ready for next round notifies them with next
+   * coordinates
+   */
+  public void submitScore(int score,Long userId,Lobby lob) throws Exception{
+    lob.setDistance(score, userId);
+    this.advanceRound(userId,lob);
+    boolean nextRound = this.checkNextRound(lob);
 
+    if(nextRound && lob.getState() == lobbyStates.PLAYING){
+      try{
+        this.sendCoord(lob.getId());
+      }
+      catch (Exception e){
+        lob.setState(lobbyStates.CLOSED);
+        throw new Exception("Game could not initialize, create new lobby");
+      }
+    }
+
+  }
+
+  public void sendCoord(Long lobbyId) throws Exception{
+    try{
+      // // List<Double> coord = this.gameService.get_image_coordinates();
+      // Map<String,String> resp = this.createCoordResp(coord);
+      // this.messagingTemplate.convertAndSend(String.format("/topic/GameMode1/lobby/%s", lobbyId),resp);
+    }
+    catch (Exception e){
+      throw new Exception("Game could not initialize, create new lobby");
+    }
+    
+  }
 
 }
