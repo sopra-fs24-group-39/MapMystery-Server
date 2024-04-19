@@ -93,3 +93,4 @@ web sockets
 [#30](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/30)
 [#29](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/29)
 [#34](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/34)
+[#35](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/35)
