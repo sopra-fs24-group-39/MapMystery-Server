@@ -172,7 +172,6 @@ public class LobbyService {
   }
 
   
-
   /*
   * checks if all the players have advanced to the same round which is true
   * iff when all players have submitted their geuss for the previous round
