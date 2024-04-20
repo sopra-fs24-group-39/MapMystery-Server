@@ -44,11 +44,12 @@ public class LobbyService {
   @Autowired
   private LobbyRepository lobbyRepository;
 
-  // @Autowired
-  // public GameService gameService;
-
   public List<Lobby> getAllLobbies() {
     return this.lobbyRepository.findAll();
+  }
+
+  public void setLobbyLimit(int limit){
+    this.LobbyLimit = limit;
   }
 
   /*
@@ -70,7 +71,7 @@ public class LobbyService {
     /**
      * 
      * @param user the user who wants to join the lobby
-     * @param lob the lobby
+     * @param lob the lobby, assumes lobby to be open
      * @return the lobby state after adding the user
      */
   public lobbyStates joinLobby(User user, Lobby lob) throws Exception{
@@ -110,7 +111,7 @@ public class LobbyService {
       lob.distances.put(user.getId(),0);
       lob.currRound.put(user.getId(), 1);
       lobbyRepository.saveAndFlush(lob);
-      this.messagingTemplate.convertAndSend(String.format("/topic/GameMode1/lobby/%s", lob.getId()),user.getUserEmail()+" just joined the lobby");
+      this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/%s", lob.getId()),user.getUserEmail()+" just joined the lobby");
 
       return lob.getId();
     } 
@@ -124,6 +125,7 @@ public class LobbyService {
   public void removePlayer(User user,Lobby lob) throws Exception {
     try {
       boolean removed = lob.players.remove(user);
+      lobbyRepository.saveAndFlush(lob);
       if (!removed) {
         throw new Exception("User not found in players list");
       }
@@ -156,7 +158,7 @@ public class LobbyService {
   public void endGame(Lobby lob){
     lob.setState(lobbyStates.CLOSED);
     this.refreshLobbies();
-    this.messagingTemplate.convertAndSend(String.format("/topic/GameMode1/lobby/%s", lob.getId()),"Game finished");
+    this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/%s", lob.getId()),"Game finished");
   }
 
 
@@ -251,6 +253,7 @@ public class LobbyService {
 
         Lobby lob = this.createLobby(gamemode);
         this.joinLobby(user, lob);
+        return lob.getId();
       }
       catch (Exception e){
         throw new Exception("User could not join Lobby even though spots are left");
@@ -286,7 +289,7 @@ public class LobbyService {
     try{
       List<Double> coord = this.gameService.get_image_coordinates();
       Map<String,String> resp = this.createCoordResp(coord);
-      this.messagingTemplate.convertAndSend(String.format("/topic/GameMode1/lobby/%s", lobbyId),resp);
+      this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/%s", lobbyId),resp);
     }
     catch (Exception e){
       throw new Exception("Game could not initialize, create new lobby");

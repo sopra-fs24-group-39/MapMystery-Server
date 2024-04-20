@@ -97,6 +97,10 @@ import ch.uzh.ifi.hase.constants.GameModes;
     return state;
   }   
 
+  public void setLobbyState(lobbyStates lobbystate){
+    this.state = lobbystate;
+  }
+
   public void setState(lobbyStates state ){
     this.state = state;
   }

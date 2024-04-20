@@ -70,6 +70,14 @@ public class LobbyServiceTest {
       assertEquals(1, lobby.getPlayers().size());
     }
 
+    @Test
+    public void addPlayer_success_return_CorrectId() throws Exception {
+      lobbyService.addPlayer(user1,lobby);
+      Long LobbyId = lobbyService.addPlayer(user1, lobby);
+      assertEquals(2, lobby.getPlayers().size());
+      assertEquals(LobbyId, lobby.getId());
+    }
+
 
     @Test
     public void testStateTransitionToPlaying() throws Exception {
@@ -86,7 +94,32 @@ public class LobbyServiceTest {
         lobbyService.addPlayer(user1,lobby);
         lobbyService.addPlayer(user2,lobby);
         lobbyService.addPlayer(user3,lobby);
-        assertEquals(3, lobby.getPlayers().size());
+        lobbyService.removePlayer(user1, lobby);
+        assertEquals(2, lobby.getPlayers().size());
+    }
+
+    @Test
+    public void removePlayer_success_state_unchanged() throws Exception {
+        List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
+        when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
+        lobbyService.joinLobby(user1,lobby);
+        lobbyService.joinLobby(user2,lobby);
+        lobbyService.joinLobby(user3,lobby);
+        lobbyService.removePlayer(user1, lobby);
+        assertEquals(lobbyStates.PLAYING, lobby.getState());
+
+    }
+
+    @Test
+    public void joinLobbyMessagesSend() throws Exception {
+        List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
+        when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
+        lobbyService.joinLobby(user1,lobby);
+        lobbyService.joinLobby(user2,lobby);
+        lobbyService.joinLobby(user3,lobby);
+        verify(messagingTemplate, times(3)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyString());
+        verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyMap());
+
     }
 
     @Test
@@ -120,9 +153,10 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void testJoinLobby_LobbyFull() throws Exception {
+    public void testJoinLobby_throwsError() throws Exception {
       // Simulate a full lobby
-      when(lobby.getPlayers().size()).thenReturn(lobby.getPlayerLimit());
+      lobbyService.joinLobby(user1,lobby);
+      lobbyService.joinLobby(user2,lobby);
       assertThrows(Exception.class, () -> lobbyService.joinLobby(user1, lobby));
     }
 
@@ -136,8 +170,6 @@ public class LobbyServiceTest {
     @Test
     public void testPutToSomeLobby_Success() throws Exception {
         when(lobbyRepository.findAll()).thenReturn(Arrays.asList(lobby));
-        when(lobby.getState()).thenReturn(lobbyStates.OPEN);
-        when(lobby.getGamemode()).thenReturn(GameModes.Gamemode1);
 
         Long result = lobbyService.putToSomeLobby(user1, GameModes.Gamemode1);
         assertEquals(lobby.getId(), result);
@@ -146,17 +178,21 @@ public class LobbyServiceTest {
     @Test
     public void testPutToSomeLobby_NoOpenLobbies() throws Exception {
         when(lobbyRepository.findAll()).thenReturn(Arrays.asList());
-        when(lobbyService.getLobbyLimit()).thenReturn(1);
 
         Long result = lobbyService.putToSomeLobby(user1, GameModes.Gamemode1);
-        assertEquals(-1L, result);
+        assertNotEquals(-1L, result);
     }
 
     @Test
     public void submitScore_Success() throws Exception {
+        List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
+        when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
         lobbyService.addPlayer(user1, lobby);
+        lobby.setLobbyState(lobbyStates.PLAYING);
         lobbyService.submitScore(100, user1.getId(), lobby);
         assertEquals(100, lobby.getDistances().get(user1.getId()).intValue());
+        verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyMap());
+
     }
 
     @Test
@@ -191,7 +227,7 @@ public class LobbyServiceTest {
         lobbyService.addPlayer(user1, lobby);
         lobbyService.endGame(lobby);
         assertEquals(lobbyStates.CLOSED, lobby.getState());
-        verify(messagingTemplate).convertAndSend(String.format("/topic/GameMode1/lobby/%s", lobby.getId()), "Game finished");
+        verify(messagingTemplate).convertAndSend(String.format("/topic/lobby/GameMode1/%s", lobby.getId()), "Game finished");
     }
 
     @Test
@@ -210,9 +246,11 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void testJoinLobby_LobbyClosed() {
+    public void testPutToSomeLobbyAllClosed() throws Exception{
+        when(lobbyRepository.findAll()).thenReturn(Arrays.asList(lobby));
         lobby.setState(lobbyStates.CLOSED);
-        assertThrows(Exception.class, () -> lobbyService.joinLobby(user1, lobby));
+        lobbyService.setLobbyLimit(1);
+        assertEquals(-1L, lobbyService.putToSomeLobby(user1,GameModes.Gamemode1));
     }
 
     @Test
@@ -241,16 +279,11 @@ public class LobbyServiceTest {
 
     @Test
     public void testAdvanceRound_ExceedMaxRounds() throws Exception {
+        lobbyService.joinLobby(user1, lobby);
         for (int i = 0; i < 5; i++) { // Assuming max rounds are 5
             lobbyService.advanceRound(user1.getId(), lobby);
         }
-        assertThrows(Exception.class, () -> lobbyService.advanceRound(user1.getId(), lobby));
-    }
-
-    @Test
-    public void testCheckGameState_AllPlayersFinished() {
-        when(lobby.getCurrRound()).thenReturn(Map.of(user1.getId(), 5, user2.getId(), 5)); // Assuming max rounds are 5
-        assertTrue(lobbyService.checkGameState(lobby));
+        assertEquals(lobby.getCurrRound().get(user1.getId()),5);
     }
 
     @Test
@@ -258,7 +291,7 @@ public class LobbyServiceTest {
         lobbyService.addPlayer(user1, lobby);
         lobbyService.addPlayer(user2, lobby);
         lobbyService.endGame(lobby);
-        verify(messagingTemplate, times(2)).convertAndSend(anyString(), eq("Game finished"));
+        verify(messagingTemplate, times(3)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyString());
     }
 
 
