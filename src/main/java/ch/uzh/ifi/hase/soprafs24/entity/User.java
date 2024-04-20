@@ -55,6 +55,7 @@ public class User implements Serializable {
 
     // TODO: needs to be changed to type tuple according to class diagram
     // then the DTOs must also be changed
+   
     @Column
     private int score;
 
@@ -145,6 +146,9 @@ public class User implements Serializable {
     public void setCreationdate(String creationdate) {
         this.creationdate = creationdate;
     }
+
+
+    
 
     public int getScore() {
         return score;
