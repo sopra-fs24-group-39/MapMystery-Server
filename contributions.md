@@ -31,7 +31,7 @@
 #### What did I do last week?
 api endpoints for user entity 
 #### What will I do this week?
-web sockets
+websockets and lobbyService
 #### What are the obstacles to progress?
 ### Joshua:
 #### What did I do last week?
