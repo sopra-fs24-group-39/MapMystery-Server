@@ -190,7 +190,7 @@ public class LobbyServiceTest {
         lobbyService.addPlayer(user1, lobby);
         lobby.setLobbyState(lobbyStates.PLAYING);
         lobbyService.submitScore(100, user1.getId(), lobby);
-        assertEquals(100, lobby.getDistances().get(user1.getId()).intValue());
+        assertEquals(999, lobby.getPoints().get(user1.getId()).intValue());
         verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyMap());
 
     }

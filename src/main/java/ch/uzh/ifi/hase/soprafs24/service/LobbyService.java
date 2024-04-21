@@ -108,10 +108,10 @@ public class LobbyService {
     if (numberOfMembers < lob.getPlayerLimit() ) {
       lob.players.add(user);
       lob.currRound.put(user.getId(),1);
-      lob.distances.put(user.getId(),0);
+      lob.setPoints(0,user.getId());
       lob.currRound.put(user.getId(), 1);
       lobbyRepository.saveAndFlush(lob);
-      this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/%s", lob.getId()),user.getUserEmail()+" just joined the lobby");
+      this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/%s", lob.getId()),user.getUsername()+" just joined the lobby");
 
       return lob.getId();
     } 
@@ -267,8 +267,8 @@ public class LobbyService {
    * then checks if all players are ready for next round notifies them with next
    * coordinates
    */
-  public void submitScore(int score,Long userId,Lobby lob) throws Exception{
-    lob.setDistance(score, userId);
+  public void submitScore(int distance,Long userId,Lobby lob) throws Exception{
+    lob.setPoints(distance, userId);
     this.advanceRound(userId,lob);
     boolean nextRound = this.checkNextRound(lob);
 

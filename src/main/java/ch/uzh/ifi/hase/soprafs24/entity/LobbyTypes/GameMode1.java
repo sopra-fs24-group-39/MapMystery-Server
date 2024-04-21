@@ -22,5 +22,25 @@ public class GameMode1 extends Lobby {
     super.gamemode = GameModes.Gamemode1;
   }
 
+  /**
+   * assuming distance is in meters
+   * @param Distance
+   * @return
+   */
+  public float computePoints(float Distance){
+    if( Distance > 1200*1000){
+      return 0;
+    }
+    else {
+      return (1000*1000 - Distance)/1000;
+    }
+  }
+
+  @Override
+  public void setPoints(float points,Long playerId){
+    float score = this.computePoints(points);
+    this.points.put(playerId,score);
+  }
+
   
 }
