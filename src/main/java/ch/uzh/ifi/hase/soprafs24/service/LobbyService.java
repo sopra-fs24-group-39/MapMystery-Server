@@ -17,6 +17,7 @@ import java.util.Map;
 import javax.el.ELException;
 
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
+import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import ch.uzh.ifi.hase.constants.GameModes;
 import ch.uzh.ifi.hase.constants.lobbyStates;
 import org.springframework.web.client.RestTemplate;
@@ -43,6 +44,9 @@ public class LobbyService {
 
   @Autowired
   private LobbyRepository lobbyRepository;
+
+  @Autowired 
+  UserRepository userRepository;
 
   public List<Lobby> getAllLobbies() {
     return this.lobbyRepository.findAll();
@@ -108,8 +112,6 @@ public class LobbyService {
     if (numberOfMembers < lob.getPlayerLimit() ) {
       lob.players.add(user);
       lob.currRound.put(user.getId(),1);
-      lob.setPoints(0,user.getId());
-      lob.currRound.put(user.getId(), 1);
       lobbyRepository.saveAndFlush(lob);
       this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/%s", lob.getId()),user.getUsername()+" just joined the lobby");
 
@@ -157,8 +159,25 @@ public class LobbyService {
    */
   public void endGame(Lobby lob){
     lob.setState(lobbyStates.CLOSED);
-    this.refreshLobbies();
-    this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/%s", lob.getId()),"Game finished");
+    Map<Long,Float> results = lob.getPoints();
+    List<User> players = lob.getPlayers();
+    Map<String,Float> response = new HashMap<>();
+
+    for(int k = 0; k < players.size();k++){
+      User player = players.get(k);
+      float score = results.getOrDefault(player.getId(),0.0f);
+      response.put(player.getUsername(), score);
+      score += player.getCurrentpoints();
+      player.setCurrentpoints(score);
+      userRepository.saveAndFlush(player);
+    }
+    
+
+    // TODO: seems not to work
+    // this.refreshLobbies();
+
+    this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/%s", lob.getId()),response);
+
   }
 
 
@@ -194,6 +213,7 @@ public class LobbyService {
       Lobby lob = lobbies.get(k);
       // we also remove and reinitialize lobbies here!!
       if(lob.getState() == lobbyStates.CLOSED){
+        lob.players = null;
         lobbyRepository.delete(lob);
       }
     }
@@ -267,7 +287,7 @@ public class LobbyService {
    * then checks if all players are ready for next round notifies them with next
    * coordinates
    */
-  public void submitScore(int distance,Long userId,Lobby lob) throws Exception{
+  public void submitScore(float distance,Long userId,Lobby lob) throws Exception{
     lob.setPoints(distance, userId);
     this.advanceRound(userId,lob);
     boolean nextRound = this.checkNextRound(lob);

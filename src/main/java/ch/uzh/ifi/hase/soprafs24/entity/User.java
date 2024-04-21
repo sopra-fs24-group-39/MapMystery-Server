@@ -57,13 +57,13 @@ public class User implements Serializable {
     // then the DTOs must also be changed
    
     @Column
-    private int score;
+    private float score;
 
     @Transient // Marking this as transient to avoid persistence issues, adjust according to your JPA implementation details
     private List<User> friends;
 
     @Column
-    private int currentpoints;
+    private float currentpoints;
 
     @Column
     private Boolean featured_in_rankings = true;
@@ -150,11 +150,11 @@ public class User implements Serializable {
 
     
 
-    public int getScore() {
+    public float getScore() {
         return score;
     }
 
-    public void setScore(int score) {
+    public void setScore(float score) {
         this.score = score;
     }
 
@@ -174,11 +174,11 @@ public class User implements Serializable {
         this.verified = state;
     }
 
-    public int getCurrentpoints() {
+    public float getCurrentpoints() {
         return currentpoints;
     }
 
-    public void setCurrentpoints(int currentpoints) {
+    public void setCurrentpoints(float currentpoints) {
         this.currentpoints = currentpoints;
     }
 

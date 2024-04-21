@@ -38,8 +38,9 @@ public class GameMode1 extends Lobby {
 
   @Override
   public void setPoints(float points,Long playerId){
-    float score = this.computePoints(points);
-    this.points.put(playerId,score);
+    float prevPoints = this.getPoints().getOrDefault(playerId, 0.0f);
+    prevPoints += this.computePoints(points);
+    this.points.put(playerId,prevPoints);
   }
 
   
