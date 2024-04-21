@@ -50,6 +50,9 @@ import java.util.Map;
     try{
       User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
       assert user.getToken().equals(token);
+      Long userId = user.getId();
+
+      user = userService.getUser(userId);
 
       Long lobbyId = lobbyService.putToSomeLobby(user,GameModes.Gamemode1);
 
@@ -97,7 +100,7 @@ import java.util.Map;
        assert user.getToken().equals(token);
 
        Long userId = user.getId();
-       int score = user.getScore();
+       float score = user.getScore();
        Lobby lob = lobbyService.getLobby(lobbyId);
        if( lob == null){
         throw new Exception("lobby not found");

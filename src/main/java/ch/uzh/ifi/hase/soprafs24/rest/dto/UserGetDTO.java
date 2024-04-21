@@ -16,9 +16,9 @@ public class UserGetDTO {
   private String status = "UNDEF";
   private String creationdate = null;
   private String userEmail = null;
-  private String score;
+  private float score;
   private List<UserGetDTO> friends;
-  private int currentpoints;
+  private float currentpoints;
   private Boolean verified;
   private  Boolean featured_in_rankings = null;
 
@@ -46,11 +46,11 @@ public class UserGetDTO {
     return creationdate;
   }
 
-  public String getScore(){
+  public float getScore(){
     return this.score;
   }
 
-  public void setScore(String score){
+  public void setScore(float score){
     this.score = score;
   }
 
@@ -62,11 +62,11 @@ public class UserGetDTO {
     this.friends = friends;
   }
 
-  public int getCurrentpoints(){
+  public float getCurrentpoints(){
     return this.currentpoints;
   }
 
-  public void setCurrentpoints(int currentpoints){
+  public void setCurrentpoints(float currentpoints){
     this.currentpoints = currentpoints;
   }
 

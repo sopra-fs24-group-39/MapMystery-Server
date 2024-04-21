@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.GameMode1;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.Lobby;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
+import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -17,6 +18,8 @@ import static org.mockito.Mockito.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
+import java.util.HashMap;
+
 import ch.uzh.ifi.hase.constants.GameModes;
 
 import org.mockito.MockitoAnnotations;
@@ -40,6 +43,8 @@ public class LobbyServiceTest {
 
     @Mock
     private GameService gameService;
+
+    @Mock UserRepository userRepository;
 
     @InjectMocks
     private LobbyService lobbyService = new LobbyService();
@@ -190,7 +195,7 @@ public class LobbyServiceTest {
         lobbyService.addPlayer(user1, lobby);
         lobby.setLobbyState(lobbyStates.PLAYING);
         lobbyService.submitScore(100, user1.getId(), lobby);
-        assertEquals(100, lobby.getDistances().get(user1.getId()).intValue());
+        assertEquals(999, lobby.getPoints().get(user1.getId()).intValue());
         verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyMap());
 
     }
@@ -226,8 +231,10 @@ public class LobbyServiceTest {
     public void testEndGame_SetsStateToClosedAndNotifiesPlayers() throws Exception {
         lobbyService.addPlayer(user1, lobby);
         lobbyService.endGame(lobby);
+        Map<String,Float> expected = new HashMap<>();
+        expected.put(null, 0.0f);
         assertEquals(lobbyStates.CLOSED, lobby.getState());
-        verify(messagingTemplate).convertAndSend(String.format("/topic/lobby/GameMode1/%s", lobby.getId()), "Game finished");
+        verify(messagingTemplate).convertAndSend(String.format("/topic/lobby/GameMode1/%s", lobby.getId()),expected );
     }
 
     @Test
@@ -291,7 +298,9 @@ public class LobbyServiceTest {
         lobbyService.addPlayer(user1, lobby);
         lobbyService.addPlayer(user2, lobby);
         lobbyService.endGame(lobby);
-        verify(messagingTemplate, times(3)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyString());
+        verify(messagingTemplate, times(2)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyString());
+        verify(messagingTemplate).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyMap());
+
     }
 
 

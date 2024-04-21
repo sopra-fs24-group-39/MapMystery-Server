@@ -50,7 +50,7 @@ import ch.uzh.ifi.hase.constants.GameModes;
   @CollectionTable(name = "lobby_points", joinColumns = @JoinColumn(name = "lobby_id"))
   @MapKeyColumn(name = "player_id")
   @Column(name = "points")
-  public Map<Long, Integer> distances = new HashMap<>();
+  protected Map<Long, Float> points = new HashMap<>();
  
   public Long getId(){
     return lobbyId;
@@ -76,8 +76,8 @@ import ch.uzh.ifi.hase.constants.GameModes;
     this.rounds = rounds;
   }
 
-  public Map<Long, Integer> getDistances(){
-   return distances;
+  public Map<Long, Float> getPoints(){
+   return points;
   }
 
   public Map<Long,Integer> getCurrRound(){
@@ -114,10 +114,10 @@ import ch.uzh.ifi.hase.constants.GameModes;
    * @param score
    * @param playerId
   */
-  public void setDistance(int dist,Long playerId){
-    distances.put(playerId, dist);
+  public void setPoints(float points,Long playerId){
+    this.points.put(playerId, points);
   }
 
-   
+
 }
  
