@@ -79,6 +79,14 @@ websockets and lobbyService
 - none
 ## M3 12.04.2024 - 19.04.2024:
 ### Nils:
+#### What did I do last week?
+- #28, #25: Finished work on the Game component
+- #23, #22: API connection for Registry and Login
+- #18: Added main menu landing page
+#### What will I do this week?
+- Create A Lobby component and connect it to the backend
+#### What are the obstacles to progress?
+- Working with websockets for the first time
 ### Samuel:
 ### David:
 ### Joshua:
