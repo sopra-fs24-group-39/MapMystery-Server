@@ -83,20 +83,3 @@ public class CoordResponse {
     }
 }
 
-@XmlAccessorType(XmlAccessType.FIELD)
-class Osmtags {
-    // Define fields according to XML structure
-    // You can add annotations if necessary
-}
-
-@XmlAccessorType(XmlAccessType.FIELD)
-class Adminareas {
-    // Define fields according to XML structure
-    // You can add annotations if necessary
-}
-
-@XmlAccessorType(XmlAccessType.FIELD)
-class Major {
-    // Define fields according to XML structure
-    // You can add annotations if necessary
-}
