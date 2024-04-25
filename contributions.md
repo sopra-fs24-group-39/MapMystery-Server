@@ -25,6 +25,9 @@
 - Game Object
 - Tally Points for players
 - Function to get coordinates
+
+-  Backend Testing
+-  Database Schema
 -  
 #### What are the obstacles to progress?
 ### David:
