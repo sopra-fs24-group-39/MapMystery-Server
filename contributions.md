@@ -90,8 +90,19 @@ websockets and lobbyService
 - Working with websockets for the first time
 ### Samuel:
 
--  Backend Testing
--  Database Schema
+#### What did I do last week?
+
+- API Integration for Data Fetching https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/43#issue-2200492110
+
+- Tally Points for players
+- Function to get coordinates https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/5#issue-2192439339
+
+
+  #### What will I do this week?
+
+  -  Database Schema https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/91#issue-2263372314
+- Get mapping 
+- Game Object
 
 ### David:
 ### Joshua:
