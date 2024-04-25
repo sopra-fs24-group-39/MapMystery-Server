@@ -294,6 +294,7 @@ public class LobbyService {
 
     if(nextRound && lob.getState() == lobbyStates.PLAYING){
       try{
+        Thread.sleep(1500);
         this.sendCoord(lob.getId());
       }
       catch (Exception e){
