@@ -55,6 +55,7 @@ public class GameService {
         System.out.println("Couldn't find valid image within call limit");
         return null;
     }
+    public RestTemplate getRestTemplate(){ return  this.restTemplate;}
 }
 
 
