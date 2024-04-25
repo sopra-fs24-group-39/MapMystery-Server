@@ -14,21 +14,19 @@
 - Trying to keep the code clean, readable and easy to understand
 ### Samuel:
 #### What did I do last week?
-- created Email account
-- JAVA Email sender implementation
-- Verification email + creation email sent
+- created Email account https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38#issue-2200489858
+- JAVA Email sender implementation https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38#issue-2200489858
+- Verification email + creation email sent https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/41
 - Verification link -> database update
-- Secure password requirements
+- Secure password requirements 
 #### What will I do this week?
-- API Integration for Data Fetching
-- Get mapping
+- API Integration for Data Fetching https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/5
+- Get mapping 
 - Game Object
 - Tally Points for players
 - Function to get coordinates
 
--  Backend Testing
--  Database Schema
--  
+
 #### What are the obstacles to progress?
 ### David:
 #### What did I do last week?
@@ -91,6 +89,10 @@ websockets and lobbyService
 #### What are the obstacles to progress?
 - Working with websockets for the first time
 ### Samuel:
+
+-  Backend Testing
+-  Database Schema
+
 ### David:
 ### Joshua:
 #### What did I do last week?
