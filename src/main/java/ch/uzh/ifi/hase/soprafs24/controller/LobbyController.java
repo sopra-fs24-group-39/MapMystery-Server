@@ -8,15 +8,10 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.*;
 import ch.uzh.ifi.hase.constants.GameModes;
-import ch.uzh.ifi.hase.constants.GameModes.*;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
-import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
-import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.GameMode1;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
@@ -98,7 +93,7 @@ import java.util.Map;
      try{
        User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
        assert user.getToken().equals(token);
-
+      
        Long userId = user.getId();
        float score = user.getScore();
        Lobby lob = lobbyService.getLobby(lobbyId);

@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,8 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import javax.el.ELException;
 
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
@@ -33,7 +30,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 @Service
 @Transactional
 public class LobbyService {
-  private int LobbyLimit = 5;
+  private int LobbyLimit = 10;
   private final Logger log = LoggerFactory.getLogger(UserService.class);
 
   @Autowired
@@ -59,7 +56,7 @@ public class LobbyService {
   /*
     * prepares coordinates for sending to client 
     */
-   private Map<String,String> createCoordResp( List<Double> coordinates){
+  private Map<String,String> createCoordResp( List<Double> coordinates){
     Map<String, String> response = new HashMap<>();
 
     response.put(coordinates.get(0).toString(),"longitude");
@@ -85,6 +82,7 @@ public class LobbyService {
       try{
         lob.setState(lobbyStates.PLAYING);
         this.sendCoord(lob.getId());
+        this.createAndSendLeaderBoard(lob);
         return lobbyStates.PLAYING;
       }
       catch (Exception e){
@@ -111,9 +109,10 @@ public class LobbyService {
 
     if (numberOfMembers < lob.getPlayerLimit() ) {
       lob.players.add(user);
-      lob.currRound.put(user.getId(),1);
+      lob.currRound.put(user.getId(),0);
+      lob.setPoints(-1, user.getId());
       lobbyRepository.saveAndFlush(lob);
-      this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/%s", lob.getId()),user.getUsername()+" just joined the lobby");
+      this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lob.getId()),user.getUsername()+" just joined the lobby");
 
       return lob.getId();
     } 
@@ -153,12 +152,7 @@ public class LobbyService {
     return true;
   }
 
-  /*
-   * after settting the state to finished
-   * it sends the results to all players
-   */
-  public void endGame(Lobby lob){
-    lob.setState(lobbyStates.CLOSED);
+  public void createAndSendLeaderBoard(Lobby lob){
     Map<Long,Float> results = lob.getPoints();
     List<User> players = lob.getPlayers();
     Map<String,Float> response = new HashMap<>();
@@ -171,12 +165,20 @@ public class LobbyService {
       player.setCurrentpoints(score);
       userRepository.saveAndFlush(player);
     }
-    
 
     // TODO: seems not to work
     // this.refreshLobbies();
 
-    this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/%s", lob.getId()),response);
+    this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lob.getId()),response);
+  }
+
+  /*
+   * after settting the state to finished
+   * it sends the results to all players
+   */
+  public void endGame(Lobby lob){
+    lob.setState(lobbyStates.CLOSED);
+    createAndSendLeaderBoard(lob);
 
   }
 
@@ -296,6 +298,7 @@ public class LobbyService {
       try{
         Thread.sleep(1500);
         this.sendCoord(lob.getId());
+        this.createAndSendLeaderBoard(lob);
       }
       catch (Exception e){
         lob.setState(lobbyStates.CLOSED);
@@ -309,7 +312,7 @@ public class LobbyService {
     try{
       List<Double> coord = this.gameService.get_image_coordinates();
       Map<String,String> resp = this.createCoordResp(coord);
-      this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/%s", lobbyId),resp);
+      this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/coordinates/%s", lobbyId),resp);
     }
     catch (Exception e){
       throw new Exception("Game could not initialize, create new lobby");

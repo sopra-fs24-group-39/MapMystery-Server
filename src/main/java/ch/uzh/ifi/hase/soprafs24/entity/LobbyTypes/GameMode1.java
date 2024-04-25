@@ -1,13 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes;
 
-import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 import ch.uzh.ifi.hase.constants.GameModes;
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.HashMap;
 
 
 @Entity
@@ -32,15 +26,21 @@ public class GameMode1 extends Lobby {
       return 0;
     }
     else {
-      return (1000*1000 - Distance)/1000;
+      return (1400*1000 - Distance)/1000;
     }
   }
 
   @Override
   public void setPoints(float points,Long playerId){
-    float prevPoints = this.getPoints().getOrDefault(playerId, 0.0f);
-    prevPoints += this.computePoints(points);
-    this.points.put(playerId,prevPoints);
+    if(points < 0.0){
+      this.points.put(playerId, 0.0f);
+    }
+    else{
+      float prevPoints = this.getPoints().getOrDefault(playerId, 0.0f);
+      prevPoints += this.computePoints(points);
+      this.points.put(playerId,prevPoints);
+    }
+    
   }
 
   

@@ -5,13 +5,11 @@ import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.GameMode1;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.Lobby;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
-import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import ch.uzh.ifi.hase.constants.lobbyStates;
 import static org.mockito.Mockito.*;
@@ -26,7 +24,6 @@ import org.mockito.MockitoAnnotations;
 
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.BDDMockito.given;
 
 
 public class LobbyServiceTest {
@@ -122,8 +119,8 @@ public class LobbyServiceTest {
         lobbyService.joinLobby(user1,lobby);
         lobbyService.joinLobby(user2,lobby);
         lobbyService.joinLobby(user3,lobby);
-        verify(messagingTemplate, times(3)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyString());
-        verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyMap());
+        verify(messagingTemplate, times(3)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lobby.getId())), anyString());
+        verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/coordinates/%s", lobby.getId())), anyMap());
 
     }
 
@@ -137,7 +134,7 @@ public class LobbyServiceTest {
     public void advanceRound_success() throws Exception {
         lobbyService.addPlayer(user1,lobby);
         lobbyService.advanceRound(user1.getId(),lobby);
-        assertEquals(2, lobby.getCurrRound().get(1L));
+        assertEquals(1, lobby.getCurrRound().get(1L));
     }
 
     @Test
@@ -195,8 +192,8 @@ public class LobbyServiceTest {
         lobbyService.addPlayer(user1, lobby);
         lobby.setLobbyState(lobbyStates.PLAYING);
         lobbyService.submitScore(100, user1.getId(), lobby);
-        assertEquals(999, lobby.getPoints().get(user1.getId()).intValue());
-        verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyMap());
+        assertEquals(1399, lobby.getPoints().get(user1.getId()).intValue());
+        verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/coordinates/%s", lobby.getId())), anyMap());
 
     }
 
@@ -234,7 +231,7 @@ public class LobbyServiceTest {
         Map<String,Float> expected = new HashMap<>();
         expected.put(null, 0.0f);
         assertEquals(lobbyStates.CLOSED, lobby.getState());
-        verify(messagingTemplate).convertAndSend(String.format("/topic/lobby/GameMode1/%s", lobby.getId()),expected );
+        verify(messagingTemplate).convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lobby.getId()),expected );
     }
 
     @Test
@@ -274,7 +271,7 @@ public class LobbyServiceTest {
 
     @Test
     public void testGetLobbyLimit() {
-        assertEquals(5, lobbyService.getLobbyLimit());
+        assertEquals(10, lobbyService.getLobbyLimit());
     }
 
     @Test
@@ -298,8 +295,8 @@ public class LobbyServiceTest {
         lobbyService.addPlayer(user1, lobby);
         lobbyService.addPlayer(user2, lobby);
         lobbyService.endGame(lobby);
-        verify(messagingTemplate, times(2)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyString());
-        verify(messagingTemplate).convertAndSend(eq(String.format("/topic/lobby/GameMode1/%s", lobby.getId())), anyMap());
+        verify(messagingTemplate, times(2)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lobby.getId())), anyString());
+        verify(messagingTemplate).convertAndSend(eq(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lobby.getId())), anyMap());
 
     }
 

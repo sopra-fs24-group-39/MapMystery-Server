@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.HashMap;
 import ch.uzh.ifi.hase.constants.lobbyStates;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.constants.GameModes;
  
  @Entity
@@ -115,6 +114,9 @@ import ch.uzh.ifi.hase.constants.GameModes;
    * @param playerId
   */
   public void setPoints(float points,Long playerId){
+    if(points < 0.0){
+      this.points.put(playerId, 0.0f);
+    }
     this.points.put(playerId, points);
   }
 
