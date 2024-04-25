@@ -2,9 +2,9 @@
 ## M3 05.04.2024 - 12.04.2024:
 ### Nils:
 #### What did I do last week?
-- Created the buttons
-- Navbar skeleton
-- An outline of the main page
+- Created the buttons [#9](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/9#issue-2051971058)
+- Navbar skeleton [#13](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/13#issue-2051969558)
+- An outline of the main page [#13](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/13#issue-2051969558)
 #### What will I do this week?
 - Create the frontend draft for Login and Registration
 - Connect the Login/Registry to the backend
@@ -14,18 +14,19 @@
 - Trying to keep the code clean, readable and easy to understand
 ### Samuel:
 #### What did I do last week?
-- created Email account
-- JAVA Email sender implementation
-- Verification email + creation email sent
+- created Email account https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38#issue-2200489858
+- JAVA Email sender implementation https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38#issue-2200489858
+- Verification email + creation email sent https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/41
 - Verification link -> database update
-- Secure password requirements
+- Secure password requirements 
 #### What will I do this week?
-- API Integration for Data Fetching
-- Get mapping
+- API Integration for Data Fetching https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/5
+- Get mapping 
 - Game Object
 - Tally Points for players
 - Function to get coordinates
--  
+
+
 #### What are the obstacles to progress?
 ### David:
 #### What did I do last week?
@@ -80,14 +81,22 @@ websockets and lobbyService
 ## M3 12.04.2024 - 19.04.2024:
 ### Nils:
 #### What did I do last week?
-- #28, #25: Finished work on the Game component
-- #23, #22: API connection for Registry and Login
-- #18: Added main menu landing page
+- Finished work on the Game component [#23](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/23#issue-2242276792) [#22](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/22#issue-2242276458)
+- API connection for Registry and Login [#20](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/20#issue-2240463236) [#19](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/19#issue-2240461299)
+- Added main menu landing page [#18](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/18#issue-2240459735)
 #### What will I do this week?
 - Create A Lobby component and connect it to the backend
 #### What are the obstacles to progress?
 - Working with websockets for the first time
 ### Samuel:
+
+#### What will I do this week?
+
+- API Integration for Data Fetching https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/43#issue-2200492110
+
+- Tally Points for players
+- Function to get coordinates https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/5#issue-2192439339
+
 ### David:
 ### Joshua:
 #### What did I do last week?
@@ -102,3 +111,32 @@ websockets and lobbyService
 [#29](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/29)
 [#34](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/34)
 [#35](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/35)
+
+## M3 19.04.2024 - 25.04.2024:
+### Nils
+#### What did I do last week?
+- Created a Lobby component [#21](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/21#issue-2242261821)
+- Added Interactivity to the game component [#28](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/28#issue-2250029970)
+#### What will I do this week?
+- Add a dropdown menu to the profile picture and add a logout component
+#### What are the obstacles to progress?
+- Working with new technology such as websockets
+### Samuel
+
+#### What did I do last week?
+
+- API Integration for Data Fetching https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/43#issue-2200492110
+
+- Tally Points for players
+- Function to get coordinates https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/5#issue-2192439339
+
+
+#### What will I do this week?
+
+-  Database Schema https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/91#issue-2263372314
+- Get mapping 
+- Game Object
+- Finaising Account Creation https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/1#issue-2192414500 - (Just need to deael with statistics)
+- Integration of unit testing w/ David for sonarcube coverage https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/33#issue-2200487029
+- https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/34#issue-2200487170
+
