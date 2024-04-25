@@ -90,19 +90,12 @@ websockets and lobbyService
 - Working with websockets for the first time
 ### Samuel:
 
-#### What did I do last week?
+#### What will I do this week?
 
 - API Integration for Data Fetching https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/43#issue-2200492110
 
 - Tally Points for players
 - Function to get coordinates https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/5#issue-2192439339
-
-
-  #### What will I do this week?
-
-  -  Database Schema https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/91#issue-2263372314
-- Get mapping 
-- Game Object
 
 ### David:
 ### Joshua:
@@ -118,3 +111,15 @@ websockets and lobbyService
 [#29](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/29)
 [#34](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/34)
 [#35](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/35)
+
+## M3 19.04.2024 - 25.04.2024:
+
+### Nils
+### Samuel
+
+### What will I do this week?
+
+- Database Schema for report https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/91#issue-2263372314\
+- Integration of unit testing w/ David for sonarcube coverage https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/33#issue-2200487029
+- https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/34#issue-2200487170
+
