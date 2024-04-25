@@ -120,7 +120,6 @@ public class LobbyService {
       return -1L;
     }
     
-    
   } 
 
   public void removePlayer(User user,Lobby lob) throws Exception {
