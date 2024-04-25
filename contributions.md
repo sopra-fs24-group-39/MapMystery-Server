@@ -2,9 +2,9 @@
 ## M3 05.04.2024 - 12.04.2024:
 ### Nils:
 #### What did I do last week?
-- Created the buttons
-- Navbar skeleton
-- An outline of the main page
+- Created the buttons [#9](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/9#issue-2051971058)
+- Navbar skeleton [#13](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/13#issue-2051969558)
+- An outline of the main page [#13](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/13#issue-2051969558)
 #### What will I do this week?
 - Create the frontend draft for Login and Registration
 - Connect the Login/Registry to the backend
@@ -81,9 +81,9 @@ websockets and lobbyService
 ## M3 12.04.2024 - 19.04.2024:
 ### Nils:
 #### What did I do last week?
-- #28, #25: Finished work on the Game component
-- #23, #22: API connection for Registry and Login
-- #18: Added main menu landing page
+- Finished work on the Game component [#23](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/23#issue-2242276792) [#22](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/22#issue-2242276458)
+- API connection for Registry and Login [#20](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/20#issue-2240463236) [#19](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/19#issue-2240461299)
+- Added main menu landing page [#18](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/18#issue-2240459735)
 #### What will I do this week?
 - Create A Lobby component and connect it to the backend
 #### What are the obstacles to progress?
@@ -113,8 +113,14 @@ websockets and lobbyService
 [#35](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/35)
 
 ## M3 19.04.2024 - 25.04.2024:
-
 ### Nils
+#### What did I do last week?
+- Created a Lobby component [#21](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/21#issue-2242261821)
+- Added Interactivity to the game component [#28](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/28#issue-2250029970)
+#### What will I do this week?
+- Add a dropdown menu to the profile picture and add a logout component
+#### What are the obstacles to progress?
+- Working with new technology such as websockets
 ### Samuel
 
 #### What did I do last week?
