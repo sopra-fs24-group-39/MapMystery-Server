@@ -26,9 +26,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // Configure the endpoint 6 enable CORS
         registry.addEndpoint("/wss").setAllowedOrigins("https://localhost:5500").withSockJS();
-        registry.addEndpoint("/wss").setAllowedOrigins("http://localhost:5500").withSockJS();
+        registry.addEndpoint("/ws").setAllowedOrigins("http://localhost:5500").withSockJS();
         registry.addEndpoint("/wss").setAllowedOrigins("https://sopra-fs24-group-39-client.oa.r.appspot.com:5500").withSockJS();
-        registry.addEndpoint("/wss").setAllowedOrigins("http://sopra-fs24-group-39-client.oa.r.appspot.com:5500").withSockJS();
+        registry.addEndpoint("/ws").setAllowedOrigins("http://sopra-fs24-group-39-client.oa.r.appspot.com:5500").withSockJS();
 
     }
 }
