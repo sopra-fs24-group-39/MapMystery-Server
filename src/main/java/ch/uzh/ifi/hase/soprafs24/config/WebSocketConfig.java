@@ -11,6 +11,7 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+  
     private static final String ORIGIN_LOCALHOST = "http://localhost:5050";
     private static final String ORIGIN_PROD = "https://sopra-fs24-group-39-client.oa.r.appspot.com";
 
