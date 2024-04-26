@@ -22,6 +22,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         WebSocketMessageBrokerConfigurer.super.configureWebSocketTransport(registration);
     }
 
+    
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // Configure the endpoint 6 enable CORS
