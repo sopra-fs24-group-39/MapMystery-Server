@@ -24,6 +24,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import java.util.List;
 import java.util.Map;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import org.mockito.MockedStatic;
@@ -207,7 +208,7 @@ public class LobbyServiceTest {
         lobbyService.addPlayer(user1, lobby);
         lobby.setLobbyState(lobbyStates.PLAYING);
         lobbyService.submitScore(100, user1.getId(), lobby);
-        assertEquals(1399, lobby.getPoints().get(user1.getId()).intValue());
+        assertEquals(2399, lobby.getPoints().get(user1.getId()).intValue());
         verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/coordinates/%s", lobby.getId())), anyMap());
 
     }
@@ -316,5 +317,51 @@ public class LobbyServiceTest {
     }
 
 
-    
+    @Test 
+    public void testCompleteGameFlow() throws Exception{
+      List<Lobby> returnList = new ArrayList<>();
+      returnList.add(lobby);
+      when(lobbyService.getAllLobbies()).thenReturn(returnList);
+      lobby.setPlayerLimit(3);
+      lobby.setRounds(3);
+      assertEquals(lobby.getState(), lobbyStates.OPEN);
+      lobbyService.putToSomeLobby(user1, GameModes.Gamemode1);
+      lobbyService.putToSomeLobby(user2, GameModes.Gamemode1);
+      lobbyService.putToSomeLobby(user3, GameModes.Gamemode1);
+
+      assertEquals(lobbyStates.CLOSED,lobby.getState());
+      List<User> expectedPlayers = new ArrayList<User>();
+      expectedPlayers.add(user1);
+      expectedPlayers.add(user2);
+      expectedPlayers.add(user3);
+     
+
+      assertEquals(expectedPlayers, lobby.getPlayers());
+
+      lobbyService.submitScore(200, user1.getId(), lobby);
+      lobbyService.submitScore(200, user2.getId(), lobby);
+      lobbyService.submitScore(200, user3.getId(), lobby);
+
+      assertEquals(lobby.getCurrRound().get(user1.getId()), 1);
+      assertEquals(lobby.getCurrRound().get(user2.getId()), 1);
+      assertEquals(lobby.getCurrRound().get(user3.getId()), 1);
+
+      lobbyService.submitScore(200, user1.getId(), lobby);
+      lobbyService.submitScore(200, user2.getId(), lobby);
+      lobbyService.submitScore(200, user3.getId(), lobby);
+
+      assertEquals(lobby.getCurrRound().get(user1.getId()), 2);
+      assertEquals(lobby.getCurrRound().get(user2.getId()), 2);
+      assertEquals(lobby.getCurrRound().get(user3.getId()), 2);
+
+      lobbyService.submitScore(200, user1.getId(), lobby);
+      lobbyService.submitScore(200, user2.getId(), lobby);
+      lobbyService.submitScore(200, user3.getId(), lobby);
+
+      assertEquals(lobby.getCurrRound().get(user1.getId()), 3);
+      assertEquals(lobby.getCurrRound().get(user2.getId()), 3);
+      assertEquals(lobby.getCurrRound().get(user3.getId()), 3);
+
+
+    }
 }
