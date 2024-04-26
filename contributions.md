@@ -117,10 +117,21 @@ that issue : (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93
 #### What are the obstacles to progress?
 - Integrating a functional module into a system
 ### Tim:
-[#30](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/30)
-[#29](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/29)
-[#34](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/34)
-[#35](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/35)
+#### What did I do last week?
+- Component that clalcualtes the distance between two points, given in latitude and longitude, on a sphere which can output the distnace in any unit of measurement for distance (m, km in, yd etc.) [#30](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/30)
+- Scoreboard component that keeps track of points, time and rounds [#29](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/29)
+- Generall Maintancance work on components that had bugs:[#34](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/34)
+    - Updated the AppRouter
+    - Changed the Buttons to be animated on press not hover, fixed the 3D look of them, centred their text
+    - Updated the Navbar to have change the text on hover and made everything links
+    - Settings menue became interactable
+    - fixed the formation bug in the Login and Register
+- Create a component that retrieves the google map, and makes it interactablke, with markers which return their coordiantes[#35](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/35)
+#### What will I do this week?
+- Bring the Google Maps and Google StreetView components to craete the game component
+- Fix the Google Street View API Call to work with the GoogleMapsContext and make it look for another streetview point if on extact coords not avvaiable
+- Create a GoogleMapsContext to manage all the API calls.
+
 
 ## M3 19.04.2024 - 25.04.2024:
 ### Nils
@@ -150,3 +161,5 @@ that issue : (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93
 - Integration of unit testing w/ David for sonarcube coverage https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/33#issue-2200487029
 - https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/34#issue-2200487170
 
+### Tim
+#### What did I do last week?
