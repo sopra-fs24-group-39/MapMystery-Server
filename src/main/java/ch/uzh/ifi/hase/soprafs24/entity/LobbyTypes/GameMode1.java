@@ -22,11 +22,11 @@ public class GameMode1 extends Lobby {
    * @return
    */
   public float computePoints(float Distance){
-    if( Distance > 1200*1000){
+    if( Distance > 2000*1000){
       return 0;
     }
     else {
-      return (1400*1000 - Distance)/1000;
+      return (2400*1000 - Distance)/1000;
     }
   }
 
