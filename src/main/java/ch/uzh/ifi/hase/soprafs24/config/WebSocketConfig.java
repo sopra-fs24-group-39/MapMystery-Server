@@ -31,7 +31,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         // Configure the endpoint 6 enable CORS
         // registry.addEndpoint("/ws").setAllowedOrigins("http://localhost:5500","http://localhost:3000","http://sopra-fs24-group-39-client.oa.r.appspot.com:5500","http://sopra-fs24-group-39-client.oa.r.appspot.com:3000","http://sopra-fs24-group-39-client.oa.r.appspot.com:443").withSockJS();
         registry.addEndpoint("/ws").setAllowedOrigins(ORIGIN_LOCALHOST, ORIGIN_PROD).withSockJS();
-        registry.addEndpoint("/wss").setAllowedOrigins(ORIGIN_LOCALHOST, ORIGIN_PROD).withSockJS();
 
 
 
