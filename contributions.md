@@ -163,3 +163,5 @@ that issue : (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93
 
 ### Tim
 #### What did I do last week?
+
+#### What will I do this week?
