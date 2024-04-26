@@ -164,5 +164,12 @@ that issue : (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93
 
 ### Tim
 #### What did I do last week?
-
+- Redid the StreetView component to work with the GoogleMaps Context and to now check if there is a streetview nearby if not directly at coordinates[#42](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/42)
+- Context for Google API calls[#41](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/41)
+- Made interactive fields to switch between componetns during the game[#31](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/31)
+- Added timer and round to game [#32](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/32)
 #### What will I do this week?
+- connecting all the conpoments that need to communicate and enable the to communicate to each other and with the backend (WebSockets and REST)[#33](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/33)
+- Craeted Conent into Lobby, and made it update with points and names of playdrs in lobby [#39](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/39)
+[#40](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/40)
+
