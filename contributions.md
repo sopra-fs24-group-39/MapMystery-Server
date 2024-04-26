@@ -138,6 +138,7 @@ that issue : (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93
 #### What did I do last week?
 - Created a Lobby component [#21](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/21#issue-2242261821)
 - Added Interactivity to the game component [#28](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/28#issue-2250029970)
+- Created a dropdown menu for logout [#36](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/36#issue-2263666970)
 #### What will I do this week?
 - Add a dropdown menu to the profile picture and add a logout component
 #### What are the obstacles to progress?
