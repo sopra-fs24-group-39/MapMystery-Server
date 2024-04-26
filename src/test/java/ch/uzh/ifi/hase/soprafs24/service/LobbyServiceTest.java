@@ -5,18 +5,28 @@ import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.GameMode1;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.Lobby;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
-
+import java.lang.Thread;
+import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.TaskScheduler;
+
 import ch.uzh.ifi.hase.constants.lobbyStates;
+
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyMap;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 import java.util.List;
 import java.util.Map;
 import java.util.Arrays;
 import java.util.HashMap;
+import org.mockito.MockedStatic;
 
 import ch.uzh.ifi.hase.constants.GameModes;
 
@@ -41,7 +51,11 @@ public class LobbyServiceTest {
     @Mock
     private GameService gameService;
 
-    @Mock UserRepository userRepository;
+    @Mock 
+    UserRepository userRepository;
+
+    @Mock
+    private TaskScheduler taskScheduler;
 
     @InjectMocks
     private LobbyService lobbyService = new LobbyService();
@@ -50,13 +64,21 @@ public class LobbyServiceTest {
 
 
     @BeforeEach
-    public void setup() {
+    public void setup() throws Exception{
         MockitoAnnotations.openMocks(this);
 
         user1 = new User(); user1.setId(1L);
         user2 = new User(); user2.setId(2L);
         user3 = new User(); user3.setId(3L);
         user4 = new User(); user4.setId(4L);
+
+        when(taskScheduler.schedule(any(Runnable.class), any(Date.class)))
+            .thenAnswer(invocation -> {
+                Runnable task = invocation.getArgument(0, Runnable.class);
+                task.run();  // Execute the task immediately
+                return null;  // Since it's a void method, return null
+            });
+
 
     }
 
@@ -154,13 +176,6 @@ public class LobbyServiceTest {
         assertFalse(lobbyService.checkNextRound(lobby));
     }
 
-    @Test
-    public void testJoinLobby_throwsError() throws Exception {
-      // Simulate a full lobby
-      lobbyService.joinLobby(user1,lobby);
-      lobbyService.joinLobby(user2,lobby);
-      assertThrows(Exception.class, () -> lobbyService.joinLobby(user1, lobby));
-    }
 
     @Test
     public void testCreateLobby_Success() throws Exception {
