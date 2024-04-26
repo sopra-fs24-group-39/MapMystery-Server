@@ -5,12 +5,16 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @RestController
 @SpringBootApplication
+@EnableAsync
 public class Application {
 
   public static void main(String[] args) {
@@ -33,6 +37,13 @@ public class Application {
       }
     };
   }
+
+  @Bean
+    public TaskScheduler taskScheduler() {
+        ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
+        scheduler.setPoolSize(5);  // Adjust pool size as necessary
+        return scheduler;
+    }
 
 
 

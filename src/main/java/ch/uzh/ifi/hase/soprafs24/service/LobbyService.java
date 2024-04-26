@@ -6,8 +6,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.scheduling.TaskScheduler;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import java.util.Date;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +48,9 @@ public class LobbyService {
   @Autowired 
   UserRepository userRepository;
 
+  @Autowired
+  private TaskScheduler taskScheduler;
+
   public List<Lobby> getAllLobbies() {
     return this.lobbyRepository.findAll();
   }
@@ -69,8 +75,33 @@ public class LobbyService {
     return this.lobbyRepository.findByLobbyId(lobbyId);
   }
 
-    /**
-     * 
+  @Async
+  public void createSendTaskCoord(Lobby lob,Long miliseconds){
+    taskScheduler.schedule(() -> {
+      try {
+          sendCoord(lob.getId());
+      } catch (Exception e) {
+          lob.setState(lobbyStates.CLOSED);
+          // handle exception
+      }
+    }, new Date(System.currentTimeMillis() + miliseconds));
+  }
+    
+  @Async
+  public void createSendTaskLeaderB(Lobby lob,Long miliseconds){
+    taskScheduler.schedule(() -> {
+      try {
+          createAndSendLeaderBoard(lob);
+      } catch (Exception e) {
+          lob.setState(lobbyStates.CLOSED);
+          // handle exception
+      }
+    }, new Date(System.currentTimeMillis() + miliseconds));
+  }
+ 
+  
+  
+  /**    * 
      * @param user the user who wants to join the lobby
      * @param lob the lobby, assumes lobby to be open
      * @return the lobby state after adding the user
@@ -81,8 +112,8 @@ public class LobbyService {
     if ( lob.getPlayers().size() == lob.getPlayerLimit()){
       try{
         lob.setState(lobbyStates.PLAYING);
-        this.sendCoord(lob.getId());
-        this.createAndSendLeaderBoard(lob);
+        this.createSendTaskLeaderB(lob,2000L);
+        this.createSendTaskCoord(lob, 6000L);
         return lobbyStates.PLAYING;
       }
       catch (Exception e){
@@ -151,6 +182,7 @@ public class LobbyService {
     return true;
   }
 
+  @Async
   public void createAndSendLeaderBoard(Lobby lob){
     Map<Long,Float> results = lob.getPoints();
     List<User> players = lob.getPlayers();
@@ -182,7 +214,7 @@ public class LobbyService {
   }
 
 
-  public void advanceRound(Long playerId, Lobby lob){
+  public void advanceRound(Long playerId, Lobby lob)throws Exception{
     int oldRound = lob.currRound.get(playerId);
     if(oldRound < lob.getRounds()){
       lob.currRound.put(playerId, ++oldRound);
@@ -295,9 +327,8 @@ public class LobbyService {
 
     if(nextRound && lob.getState() == lobbyStates.PLAYING){
       try{
-        Thread.sleep(1500);
-        this.sendCoord(lob.getId());
-        this.createAndSendLeaderBoard(lob);
+        this.createSendTaskCoord(lob,6000L);
+        this.createSendTaskLeaderB(lob,2000L);
       }
       catch (Exception e){
         lob.setState(lobbyStates.CLOSED);
@@ -307,6 +338,7 @@ public class LobbyService {
 
   }
 
+  @Async
   public void sendCoord(Long lobbyId) throws Exception{
     try{
       List<Double> coord = this.gameService.get_image_coordinates();
