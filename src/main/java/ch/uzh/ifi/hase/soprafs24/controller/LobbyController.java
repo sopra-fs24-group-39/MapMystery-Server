@@ -115,6 +115,40 @@ import java.util.Map;
       
     }
  
+    /**
+    * GameId = LobbyId for simplicity
+    * @param lobbyId is the Id of the lobby
+    * @param userId is the Id of the user which leaves the loby
+    * needed for security reasons
+    * @return returns only the status codes
+    */
+    @DeleteMapping("/Lobby/GameMode1/{lobbyId}/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void leaveLobby(@PathVariable long lobbyId,@PathVariable long userId,@RequestHeader(value = "Authorization") String token) {
+  
+     try{
+       User user = userService.getUser(userId);
+       assert user.getToken().equals(token);
+      
+       Lobby lob = lobbyService.getLobby(lobbyId);
+       if( lob == null){
+        throw new Exception("lobby not found");
+       };
+       lobbyService.removePlayer(user, lob);
+ 
+     } 
+     catch (AssertionError e){
+       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid! "+e.getMessage());
+     }
+     catch (RuntimeException e){
+       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with %d not found "+e.getMessage());
+     }
+     catch (Exception e){
+       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured "+e.getMessage() );
+     }
+      
+    }
    
  }
  

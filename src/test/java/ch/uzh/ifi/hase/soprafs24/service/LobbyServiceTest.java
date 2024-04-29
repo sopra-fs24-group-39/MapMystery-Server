@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.GameMode1;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.Lobby;
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
-import java.lang.Thread;
 import java.util.Date;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,7 +26,6 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import org.mockito.MockedStatic;
 
 import ch.uzh.ifi.hase.constants.GameModes;
 

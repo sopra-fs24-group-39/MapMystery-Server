@@ -17,11 +17,17 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import ch.uzh.ifi.hase.constants.GameModes;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 /**
  * UserControllerTest
@@ -155,6 +161,68 @@ public class LobbyControllerTest {
 
     // then
     mockMvc.perform(request)
+        .andExpect(status().isInternalServerError());
+  }
+
+  @Test
+  public void testLeaveLobbySuccess() throws Exception {
+    // given
+    User user = new User();
+    user.setUsername("firstname@lastname");
+    user.setStatus("OFFLINE");
+    user.setPassword("null");
+    long userId = 1L; // Assuming IDs are long
+    user.setId(userId);
+    String token = user.getToken();
+
+    lobbyService.addPlayer(user,lob);
+    Long lobbyId = 1L;
+
+    List<User> expectedPlayers = new ArrayList<>();
+
+
+    // Mocking UserService to return a specific user when getUser() is called
+    given(userService.getUser(userId)).willReturn(user);
+    given(lobbyService.getLobby(lobbyId)).willReturn(lob);
+
+
+    // when
+    MockHttpServletRequestBuilder Request = delete("/Lobby/GameMode1/{lobbyId}/{userId}",lobbyId,userId)
+    .header("Authorization",token)
+    .content(new ObjectMapper().writeValueAsString(user))
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(Request)
+        .andExpect(status().isOk());
+
+    assertEquals(lob.players,expectedPlayers );
+  }
+
+  @Test
+  public void testLeaveLobbyFailure() throws Exception {
+    // given
+    User user = new User();
+    user.setUsername("firstname@lastname");
+    user.setStatus("OFFLINE");
+    user.setPassword("null");
+    long userId = 1L; // Assuming IDs are long
+    user.setId(userId);
+    String token = user.getToken();
+
+    Long lobbyId = 1L;
+
+    // Mocking UserService to return a specific user when getUser() is called
+    given(userService.getUser(userId)).willReturn(user);
+    given(lobbyService.getLobby(lobbyId)).willReturn(null);
+    // when
+    MockHttpServletRequestBuilder Request = delete("/Lobby/GameMode1/{lobbyId}/{userId}",lobbyId,userId)
+    .header("Authorization",token)
+    .content(new ObjectMapper().writeValueAsString(user))
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(Request)
         .andExpect(status().isInternalServerError());
   }
 
