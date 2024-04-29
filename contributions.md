@@ -162,6 +162,17 @@ copmleted before 26.04.2024
 
 - Tally Points for players
 - Function to get coordinates https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/5#issue-2192439339
+  
+### Joshua
+
+#### What did I do last week?
+
+- Decorator for the get_coordinates function to enable logging of the Game Data https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/90
+
+
+#### What will I do this week?
+
+#### What are the obstacles to progress?
 
 
 #### What will I do this week?
