@@ -168,21 +168,12 @@ copmleted before 26.04.2024
 #### What did I do last week?
 
 - Decorator for the get_coordinates function to enable logging of the Game Data https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/90
-
+- Presentation Slides, M3 cleanup, Report https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/110
 
 #### What will I do this week?
 
 #### What are the obstacles to progress?
 
-
-#### What will I do this week?
-
--  Database Schema https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/91#issue-2263372314
-- Get mapping 
-- Game Object
-- Finaising Account Creation https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/1#issue-2192414500 - (Just need to deael with statistics)
-- Integration of unit testing w/ David for sonarcube coverage https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/33#issue-2200487029
-- https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/34#issue-2200487170
 
 ### Tim
 #### What did I do last week?
