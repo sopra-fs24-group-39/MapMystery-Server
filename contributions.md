@@ -41,12 +41,15 @@ a request might fail.
  copmleted before 05.04.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/23)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/24)
+
 copmleted before  12.04.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/26)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/27)
+
 copmleted before 19.04.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/63)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/65)
+
 copmleted before 26.04.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
