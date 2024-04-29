@@ -33,15 +33,23 @@
 created and tested lobbyclass (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/26)
 created and tested lobbycontroller (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/27)
 #### What will I do this week?
-this issue : (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
-that issue : (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
+REST API endpoint for players who want to leave a lobby
+Desgining and implementing an exception system for the backend, such that people can actually understand why
+a request might fail.
 #### What have I done in total?
+
+ copmleted before 05.04.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/23)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/24)
+copmleted before  12.04.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/26)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/27)
+copmleted before 19.04.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/63)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/65)
+copmleted before 26.04.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
 
 
 #### What are the obstacles to progress?
