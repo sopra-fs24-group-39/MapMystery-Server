@@ -16,8 +16,7 @@ public class AccountService {
     @Autowired
     private EmailSenderService emailSenderService; // Assuming you have an EmailSenderService for sending emails
 
-    @Value("${app.base.url}") // Read the base URL from application.properties
-    private String baseUrl;
+
 
     public void sendVerificationEmail(User user) {
         // Generate a unique verification token
@@ -26,6 +25,7 @@ public class AccountService {
         // Associate the token with the user
         user.setVerificationToken(verificationToken);
 
+        String baseUrl = "https://sopra-fs24-group-39-client.oa.r.appspot.com";
         // Construct the verification link
         String verificationLink = baseUrl + "/verify-account?token=" + verificationToken;
 
