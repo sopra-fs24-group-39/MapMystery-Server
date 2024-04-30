@@ -1,4 +1,3 @@
-/*
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.constants.GameModes;
@@ -98,4 +97,3 @@ public class GameLog implements Serializable {
         this.gameMode = gameMode;
     }
 }
-*/
