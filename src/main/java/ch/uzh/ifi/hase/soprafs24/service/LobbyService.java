@@ -51,6 +51,9 @@ public class LobbyService {
   @Autowired
   private TaskScheduler taskScheduler;
 
+  @Autowired
+  private UtilityService utilityService;
+
   public List<Lobby> getAllLobbies() {
     return this.lobbyRepository.findAll();
   }

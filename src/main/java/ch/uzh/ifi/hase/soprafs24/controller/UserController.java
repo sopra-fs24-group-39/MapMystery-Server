@@ -11,7 +11,10 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
+import ch.uzh.ifi.hase.soprafs24.service.UtilityService;
 import ch.uzh.ifi.hase.soprafs24.service.AccountService;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,6 +33,9 @@ public class UserController {
 
   private final UserService userService;
   private AccountService accountService;
+
+  @Autowired
+  private UtilityService utilityService;
 
   UserController(UserService userService, AccountService accountService) {
     this.userService = userService;

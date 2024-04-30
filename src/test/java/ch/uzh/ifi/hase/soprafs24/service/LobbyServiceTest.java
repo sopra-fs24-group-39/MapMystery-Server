@@ -56,6 +56,10 @@ public class LobbyServiceTest {
     @Mock
     private TaskScheduler taskScheduler;
 
+    @Mock
+    private UtilityService utilityService;
+
+
     @InjectMocks
     private LobbyService lobbyService = new LobbyService();
 

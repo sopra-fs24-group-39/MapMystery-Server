@@ -7,6 +7,8 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 // import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
 import ch.uzh.ifi.hase.soprafs24.service.AccountService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
+import ch.uzh.ifi.hase.soprafs24.service.UtilityService;
+
 // import com.fasterxml.jackson.core.JsonProcessingException;
 // import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
@@ -53,6 +55,10 @@ public class UserControllerTest {
 
   @MockBean
   private AccountService accountService;
+
+  @MockBean
+  private UtilityService utilityService;
+
 
   @Test
   public void testGET_users_userid_success() throws Exception {
