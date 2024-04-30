@@ -52,7 +52,7 @@ public class LobbyService {
   private TaskScheduler taskScheduler;
 
   @Autowired
-  private UtilityService utilityService;
+  private UtilityService util;
 
   public List<Lobby> getAllLobbies() {
     return this.lobbyRepository.findAll();
@@ -74,8 +74,10 @@ public class LobbyService {
    }
 
 
-  public Lobby getLobby(Long lobbyId){
-    return this.lobbyRepository.findByLobbyId(lobbyId);
+  public Lobby getLobby(Long lobbyId) throws Exception{
+    Lobby foundLobby =  this.lobbyRepository.findByLobbyId(lobbyId);
+    util.Assert(foundLobby != null, "no Lobby found with LobbyId: "+lobbyId);
+    return foundLobby;
   }
 
   @Async
@@ -311,11 +313,11 @@ public class LobbyService {
         return lob.getId();
       }
       catch (Exception e){
-        throw new Exception("User could not join Lobby even though spots are left");
+        throw new Exception("User could not join Lobby even though spots are left"+e.getMessage());
       }
 
     }
-    return -1L;
+    throw new Exception("all lobbies are full");
   }
 
   /*

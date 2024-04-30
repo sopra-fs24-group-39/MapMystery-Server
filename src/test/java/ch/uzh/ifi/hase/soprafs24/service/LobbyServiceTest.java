@@ -253,7 +253,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void testGetLobby_LobbyExists() {
+    public void testGetLobby_LobbyExists() throws Exception {
         when(lobbyRepository.findByLobbyId(anyLong())).thenReturn(lobby);
         Lobby result = lobbyService.getLobby(1L);
         assertNotNull(result);
@@ -261,7 +261,7 @@ public class LobbyServiceTest {
     }
 
     @Test
-    public void testGetLobby_LobbyDoesNotExist() {
+    public void testGetLobby_LobbyDoesNotExist() throws Exception {
         when(lobbyRepository.findByLobbyId(anyLong())).thenReturn(null);
         Lobby result = lobbyService.getLobby(1L);
         assertNull(result);
@@ -272,7 +272,7 @@ public class LobbyServiceTest {
         when(lobbyRepository.findAll()).thenReturn(Arrays.asList(lobby));
         lobby.setState(lobbyStates.CLOSED);
         lobbyService.setLobbyLimit(1);
-        assertEquals(-1L, lobbyService.putToSomeLobby(user1,GameModes.Gamemode1));
+        assertThrows(Exception.class,()-> lobbyService.putToSomeLobby(user1, GameModes.Gamemode1));
     }
 
     @Test

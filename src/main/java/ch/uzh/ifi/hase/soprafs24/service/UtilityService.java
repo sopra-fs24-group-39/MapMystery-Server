@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 @Service
 @Transactional
 public class UtilityService {
-    public void Assert(boolean expression) throws Exception{
+    public void Assert(boolean expression,String msg) throws Exception{
         if(expression != true){
-            throw new AssertionError();
+            throw new AssertionError(msg);
         }
     }
 }

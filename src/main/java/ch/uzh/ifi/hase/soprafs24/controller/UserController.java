@@ -35,7 +35,7 @@ public class UserController {
   private AccountService accountService;
 
   @Autowired
-  private UtilityService utilityService;
+  private UtilityService util;
 
   UserController(UserService userService, AccountService accountService) {
     this.userService = userService;
@@ -43,8 +43,8 @@ public class UserController {
   }
 
   /**
-   * Unsecure, would need also some kind of authentication to prevent outside entities of accesssing this data
-   * @return returns a list of Users with all of their properties
+   * 
+   * @return returns a list of Users with all of their properties, where the passwords are hashed
    */
   @GetMapping("/users")
   @ResponseStatus(HttpStatus.OK)
@@ -81,18 +81,18 @@ public class UserController {
 
     try{
       User user = userService.getUser(userId);
-      assert user.getToken().equals(token);
+      util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
       return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     } 
     catch (AssertionError e){
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid! "+e.getMessage());
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,e.getMessage());
     }
     catch (RuntimeException e){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found "+e.getMessage(), userId));
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
     }
     catch (Exception e){
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured "+e.getMessage() );
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage() );
     }
   
   }
@@ -109,18 +109,18 @@ public class UserController {
 
     try{
       User user = userService.getUser(userId);
-      assert user.getToken().equals(token);
+      util.Assert(user.getToken()==token, "the provided token did not match the token expected in the Usercontroller");
 
       userService.deleteUser(user);
     } 
     catch (AssertionError e){
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid! "+e.getMessage());
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,e.getMessage());
     }
     catch (RuntimeException e){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found "+e.getMessage(), userId));
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
     }
     catch (Exception e){
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured "+e.getMessage());
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
     }
   
   }
@@ -147,17 +147,17 @@ public class UserController {
         accountService.sendVerificationEmail(createdUser);
       }
       catch (Exception e){
-        throw new RuntimeException("E-mail verification failed "+e.getMessage());
+        throw new RuntimeException(e.getMessage());
       }
 
       return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
 
     }
     catch (RuntimeException e){
-      throw new ResponseStatusException(HttpStatus.CONFLICT, "add user failed because username already exists or E-Mail does not exist "+e.getMessage());
+      throw new ResponseStatusException(HttpStatus.CONFLICT,e.getMessage());
     }
     catch (Exception e){
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured "+e.getMessage());
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
     }
   }
 
@@ -175,7 +175,7 @@ public class UserController {
   public void userUpdate(@PathVariable long userId, @RequestBody UserPutDTO NewUserData,@RequestHeader(value = "Authorization") String token) {
     try{
       User oldData = userService.getUser(userId);
-      assert oldData.getToken().equals(token);
+      util.Assert(oldData.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
 
       User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(NewUserData);
@@ -184,13 +184,13 @@ public class UserController {
 
     }
     catch (AssertionError e){
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid!");
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,e.getMessage());
     }
     catch(RuntimeException e){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found", userId));
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
     catch(Exception e){
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occured");
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
     
   }

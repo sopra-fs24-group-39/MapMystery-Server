@@ -29,7 +29,7 @@ import java.util.Map;
   private final LobbyService lobbyService;
 
   @Autowired
-  private UtilityService utilityService;
+  private UtilityService util;
 
  
   LobbyController(UserService userService,LobbyService lobbyService) {
@@ -49,18 +49,12 @@ import java.util.Map;
  
     try{
       User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
-      assert user.getToken().equals(token);
-      Long userId = user.getId();
+      User player = userService.getUser(user.getId());
 
-      user = userService.getUser(userId);
 
-      Long lobbyId = lobbyService.putToSomeLobby(user,GameModes.Gamemode1);
+      util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
-      if (lobbyId == -1){
-        
-        throw new Exception("all lobbies are full");
-        
-      }
+      Long lobbyId = lobbyService.putToSomeLobby(player,GameModes.Gamemode1);
 
       Map<String,Long> response = new HashMap<>();
 
@@ -71,13 +65,13 @@ import java.util.Map;
 
     } 
     catch (AssertionError e){
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid! "+e.getMessage());
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,e.getMessage());
     }
     catch (RuntimeException e){
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with %d not found "+e.getMessage());
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
     catch (Exception e){
-      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured "+e.getMessage() );
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage() );
     }
      
    }
@@ -97,25 +91,25 @@ import java.util.Map;
   
      try{
        User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
-       assert user.getToken().equals(token);
+       User player = userService.getUser(user.getId());
+       util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
       
        Long userId = user.getId();
        float score = user.getScore();
+
        Lobby lob = lobbyService.getLobby(lobbyId);
-       if( lob == null){
-        throw new Exception("lobby not found");
-       };
+       
        lobbyService.submitScore(score, userId, lob);
  
      } 
      catch (AssertionError e){
-       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid! "+e.getMessage());
+       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,e.getMessage());
      }
      catch (RuntimeException e){
-       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with %d not found "+e.getMessage());
+       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
      }
      catch (Exception e){
-       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured "+e.getMessage() );
+       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage() );
      }
       
     }
@@ -134,23 +128,21 @@ import java.util.Map;
   
      try{
        User user = userService.getUser(userId);
-       assert user.getToken().equals(token);
+       util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
       
        Lobby lob = lobbyService.getLobby(lobbyId);
-       if( lob == null){
-        throw new Exception("lobby not found");
-       };
+       
        lobbyService.removePlayer(user, lob);
  
      } 
      catch (AssertionError e){
-       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid! "+e.getMessage());
+       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,e.getMessage());
      }
      catch (RuntimeException e){
-       throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User with %d not found "+e.getMessage());
+       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
      }
      catch (Exception e){
-       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Unexpected Error occured "+e.getMessage() );
+       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage() );
      }
       
     }

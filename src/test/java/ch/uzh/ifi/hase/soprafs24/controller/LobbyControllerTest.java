@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.Lobby;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import ch.uzh.ifi.hase.soprafs24.service.UtilityService;
+import io.jsonwebtoken.lang.Assert;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -28,6 +29,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 /**
@@ -72,6 +75,8 @@ public class LobbyControllerTest {
 
     // Mocking UserService to return a specific user when getUser() is called
     given(lobbyService.putToSomeLobby(user,GameModes.Gamemode1)).willReturn(1L);
+    given(userService.getUser(1L)).willReturn(user);
+
 
     // when
     MockHttpServletRequestBuilder postRequest = post("/Lobby/GameMode1")
@@ -96,7 +101,8 @@ public class LobbyControllerTest {
     String token = user.getToken();
 
     // Mocking UserService to return a specific user when getUser() is called
-    given(lobbyService.putToSomeLobby(any(),any())).willReturn(-1L);
+    given(lobbyService.putToSomeLobby(any(),any())).willThrow(new Exception());
+    given(userService.getUser(1L)).willReturn(user);
 
     // when
     MockHttpServletRequestBuilder postRequest = post("/Lobby/GameMode1")
@@ -127,6 +133,7 @@ public class LobbyControllerTest {
 
     // Mocking UserService to return a specific user when getUser() is called
     given(lobbyService.getLobby(1L)).willReturn(lob);
+    given(userService.getUser(1L)).willReturn(user);
 
     // when
     MockHttpServletRequestBuilder request = put("/Lobby/GameMode1/{lobbyId}",lobbyId)
@@ -155,7 +162,8 @@ public class LobbyControllerTest {
     lobbyService.addPlayer(user,lob);
 
     // Mocking UserService to return a specific user when getUser() is called
-    given(lobbyService.getLobby(1L)).willReturn(null);
+    given(lobbyService.getLobby(1L)).willThrow(new Exception());
+    given(userService.getUser(1L)).willReturn(user);
 
     // when
     MockHttpServletRequestBuilder request = put("/Lobby/GameMode1/{lobbyId}",lobbyId)
@@ -218,7 +226,7 @@ public class LobbyControllerTest {
 
     // Mocking UserService to return a specific user when getUser() is called
     given(userService.getUser(userId)).willReturn(user);
-    given(lobbyService.getLobby(lobbyId)).willReturn(null);
+    given(lobbyService.getLobby(lobbyId)).willThrow(new Exception());
     // when
     MockHttpServletRequestBuilder Request = delete("/Lobby/GameMode1/{lobbyId}/{userId}",lobbyId,userId)
     .header("Authorization",token)
