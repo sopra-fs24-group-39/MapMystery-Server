@@ -244,7 +244,7 @@ public class UserController {
 
   }
 
-  @PutMapping("/verify-account")
+  @GetMapping("/verify-account")
   public ResponseEntity<String> verifyAccount(@RequestParam("token") String token){
     User user = userService.getUserByVerificationToken(token);
 

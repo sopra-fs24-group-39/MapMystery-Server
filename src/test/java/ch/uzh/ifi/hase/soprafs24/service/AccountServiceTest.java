@@ -49,7 +49,7 @@ public class AccountServiceTest {
         String expectedVerificationLink = "Hi!\n" +
                 "Welcome to MapMystery! We are excited to have you onboard with the Geography learning Journey, " +
                 "we have many exciting game modes for you to try but first.....\n" +
-                "Please click the following link to verify your account: " + baseUrl + "/verify-account?token=" + user.getVerificationToken();
+                "Please click the following link to verify your account: " + "https://sopra-fs24-group-39-client.oa.r.appspot.com" + "/verify-account?token=" + user.getVerificationToken();
         assertEquals(expectedVerificationLink, captureEmailBody());
 
         // Verify that the email was sent to the user's email address with the correct subject and body
