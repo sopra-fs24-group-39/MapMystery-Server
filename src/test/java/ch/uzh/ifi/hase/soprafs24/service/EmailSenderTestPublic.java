@@ -26,7 +26,7 @@ public class EmailSenderTestPublic {
     @Value("${app.base.url}")
     private String baseUrl;
 
-    //@Disabled("Live test to live email")
+    @Disabled("Live test to live email")
     @Test
     public void testSendVerificationEmail() {
         // Given
