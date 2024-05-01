@@ -50,7 +50,7 @@ public interface DTOMapper {
   @Mapping(source = "verified",target = "verified")
   UserGetDTO convertEntityToUserGetDTO(User user);
 
-  //@Mapping(source = "friendrequests", target = "friendrequests")
+  @Mapping(source = "friendrequests", target = "friendrequests")
   FriendrequestGetDTO convertEntityToFriendrequestGetDTO(User user);
 
 

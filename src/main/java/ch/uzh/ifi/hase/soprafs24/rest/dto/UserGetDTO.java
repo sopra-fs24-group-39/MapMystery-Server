@@ -18,6 +18,8 @@ public class UserGetDTO {
   private String userEmail = null;
   private float score;
   private List<UserGetDTO> friends;
+
+  private List<String> friendrequests;
   private float currentpoints;
   private Boolean verified;
   private  Boolean featured_in_rankings = null;
@@ -110,6 +112,8 @@ public class UserGetDTO {
     assert "OFFLINE".equals(status) || "ONLINE".equals(status) || "UNDEF".equals(status);
     this.status = status;
   }
+  public void setFriendrequests(List<String> friendrequests){this.friendrequests = friendrequests;}
+  public List<String> getFriendrequests(){return this.friendrequests;}
 
   
 

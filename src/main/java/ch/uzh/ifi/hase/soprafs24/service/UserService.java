@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
@@ -66,19 +67,41 @@ public class UserService {
 
 
   public User getUser(long user_Id){
-    Optional<User> optionalUser = userRepository.findById(user_Id);
-    return optionalUser.orElseThrow(() -> new RuntimeException("User not found with id: " + user_Id));
+    User user = userRepository.findById(user_Id);
+    return user;
   }
 
-  public void addfriendrequest(User user_who_the_friend_request_is_sent_to, User user_who_sent_request){
-      if(!user_who_the_friend_request_is_sent_to.getFriendrequests().contains(user_who_sent_request.getUsername())){
-          List<String> existing_friendrequests = user_who_the_friend_request_is_sent_to.getFriendrequests();
-          existing_friendrequests.add(user_who_sent_request.getUsername());
-          user_who_the_friend_request_is_sent_to.setFriendsrequests(existing_friendrequests);
-      }
-  }
+    public void addfriendrequest(User user_recipient, User user_sender) {
+        // Null check for the user to whom the friend request is sent
+        if (user_recipient != null) {
+            List<String> friendRequests = user_recipient.getFriendrequests();
 
-  /**
+            // Null check for the list of friend requests
+            if (friendRequests != null) {
+                // Check if the friend request doesn't already exist
+                if (!friendRequests.contains(user_sender.getUsername())) {
+                    friendRequests.add(user_sender.getUsername());
+                    user_recipient.setFriendrequests(friendRequests);
+                }
+            } else {
+
+                List<String> usernameList = new ArrayList<>(); // Create a new ArrayList to store usernames
+                String secondUsername = user_sender.getUsername(); // Assuming getUsername() returns the username of the user
+                usernameList.add(secondUsername); // Add the second user's username to the list
+                user_recipient.setFriendrequests(usernameList);
+
+            }
+        } else {
+            // Handle the case where the user to whom the friend request is sent is null
+            // You might choose to throw an exception or log a message
+        }
+        userRepository.save(user_recipient);
+        userRepository.flush();
+
+    }
+
+
+    /**
    * This is a helper method that will check the uniqueness criteria of the
    * username and the name
    * defined in the User entity. The method will do nothing if the input is unique

@@ -19,6 +19,8 @@ public class UserPutDTO {
   private boolean verified;
   private List<UserPutDTO> friends;
   private float currentpoints;
+
+  private String token = null;
   private  Boolean featured_in_rankings = null;
 
   public Long getId(){
@@ -81,6 +83,14 @@ public class UserPutDTO {
   }
   public void setFeatured_in_rankings(Boolean featured_in_rankings){
       this.featured_in_rankings = featured_in_rankings;
+  }
+  public String getToken() {
+        return this.token;
+    }
+
+    // Setter method for token
+  public void setToken(String token) {
+      this.token = token;
   }
 
 

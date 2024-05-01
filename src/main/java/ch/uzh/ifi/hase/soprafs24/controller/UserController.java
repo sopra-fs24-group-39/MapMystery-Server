@@ -279,10 +279,11 @@ public class UserController {
     @ResponseBody
     public void sendfriendrequest(@PathVariable long userId, @RequestBody UserPutDTO FromUserData,@RequestHeader(value = "Authorization") String token) {
         try {
-            User user_to_which_friend_request_is_sent = userService.getUser(userId);
-            User user_who_sent_friend_request = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(FromUserData);
+            User user_who_sent_friend_request = userService.getUser(userId);
 
-            assert user_to_which_friend_request_is_sent.getToken().equals(token);
+            User user_to_which_friend_request_is_sent = userService.getUser(DTOMapper.INSTANCE.convertUserPutDTOtoEntity(FromUserData).getUsername());
+
+            assert user_who_sent_friend_request.getToken().equals(token);
 
             userService.addfriendrequest(user_to_which_friend_request_is_sent, user_who_sent_friend_request);
 
