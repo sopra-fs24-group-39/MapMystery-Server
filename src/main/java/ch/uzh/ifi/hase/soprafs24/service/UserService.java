@@ -70,6 +70,14 @@ public class UserService {
     return optionalUser.orElseThrow(() -> new RuntimeException("User not found with id: " + user_Id));
   }
 
+  public void addfriendrequest(User user_who_the_friend_request_is_sent_to, User user_who_sent_request){
+      if(!user_who_the_friend_request_is_sent_to.getFriendrequests().contains(user_who_sent_request.getUsername())){
+          List<String> existing_friendrequests = user_who_the_friend_request_is_sent_to.getFriendrequests();
+          existing_friendrequests.add(user_who_sent_request.getUsername());
+          user_who_the_friend_request_is_sent_to.setFriendsrequests(existing_friendrequests);
+      }
+  }
+
   /**
    * This is a helper method that will check the uniqueness criteria of the
    * username and the name

@@ -62,6 +62,9 @@ public class User implements Serializable {
     @Transient // Marking this as transient to avoid persistence issues, adjust according to your JPA implementation details
     private List<User> friends;
 
+    @Transient // Marking this as transient to avoid persistence issues, adjust according to your JPA implementation details
+    private List<String> friendrequests;
+
     @Column
     private float currentpoints;
 
@@ -166,6 +169,13 @@ public class User implements Serializable {
         this.friends = friends;
     }
 
+    public List<String> getFriendrequests() {
+        return friendrequests;
+    }
+
+    public void setFriendsrequests(List<String> friendsrequests) {
+        this.friendrequests = friendsrequests;
+    }
     public Boolean getVerified(){
         return this.verified;
     }

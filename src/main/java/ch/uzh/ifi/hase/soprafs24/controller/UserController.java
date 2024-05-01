@@ -263,7 +263,8 @@ public class UserController {
 
     return ResponseEntity.ok("Account verified successfully.");
   }
-// ##################################### Friends Section #################################################################
+// ##################################### Start Friends Section #################################################################
+
     /**
      * This section deals with:
      * Creating Friend Requests,
@@ -294,7 +295,6 @@ public class UserController {
         catch(Exception e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occured");
         }
+// ##################################### End Friends Section #################################################################
 
     }
-
-}
