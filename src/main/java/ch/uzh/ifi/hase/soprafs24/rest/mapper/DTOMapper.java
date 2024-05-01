@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.CredPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.FriendrequestGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 import org.mapstruct.*;
@@ -44,10 +45,15 @@ public interface DTOMapper {
   @Mapping(source = "userEmail",target = "userEmail")
   @Mapping(source = "score", target = "score")
   @Mapping(source = "friends", target = "friends")
+  @Mapping(source = "friendrequests", target = "friendrequests")
   @Mapping(source = "currentpoints",target = "currentpoints")
   @Mapping(source = "featured_in_rankings",target = "featured_in_rankings")
   @Mapping(source = "verified",target = "verified")
   UserGetDTO convertEntityToUserGetDTO(User user);
+
+  @Mapping(source = "friendrequests", target = "friendrequests")
+  FriendrequestGetDTO convertEntityToFriendrequestGetDTO(User user);
+
 
   @Mapping(source="username",target="username")
   @Mapping(source="password",target="password")

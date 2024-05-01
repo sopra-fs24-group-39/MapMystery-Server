@@ -17,7 +17,7 @@ public class UserGetDTO {
   private String creationdate = null;
   private String userEmail = null;
   private float score;
-  private List<UserGetDTO> friends;
+  private List<UserGetDTO> friends = null;
   private float currentpoints;
   private Boolean verified;
   private  Boolean featured_in_rankings = null;

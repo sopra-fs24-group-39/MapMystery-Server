@@ -7,6 +7,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.CredPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.FriendrequestGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
@@ -273,11 +274,11 @@ public class UserController {
      * Removing Friends,
      * Loading all friends
      */
-    @PutMapping("/friends")
+    @PutMapping("/friends/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public void sendfriendrequest(@PathVariable long userId, @RequestBody UserPutDTO FromUserData,@RequestHeader(value = "Authorization") String token) {
-        try{
+        try {
             User user_to_which_friend_request_is_sent = userService.getUser(userId);
             User user_who_sent_friend_request = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(FromUserData);
 
@@ -286,15 +287,37 @@ public class UserController {
             userService.addfriendrequest(user_to_which_friend_request_is_sent, user_who_sent_friend_request);
 
         }
-        catch (AssertionError e){
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid!");
+        catch (AssertionError e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "token is invalid!");
         }
-        catch(RuntimeException e){
+        catch (RuntimeException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found", userId));
         }
-        catch(Exception e){
+        catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occured");
         }
+    }
+
+        @GetMapping("/friends/friendrequests/{userId}")
+        @ResponseStatus(HttpStatus.OK)
+        @ResponseBody
+        public FriendrequestGetDTO getfriendrequests(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
+            try {
+                User user = userService.getUser(userId);
+                return DTOMapper.INSTANCE.convertEntityToFriendrequestGetDTO(user);
+
+            }
+            catch (AssertionError e) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "token is invalid!");
+            }
+            catch (RuntimeException e) {
+                throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found", userId));
+            }
+            catch (Exception e) {
+                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occured");
+            }
+        }
+
 // ##################################### End Friends Section #################################################################
 
     }
