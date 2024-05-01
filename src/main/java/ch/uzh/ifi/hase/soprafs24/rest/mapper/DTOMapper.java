@@ -45,13 +45,12 @@ public interface DTOMapper {
   @Mapping(source = "userEmail",target = "userEmail")
   @Mapping(source = "score", target = "score")
   @Mapping(source = "friends", target = "friends")
-  @Mapping(source = "friendrequests", target = "friendrequests")
   @Mapping(source = "currentpoints",target = "currentpoints")
   @Mapping(source = "featured_in_rankings",target = "featured_in_rankings")
   @Mapping(source = "verified",target = "verified")
   UserGetDTO convertEntityToUserGetDTO(User user);
 
-  @Mapping(source = "friendrequests", target = "friendrequests")
+  //@Mapping(source = "friendrequests", target = "friendrequests")
   FriendrequestGetDTO convertEntityToFriendrequestGetDTO(User user);
 
 
