@@ -263,4 +263,38 @@ public class UserController {
 
     return ResponseEntity.ok("Account verified successfully.");
   }
+// ##################################### Friends Section #################################################################
+    /**
+     * This section deals with:
+     * Creating Friend Requests,
+     * Loading all friendrequests of a user,
+     * Declining / accepting a friend request,
+     * Removing Friends,
+     * Loading all friends
+     */
+    @PutMapping("/friends")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void sendfriendrequest(@PathVariable long userId, @RequestBody UserPutDTO FromUserData,@RequestHeader(value = "Authorization") String token) {
+        try{
+            User user_to_which_friend_request_is_sent = userService.getUser(userId);
+            User user_who_sent_friend_request = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(FromUserData);
+
+            assert user_to_which_friend_request_is_sent.getToken().equals(token);
+
+            userService.addfriendrequest(user_to_which_friend_request_is_sent, user_who_sent_friend_request);
+
+        }
+        catch (AssertionError e){
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"token is invalid!");
+        }
+        catch(RuntimeException e){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found", userId));
+        }
+        catch(Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occured");
+        }
+
+    }
+
 }
