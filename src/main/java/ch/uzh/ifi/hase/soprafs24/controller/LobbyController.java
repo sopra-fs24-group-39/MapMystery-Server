@@ -91,7 +91,7 @@ import java.util.Map;
        try {
            User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
            User player = userService.getUser(user.getId());
-           //util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+           util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
 
            // Create Private Lobby we need to return the lobbyId and authKey so the player can share it
