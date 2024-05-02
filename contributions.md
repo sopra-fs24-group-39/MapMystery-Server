@@ -38,21 +38,25 @@ Desgining and implementing an exception system for the backend, such that people
 a request might fail.
 #### What have I done in total?
 
- copmleted before 05.04.2024
+ copmleted for 05.04.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/23)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/24)
 
-copmleted before  12.04.2024
+copmleted for  12.04.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/26)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/27)
 
-copmleted before 19.04.2024
+copmleted for 19.04.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/63)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/65)
 
-copmleted before 26.04.2024
+copmleted for 26.04.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
+
+copmleted for 03.05.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/111)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/112)
 
 
 #### What are the obstacles to progress?
