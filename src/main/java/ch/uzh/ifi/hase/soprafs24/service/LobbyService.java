@@ -260,7 +260,6 @@ public class LobbyService {
 
     // Check for private lobby
     if(!lob.isPublic()){
-
         if(providedAuthKey == null || providedAuthKey.isEmpty()){
             throw new Exception("Please provide an authentication key to join the private lobby");
         }
@@ -269,8 +268,14 @@ public class LobbyService {
         }
 
     }
-
-    this.addPlayer(user, lob);
+    
+    try{
+      this.addPlayer(user, lob);
+    }
+    catch (Exception e){
+      lob.setState(lobbyStates.CLOSED);
+      throw new Exception("Player could not join lobby "+e.getMessage());
+    }
 
 
     if ( lob.getPlayers().size() == lob.getPlayerLimit()){
