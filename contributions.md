@@ -197,25 +197,25 @@ copmleted for 03.05.2024
 ## What Have I done in Total?
 
 copmleted for 05.04.2024
-- created Email account (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38#issue-2200489858)
-- JAVA Email sender implementation (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38#issue-2200489858)
+- created Email account (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38)
+- JAVA Email sender implementation (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38)
 - Verification email + creation email sent (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/41)
 
 copmleted for  12.04.2024
-- API Integration for Data Fetching (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/43#issue-2200492110)
+- API Integration for Data Fetching (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/43)
 - Tally Points for players
-- Function to get coordinates (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/5#issue-2192439339)
+- Function to get coordinates (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/5)
 
 copmleted for 19.04.2024
 
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/65)
+- (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/65)
 
 copmleted for 26.04.2024
 
-Email testing and bug fixing -  (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38#issue-2200489858)
-Coordinates API - (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
+- Email testing and bug fixing -  (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38)
+- Coordinates API - (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
 
 copmleted for 03.05.2024
-- Logging Data Base Class (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/104#issue-2267677373)
-- Implementation of Private Lobbies (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/113#issue-2275508027)
-- Implementation of Countries (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/114#issue-2275511621)
+- Logging Data Base Class (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/104)
+- Implementation of Private Lobbies (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/113)
+- Implementation of Countries (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/114)
