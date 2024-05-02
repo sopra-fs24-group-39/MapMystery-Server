@@ -12,8 +12,9 @@ import java.util.HashMap;
 import ch.uzh.ifi.hase.constants.lobbyStates;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.constants.GameModes;
- 
- @Entity
+import org.springframework.lang.Nullable;
+
+@Entity
  @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
  @Table(name = "LOBBY")
  public class Lobby implements Serializable {
@@ -26,6 +27,10 @@ import ch.uzh.ifi.hase.constants.GameModes;
 
   @OneToMany(cascade = CascadeType.ALL)
   public List<User> players = new ArrayList<User>();
+
+  @Column
+  @Nullable
+  private String authKey;
 
   @Column
   private Boolean public_lobby = true;
@@ -98,7 +103,7 @@ import ch.uzh.ifi.hase.constants.GameModes;
 
      public void setPublic(){this.public_lobby = true;}
 
-  public Boolean getLobbyType(){return this.public_lobby; }
+  public Boolean isPublic(){return this.public_lobby; }
 
   public lobbyStates getState(){
     return state;
@@ -115,6 +120,12 @@ import ch.uzh.ifi.hase.constants.GameModes;
   public Map<Long, Integer> getCurrRounds(){
     return currRound;
   }
+
+  public String getAuthKey(){
+      return authKey;
+  }
+
+  public void setAuthKey(String authKey){this.authKey = authKey;}
  
   /**
    * note that player is in this game since he knows the lobbyId

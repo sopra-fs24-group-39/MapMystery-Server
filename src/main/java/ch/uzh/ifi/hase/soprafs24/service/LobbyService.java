@@ -10,11 +10,8 @@ import org.springframework.scheduling.TaskScheduler;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import java.util.Date;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
@@ -111,8 +108,20 @@ public class LobbyService {
      * @param lob the lobby, assumes lobby to be open
      * @return the lobby state after adding the user
      */
-  public lobbyStates joinLobby(User user, Lobby lob) throws Exception{
+  public lobbyStates joinLobby(User user, Lobby lob, String providedAuthKey) throws Exception{
     this.addPlayer(user, lob);
+    // Check for private lobby
+    if(!lob.isPublic()){
+
+        if(providedAuthKey == null || providedAuthKey.isEmpty()){
+            throw new Exception("Please provide an authentication key to join the private lobby");
+        }
+        if(!lob.getAuthKey().equals(providedAuthKey)){
+            throw new Exception("Invalid Authentication key");
+        }
+
+    }
+
 
     if ( lob.getPlayers().size() == lob.getPlayerLimit()){
       try{
@@ -278,12 +287,18 @@ public class LobbyService {
       if(gamemode == GameModes.Gamemode1){
           lob = new GameMode1();
           lob.setPrivate();
+          lob.setAuthKey(generateAuthKey());
           }
       else{
           throw new Exception("no valid gamemode");
       }
       this.lobbyRepository.saveAndFlush(lob);
       return lob;
+  }
+
+  // Auth Key Gen for private lobbies
+  public String generateAuthKey(){
+      return UUID.randomUUID().toString();
   }
 
   public Long getLobbyCount(){
@@ -306,10 +321,10 @@ public class LobbyService {
 
     for ( int k = 0 ; k< lobbies.size();k++){
       Lobby lob = lobbies.get(k);
-
-      if(lob.getState() == lobbyStates.OPEN && lob.getGamemode() == gamemode){
+      // Only iterate through public lobbies
+      if(lob.getState() == lobbyStates.OPEN && lob.getGamemode() == gamemode && lob.isPublic()){
         try{
-          this.joinLobby(user,lob);
+          this.joinLobby(user,lob,null);
           return lob.getId();
         }
         catch (Exception e){
@@ -322,7 +337,7 @@ public class LobbyService {
       try{
 
         Lobby lob = this.createLobby(gamemode);
-        this.joinLobby(user, lob);
+        this.joinLobby(user, lob,null);
         return lob.getId();
       }
       catch (Exception e){
@@ -332,6 +347,8 @@ public class LobbyService {
     }
     throw new Exception("all lobbies are full");
   }
+
+
 
   /*
    * sets the distance achieved in lobby and advancesRound for user

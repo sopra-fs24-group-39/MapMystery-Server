@@ -110,9 +110,9 @@ public class LobbyServiceTest {
     public void testStateTransitionToPlaying() throws Exception {
         List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
         when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
-        lobbyService.joinLobby(user1,lobby);
-        lobbyService.joinLobby(user2,lobby);
-        lobbyService.joinLobby(user3,lobby);
+        lobbyService.joinLobby(user1,lobby,null);
+        lobbyService.joinLobby(user2,lobby,null);
+        lobbyService.joinLobby(user3,lobby,null);
         assertEquals(lobbyStates.PLAYING, lobby.getState());
     }
 
@@ -129,9 +129,9 @@ public class LobbyServiceTest {
     public void removePlayer_success_state_unchanged() throws Exception {
         List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
         when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
-        lobbyService.joinLobby(user1,lobby);
-        lobbyService.joinLobby(user2,lobby);
-        lobbyService.joinLobby(user3,lobby);
+        lobbyService.joinLobby(user1,lobby,null);
+        lobbyService.joinLobby(user2,lobby,null);
+        lobbyService.joinLobby(user3,lobby,null);
         lobbyService.removePlayer(user1, lobby);
         assertEquals(lobbyStates.PLAYING, lobby.getState());
 
@@ -141,9 +141,9 @@ public class LobbyServiceTest {
     public void joinLobbyMessagesSend() throws Exception {
         List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
         when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
-        lobbyService.joinLobby(user1,lobby);
-        lobbyService.joinLobby(user2,lobby);
-        lobbyService.joinLobby(user3,lobby);
+        lobbyService.joinLobby(user1,lobby,null);
+        lobbyService.joinLobby(user2,lobby,null);
+        lobbyService.joinLobby(user3,lobby,null);
         verify(messagingTemplate, times(3)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lobby.getId())), anyString());
         verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/coordinates/%s", lobby.getId())), anyMap());
 
@@ -186,6 +186,36 @@ public class LobbyServiceTest {
         assertNotNull(newLobby);
         assertEquals(GameModes.Gamemode1, newLobby.getGamemode());
     }
+
+    @Test
+    public void testCreatePrivateLobby_Sucess() throws Exception {
+        Lobby newLobby = lobbyService.createPrivateLobby(GameModes.Gamemode1);
+        assertNotNull(newLobby);
+        assertEquals(GameModes.Gamemode1, newLobby.getGamemode());
+        assertNotNull(newLobby.getAuthKey());
+    }
+
+    @Test
+    public void testJoinPrivateLobby_Sucess() throws Exception {
+        Lobby newLobby = lobbyService.createPrivateLobby(GameModes.Gamemode1);
+        String authKey = newLobby.getAuthKey();
+        assertNotNull(newLobby.getAuthKey());
+        lobbyService.joinLobby(user1,newLobby,authKey);
+    }
+
+    @Test
+    public void testJoinPrivateLobby_Fail_IncorrectKey() throws Exception {
+        Lobby newLoby = lobbyService.createPrivateLobby(GameModes.Gamemode1);
+        String authKey = "Hello World";
+        assertThrows(Exception.class, () -> lobbyService.joinLobby(user1,newLoby,authKey));
+    }
+
+    @Test
+    public void testJoinPrivateLobby_Fail_NoKey() throws Exception {
+        Lobby newLoby = lobbyService.createPrivateLobby(GameModes.Gamemode1);
+        assertThrows(Exception.class, () -> lobbyService.joinLobby(user1,newLoby,null));
+    }
+
 
     @Test
     public void testPutToSomeLobby_Success() throws Exception {
@@ -301,7 +331,7 @@ public class LobbyServiceTest {
 
     @Test
     public void testAdvanceRound_ExceedMaxRounds() throws Exception {
-        lobbyService.joinLobby(user1, lobby);
+        lobbyService.joinLobby(user1, lobby,null);
         for (int i = 0; i < 5; i++) { // Assuming max rounds are 5
             lobbyService.advanceRound(user1.getId(), lobby);
         }
