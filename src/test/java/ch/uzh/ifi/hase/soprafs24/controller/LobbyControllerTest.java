@@ -37,7 +37,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
 import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
