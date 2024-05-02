@@ -185,4 +185,3 @@ copmleted before 26.04.2024
 - connecting all the conpoments that need to communicate and enable the to communicate to each other and with the backend (WebSockets and REST)[#33](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/33)
 - Craeted Conent into Lobby, and made it update with points and names of playdrs in lobby [#39](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/39)
 [#40](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/40)
-
