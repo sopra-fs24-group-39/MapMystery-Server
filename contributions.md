@@ -36,12 +36,37 @@ created and tested lobbycontroller (https://github.com/sopra-fs24-group-39/MapMy
 this issue : (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
 that issue : (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
 #### What have I done in total?
+
+for sprint of 03.04.2024
+
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/23)
+
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/24)
+
+for sprint of 11.04.2024
+
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/26)
+
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/27)
+
+for sprint of 18.04.2024
+
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/63)
+
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/65)
+
+for sprint of 25.04.2024
+
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
+
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
+
+for sprint of 03.05.2024
+
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/111)
+
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/112)
+
 
 
 #### What are the obstacles to progress?
