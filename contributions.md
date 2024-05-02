@@ -214,6 +214,7 @@ copmleted for 26.04.2024
 
 - Email testing and bug fixing -  (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38)
 - Coordinates API - (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
+- Database schema creation for report
 
 copmleted for 03.05.2024
 - Logging Data Base Class (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/104)
