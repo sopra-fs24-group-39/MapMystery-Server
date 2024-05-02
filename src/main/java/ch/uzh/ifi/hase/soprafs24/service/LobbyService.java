@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+
 import ch.uzh.ifi.hase.soprafs24.repository.LobbyRepository;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import ch.uzh.ifi.hase.constants.GameModes;
@@ -96,13 +97,13 @@ public class LobbyService {
   }
 
   @Async
-  public void createSendTaskCoord(Lobby lob,Long miliseconds){
+  public void createSendTaskCoord(Lobby lob,Long miliseconds) throws Exception{
     taskScheduler.schedule(() -> {
       try {
           sendCoord(lob.getId());
       } catch (Exception e) {
           lob.setState(lobbyStates.CLOSED);
-          // handle exception
+          throw new RuntimeException(e.getMessage());
       }
     }, new Date(System.currentTimeMillis() + miliseconds));
   }
@@ -114,13 +115,14 @@ public class LobbyService {
           createAndSendLeaderBoard(lob);
       } catch (Exception e) {
           lob.setState(lobbyStates.CLOSED);
-          // handle exception
+          throw new RuntimeException(e.getMessage());
       }
     }, new Date(System.currentTimeMillis() + miliseconds));
   }
 
   @Async
-  public void createAndSendLeaderBoard(Lobby lob){
+  public void createAndSendLeaderBoard(Lobby lob) throws Exception{
+   
     Map<Long,Float> results = lob.getPoints();
     List<User> players = lob.getPlayers();
     Map<String,Float> response = new HashMap<>();
@@ -133,8 +135,9 @@ public class LobbyService {
       player.setCurrentpoints(score);
       userRepository.saveAndFlush(player);
     }
-
     this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lob.getId()),response);
+
+    
   }
 
   /*
@@ -162,15 +165,9 @@ public class LobbyService {
 
   @Async
   public void sendCoord(Long lobbyId) throws Exception{
-    try{
-      List<Double> coord = this.gameService.get_image_coordinates();
-      Map<String,String> resp = this.createCoordResp(coord);
-      this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/coordinates/%s", lobbyId),resp);
-    }
-    catch (Exception e){
-      throw new Exception("Game could not initialize, create new lobby");
-    }
-    
+    List<Double> coord = this.gameService.get_image_coordinates();
+    Map<String,String> resp = this.createCoordResp(coord);
+    this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/coordinates/%s", lobbyId),resp); 
   }
 
   /*FUNCTIONS FOR CREATING AND DELETING LOBBIES OF DIFFERENT KINDS#######################################################################################################################33 */
@@ -246,15 +243,9 @@ public class LobbyService {
     }
 
     if ( this.LobbyLimit > lobbies.size()){
-      try{
-
-        Lobby lob = this.createLobby(gamemode);
-        this.joinLobby(user, lob,null);
-        return lob.getId();
-      }
-      catch (Exception e){
-        throw new Exception("User could not join Lobby even though spots are left"+e.getMessage());
-      }
+      Lobby lob = this.createLobby(gamemode);
+      this.joinLobby(user, lob,null);
+      return lob.getId();
 
     }
     throw new Exception("all lobbies are full");
@@ -345,7 +336,7 @@ public class LobbyService {
    * after settting the state to finished
    * it sends the results to all players
    */
-  public void endGame(Lobby lob){
+  public void endGame(Lobby lob) throws Exception{
     lob.setState(lobbyStates.CLOSED);
     createAndSendLeaderBoard(lob);
 
@@ -366,7 +357,7 @@ public class LobbyService {
   * checks if all the players have advanced to the same round which is true
   * iff when all players have submitted their geuss for the previous round
   */
-  public boolean checkGameState(Lobby lob){
+  public boolean checkGameState(Lobby lob) throws Exception{
     for (int k = 0; k < lob.players.size(); k++){ 
       Long playerId = lob.players.get(k).getId();
       if(lob.currRound.get(playerId) <5){
