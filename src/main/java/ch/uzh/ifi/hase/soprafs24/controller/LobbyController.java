@@ -84,7 +84,7 @@ import java.util.Map;
     }
      
    }
-   @PutMapping("/Lobby/private/GameMode1")
+   @PostMapping("/Lobby/private/GameMode1")
    @ResponseStatus(HttpStatus.OK)
    @ResponseBody
    public Map<String, Object> createPrivateLobby(@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
