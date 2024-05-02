@@ -338,23 +338,6 @@ public class LobbyService {
       }
   }
 
-  public boolean checkNextRound(Lobby lob){
-    Long playerId = lob.players.get(0).getId();
-    int currentRound = lob.currRound.get(playerId);
-
-    for (int k = 1; k < lob.players.size(); k++){ 
-      playerId = lob.players.get(k).getId();
-      int currentRound2 = lob.currRound.get(playerId);
-
-      if(currentRound != currentRound2 ){
-        return false;
-      }
-
-      currentRound = currentRound2;
-    }
-    return true;
-  }
-
   
   /*FUNCTIONS FOR MANAGING THE GAME STATE#######################################################################################################################33 */
 
@@ -394,6 +377,21 @@ public class LobbyService {
     return true;
   }
 
-  
+  public boolean checkNextRound(Lobby lob){
+    Long playerId = lob.players.get(0).getId();
+    int currentRound = lob.currRound.get(playerId);
+
+    for (int k = 1; k < lob.players.size(); k++){ 
+      playerId = lob.players.get(k).getId();
+      int currentRound2 = lob.currRound.get(playerId);
+
+      if(currentRound != currentRound2 ){
+        return false;
+      }
+
+      currentRound = currentRound2;
+    }
+    return true;
+  }
 
 }
