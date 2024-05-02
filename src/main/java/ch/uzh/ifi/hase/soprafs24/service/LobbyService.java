@@ -273,6 +273,19 @@ public class LobbyService {
     return lob;
   }
 
+  public Lobby createPrivateLobby(GameModes gamemode) throws Exception{
+      Lobby lob;
+      if(gamemode == GameModes.Gamemode1){
+          lob = new GameMode1();
+          lob.setPrivate();
+          }
+      else{
+          throw new Exception("no valid gamemode");
+      }
+      this.lobbyRepository.saveAndFlush(lob);
+      return lob;
+  }
+
   public Long getLobbyCount(){
     return this.lobbyRepository.count();
   }

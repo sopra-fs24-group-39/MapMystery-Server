@@ -28,6 +28,9 @@ import ch.uzh.ifi.hase.constants.GameModes;
   public List<User> players = new ArrayList<User>();
 
   @Column
+  private Boolean public_lobby = true;
+
+  @Column
   protected int playerLimit;
 
   @Column
@@ -90,8 +93,13 @@ import ch.uzh.ifi.hase.constants.GameModes;
   public void setPlayerLimit(int limit){
     playerLimit = limit;
   }
-   
- 
+
+  public void setPrivate(){this.public_lobby = false;}
+
+     public void setPublic(){this.public_lobby = true;}
+
+  public Boolean getLobbyType(){return this.public_lobby; }
+
   public lobbyStates getState(){
     return state;
   }   
