@@ -208,13 +208,13 @@ copmleted for  12.04.2024
 
 copmleted for 19.04.2024
 
-- (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/65)
+- Email testing and bug fixing  (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38)
+- Implemented Password security requirements https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/40
 
 copmleted for 26.04.2024
 
-- Email testing and bug fixing -  (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/38)
-- Coordinates API - (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
-- Database schema creation for report
+- Coordinates API  (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
+- Database schema creation for report https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/110
 
 copmleted for 03.05.2024
 - Logging Data Base Class (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/104)
