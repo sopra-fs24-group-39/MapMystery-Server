@@ -239,7 +239,7 @@ public class LobbyServiceTest {
         when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
         lobbyService.addPlayer(user1, lobby);
         lobby.setLobbyState(lobbyStates.PLAYING);
-        lobbyService.submitScore(100, user1.getId(), lobby);
+        lobbyService.submitScore(100,0, user1.getId(), lobby);
         assertEquals(2399, lobby.getPoints().get(user1.getId()).intValue());
         verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/coordinates/%s", lobby.getId())), anyMap());
 
@@ -249,8 +249,8 @@ public class LobbyServiceTest {
     public void submitScore_AdvanceRoundAndCheckNextRound() throws Exception {
         lobbyService.addPlayer(user1, lobby);
         lobbyService.addPlayer(user2, lobby);
-        lobbyService.submitScore(100, user1.getId(), lobby);
-        lobbyService.submitScore(100, user2.getId(), lobby);
+        lobbyService.submitScore(100,0, user1.getId(), lobby);
+        lobbyService.submitScore(100,0, user2.getId(), lobby);
         assertTrue(lobbyService.checkNextRound(lobby));
     }
 
@@ -370,25 +370,25 @@ public class LobbyServiceTest {
 
       assertEquals(expectedPlayers, lobby.getPlayers());
 
-      lobbyService.submitScore(200, user1.getId(), lobby);
-      lobbyService.submitScore(200, user2.getId(), lobby);
-      lobbyService.submitScore(200, user3.getId(), lobby);
+      lobbyService.submitScore(200,0, user1.getId(), lobby);
+      lobbyService.submitScore(200,0, user2.getId(), lobby);
+      lobbyService.submitScore(200,0, user3.getId(), lobby);
 
       assertEquals(lobby.getCurrRound().get(user1.getId()), 1);
       assertEquals(lobby.getCurrRound().get(user2.getId()), 1);
       assertEquals(lobby.getCurrRound().get(user3.getId()), 1);
 
-      lobbyService.submitScore(200, user1.getId(), lobby);
-      lobbyService.submitScore(200, user2.getId(), lobby);
-      lobbyService.submitScore(200, user3.getId(), lobby);
+      lobbyService.submitScore(200,0, user1.getId(), lobby);
+      lobbyService.submitScore(200,0, user2.getId(), lobby);
+      lobbyService.submitScore(200,0, user3.getId(), lobby);
 
       assertEquals(lobby.getCurrRound().get(user1.getId()), 2);
       assertEquals(lobby.getCurrRound().get(user2.getId()), 2);
       assertEquals(lobby.getCurrRound().get(user3.getId()), 2);
 
-      lobbyService.submitScore(200, user1.getId(), lobby);
-      lobbyService.submitScore(200, user2.getId(), lobby);
-      lobbyService.submitScore(200, user3.getId(), lobby);
+      lobbyService.submitScore(200,0, user1.getId(), lobby);
+      lobbyService.submitScore(200,0, user2.getId(), lobby);
+      lobbyService.submitScore(200,0, user3.getId(), lobby);
 
       assertEquals(lobby.getCurrRound().get(user1.getId()), 3);
       assertEquals(lobby.getCurrRound().get(user2.getId()), 3);

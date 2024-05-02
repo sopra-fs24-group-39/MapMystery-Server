@@ -130,10 +130,11 @@ import java.util.Map;
       
        Long userId = user.getId();
        float score = user.getScore();
+       float timeDelta = 0;
 
        Lobby lob = lobbyService.getLobby(lobbyId);
        
-       lobbyService.submitScore(score, userId, lob);
+       lobbyService.submitScore(score,timeDelta, userId, lob);
  
      } 
      catch (AssertionError e){

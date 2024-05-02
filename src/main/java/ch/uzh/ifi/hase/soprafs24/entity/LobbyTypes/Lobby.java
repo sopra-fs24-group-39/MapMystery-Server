@@ -127,16 +127,8 @@ import org.springframework.lang.Nullable;
 
   public void setAuthKey(String authKey){this.authKey = authKey;}
  
-  /**
-   * note that player is in this game since he knows the lobbyId
-   * @param score
-   * @param playerId
-  */
-  public void setPoints(float points,Long playerId){
-    if(points < 0.0){
-      this.points.put(playerId, 0.0f);
-    }
-    this.points.put(playerId, points);
+  public void setPoints(float points,float timeDelta,Long playerId){
+    
   }
 
 

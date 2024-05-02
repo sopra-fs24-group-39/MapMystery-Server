@@ -29,9 +29,9 @@ public class GameMode1 extends Lobby {
       return (2400*1000 - Distance)/1000;
     }
   }
-
+  
   @Override
-  public void setPoints(float points,Long playerId){
+  public void setPoints(float points,float timeDelta,Long playerId){
     if(points < 0.0){
       this.points.put(playerId, 0.0f);
     }

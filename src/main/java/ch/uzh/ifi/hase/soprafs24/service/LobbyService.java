@@ -145,8 +145,8 @@ public class LobbyService {
    * then checks if all players are ready for next round notifies them with next
    * coordinates
    */
-  public void submitScore(float distance,Long userId,Lobby lob) throws Exception{
-    lob.setPoints(distance, userId);
+  public void submitScore(float distance,float timeDelta,Long userId,Lobby lob) throws Exception{
+    lob.setPoints(distance,timeDelta, userId);
     this.advanceRound(userId,lob);
     boolean nextRound = this.checkNextRound(lob);
 
@@ -310,7 +310,7 @@ public class LobbyService {
     if (numberOfMembers < lob.getPlayerLimit() ) {
       lob.players.add(user);
       lob.currRound.put(user.getId(),0);
-      lob.setPoints(-1, user.getId());
+      lob.setPoints(-1,0, user.getId());
       lobbyRepository.saveAndFlush(lob);
       this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lob.getId()),user.getUsername()+" just joined the lobby");
 
