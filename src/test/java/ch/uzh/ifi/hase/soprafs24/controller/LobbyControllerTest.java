@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
+import ch.uzh.ifi.hase.constants.lobbyStates;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.Lobby;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
@@ -21,7 +22,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -61,8 +64,36 @@ public class LobbyControllerTest {
     lob = new Lobby();
   }
 
+    @Test
+    public void testJoinPrivateLobbySuccess() throws Exception {
+        // given
+        User user = new User();
+        user.setUsername("testUsername");
+        user.setPassword("testPassword");
+        user.setStatus("OFFLINE");
+        long userId = 1L;
+        user.setId(userId);
+        String token = user.getToken();
+        String authKey = "HELLO WORLD";
+        Lobby newLobby = lobbyService.createPrivateLobby(GameModes.Gamemode1);
 
-  @Test
+        // Mocking the joinLobby method to return the state of the lobby
+        given(lobbyService.joinLobby(any(User.class), eq(newLobby), eq(authKey))).willReturn(lobbyStates.PLAYING);
+        given(userService.getUser(1L)).willReturn(user);
+
+        // when
+        MockHttpServletRequestBuilder postRequest = post("/Lobby/GameMode1")
+                .header("Authorization", token)
+                .content(new ObjectMapper().writeValueAsString(user))
+                .contentType(MediaType.APPLICATION_JSON);
+
+        // then
+        mockMvc.perform(postRequest)
+                .andExpect(status().isOk());
+    }
+
+
+    @Test
   public void testJoinLobbySuccess() throws Exception {
     // given
     User user = new User();
