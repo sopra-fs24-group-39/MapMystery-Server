@@ -1,8 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
+import aj.org.objectweb.asm.TypeReference;
 import ch.uzh.ifi.hase.constants.lobbyStates;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.Lobby;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import ch.uzh.ifi.hase.soprafs24.service.UtilityService;
 import io.jsonwebtoken.lang.Assert;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 // import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 import ch.uzh.ifi.hase.constants.GameModes;
@@ -25,6 +28,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -32,6 +36,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 
@@ -268,5 +273,4 @@ public class LobbyControllerTest {
     mockMvc.perform(Request)
         .andExpect(status().isInternalServerError());
   }
-
 }

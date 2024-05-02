@@ -84,7 +84,32 @@ import java.util.Map;
     }
      
    }
+   @PutMapping("/Lobby/private/GameMode1")
+   @ResponseStatus(HttpStatus.OK)
+   @ResponseBody
+   public Map<String, Object> createPrivateLobby(@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
+       try {
+           User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
+           User player = userService.getUser(user.getId());
+           //util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
+
+           // Create Private Lobby we need to return the lobbyId and authKey so the player can share it
+           Lobby newLobby = lobbyService.createPrivateLobby(GameModes.Gamemode1);
+           String authKey = newLobby.getAuthKey();
+
+           Map<String, Object> response = new HashMap<>();
+           response.put("lobbyId", newLobby.getId());
+           response.put("authKey", authKey);
+           return response;
+       } catch (AssertionError e) {
+           throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+       } catch (RuntimeException e) {
+           throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
+       } catch (Exception e) {
+           throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+       }
+   }
 
    /**
     * GameId = LobbyId for simplicity
@@ -157,4 +182,5 @@ import java.util.Map;
     }
    
  }
+
  
