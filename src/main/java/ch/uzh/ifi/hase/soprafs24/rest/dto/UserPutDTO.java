@@ -19,9 +19,10 @@ public class UserPutDTO {
   private boolean verified;
   private List<UserPutDTO> friends;
   private float currentpoints;
-
   private String token = null;
   private  Boolean featured_in_rankings = null;
+  private String authKey = null;
+  private Long lobbyID;
 
   public Long getId(){
     return this.id;
@@ -119,5 +120,14 @@ public class UserPutDTO {
     assert "OFFLINE".equals(status) || "ONLINE".equals(status) || "UNDEF".equals(status);
     this.status = status;
   }
+  public void setAuthKey(String authKey){this.authKey = authKey;}
+  public String getAuthKey(){return authKey;}
 
+    public Long getLobbyID() {
+        return lobbyID;
+    }
+
+    public void setLobbyID(Long lobbyID) {
+        this.lobbyID = lobbyID;
+    }
 }

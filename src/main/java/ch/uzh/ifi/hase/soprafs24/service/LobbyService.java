@@ -109,7 +109,7 @@ public class LobbyService {
      * @return the lobby state after adding the user
      */
   public lobbyStates joinLobby(User user, Lobby lob, String providedAuthKey) throws Exception{
-    this.addPlayer(user, lob);
+
     // Check for private lobby
     if(!lob.isPublic()){
 
@@ -121,6 +121,8 @@ public class LobbyService {
         }
 
     }
+
+    this.addPlayer(user, lob);
 
 
     if ( lob.getPlayers().size() == lob.getPlayerLimit()){

@@ -52,6 +52,15 @@ import java.util.Map;
       User player = userService.getUser(user.getId());
 
 
+      // CHeck if the lobby is private and if the auth key matches
+      String authKey = UserData.getAuthKey();
+      if(authKey != null && !authKey.isEmpty()){
+          //Get Lobby ID from User
+
+          Long lobbyID = UserData.getLobbyID();
+          Lobby lobby = lobbyService.getLobby(lobbyID);
+          lobbyService.joinLobby(player, lobby, authKey);
+      }
       util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
       Long lobbyId = lobbyService.putToSomeLobby(player,GameModes.Gamemode1);
