@@ -190,10 +190,28 @@ copmleted for 03.05.2024
 - Craeted Conent into Lobby, and made it update with points and names of playdrs in lobby [#39](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/39)
 [#40](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/40)
 
+## M4 29.04.2024 - 3.05.2024:
+
+### Tim
+#### What did I do this week?
+[#50](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/50)
+[#51](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/51)
+[#52](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/52)
+#### What will I do next week?
+
+
+
+
+
+
+
+
+
+
+
 
 
 #### Samuel
-
 ## What Have I done in Total?
 
 copmleted for 05.04.2024
