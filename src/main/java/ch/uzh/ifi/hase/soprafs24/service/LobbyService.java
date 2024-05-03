@@ -342,10 +342,20 @@ public class LobbyService {
    * it sends the results to all players
    */
   public void endGame(Lobby lob) throws Exception{
-    lob.setState(lobbyStates.CLOSED);
+      for (User user : lob.getPlayers()) {
+          resetPrivateLobbyOwnerStatus(user);
+      }
+      lob.setState(lobbyStates.CLOSED);
     createAndSendLeaderBoard(lob);
 
   }
+
+  public void resetPrivateLobbyOwnerStatus(User user) throws Exception {
+        if (user.isPrivateLobbyOwner()) {
+            user.setPrivateLobbyOwner(false);
+            userRepository.saveAndFlush(user);
+        }
+    }
 
 
   public void advanceRound(Long playerId, Lobby lob)throws Exception{

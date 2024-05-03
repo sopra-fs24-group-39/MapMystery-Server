@@ -49,6 +49,9 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "is_private_lobby_owner", nullable = false, columnDefinition = "boolean default false")
+    private boolean isPrivateLobbyOwner = false;
+
     // TODO: needs to be changed to type Date according to class diagram
     // Then the DTOs must also be changed
     private String creationdate;
@@ -190,6 +193,14 @@ public class User implements Serializable {
 
     public void setCurrentpoints(float currentpoints) {
         this.currentpoints = currentpoints;
+    }
+
+    public boolean isPrivateLobbyOwner() {
+        return isPrivateLobbyOwner;
+    }
+
+    public void setPrivateLobbyOwner(boolean isPrivateLobbyOwner) {
+        this.isPrivateLobbyOwner = isPrivateLobbyOwner;
     }
 
     public void update(User user_with_new_data){

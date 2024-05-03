@@ -8,6 +8,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.*;
 import ch.uzh.ifi.hase.constants.GameModes;
+import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
@@ -30,9 +31,11 @@ import java.util.Map;
 
   @Autowired
   private UtilityService util;
+     @Autowired
+     private UserRepository userRepository;
 
- 
-  LobbyController(UserService userService,LobbyService lobbyService) {
+
+     LobbyController(UserService userService,LobbyService lobbyService) {
     this.userService = userService;
     this.lobbyService = lobbyService;
    }
@@ -92,15 +95,20 @@ import java.util.Map;
            User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
            User player = userService.getUser(user.getId());
            util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+           System.out.println(player.isPrivateLobbyOwner());
 
 
            // Create Private Lobby we need to return the lobbyId and authKey so the player can share it
            Lobby newLobby = lobbyService.createPrivateLobby(GameModes.Gamemode1);
            String authKey = newLobby.getAuthKey();
 
-           if (lobbyService.hasExistingPrivateLobby(user)) {
+           if (player.isPrivateLobbyOwner()) {
                throw new IllegalStateException("User already has an existing private lobby.");
            }
+
+           player.setPrivateLobbyOwner(true);
+           userService.updateUser(player, player);
+
 
            Map<String, Object> response = new HashMap<>();
            response.put("lobbyId", newLobby.getId());
