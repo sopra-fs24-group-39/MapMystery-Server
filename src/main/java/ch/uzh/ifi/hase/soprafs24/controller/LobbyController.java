@@ -98,6 +98,10 @@ import java.util.Map;
            Lobby newLobby = lobbyService.createPrivateLobby(GameModes.Gamemode1);
            String authKey = newLobby.getAuthKey();
 
+           if (lobbyService.hasExistingPrivateLobby(user)) {
+               throw new IllegalStateException("User already has an existing private lobby.");
+           }
+
            Map<String, Object> response = new HashMap<>();
            response.put("lobbyId", newLobby.getId());
            response.put("authKey", authKey);

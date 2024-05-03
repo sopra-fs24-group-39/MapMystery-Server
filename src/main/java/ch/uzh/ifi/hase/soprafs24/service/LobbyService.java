@@ -390,4 +390,7 @@ public class LobbyService {
     return true;
   }
 
+    public boolean hasExistingPrivateLobby(User user) {
+      return false;
+    }
 }
