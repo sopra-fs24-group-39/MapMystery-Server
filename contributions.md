@@ -211,7 +211,18 @@ copmleted for 03.05.2024
 
 
 
-
+### Nils
+#### What did I do this week?
+[#49](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/49)
+[#48](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/48)
+[#46](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/46)
+[#45](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/45)
+[#44](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/44)
+### What will I do next week?
+- Fixing the entire implementation of the private lobbies and fully connect it to the backend such that it is playable
+### What are the obstacles in the progress?
+- Working with backend implementation of API
+- Working with websockets
 
 #### Samuel
 ## What Have I done in Total?
