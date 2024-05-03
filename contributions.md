@@ -197,6 +197,7 @@ copmleted for 03.05.2024
 [#50](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/50)
 [#51](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/51)
 [#52](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/52)
+[#54](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/54)
 [#55](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/55)
 #### What will I do next week?
 
