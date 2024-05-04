@@ -284,13 +284,13 @@ public class UserController {
 
         }
         catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "token is invalid!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
         catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found", userId));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
         }
         catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occured");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -304,13 +304,13 @@ public class UserController {
 
         }
         catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "token is invalid!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
         catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found", userId));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
         }
         catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occured");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
@@ -332,13 +332,41 @@ public class UserController {
 
         }
         catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "token is invalid!");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
         }
         catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("User with %d not found", userId));
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
         }
         catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occured");
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+
+    @GetMapping("/friends/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> returnfriendsofuser(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
+        try {
+            User user = userService.getUser(userId);
+            List<UserGetDTO> userGetDTOS = new ArrayList<>();
+            List<String> friends = user.getFriends();
+
+            // convert each user to the API representation
+            for (String username : friends ) {
+                User tmpuser = userService.getUser(username);
+                userGetDTOS.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(tmpuser));
+            }
+            return userGetDTOS;
+        }
+        catch (AssertionError e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+        catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
         }
     }
 
