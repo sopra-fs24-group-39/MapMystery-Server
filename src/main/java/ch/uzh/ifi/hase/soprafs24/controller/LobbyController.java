@@ -31,8 +31,7 @@ import java.util.Map;
 
   @Autowired
   private UtilityService util;
-     @Autowired
-     private UserRepository userRepository;
+
 
 
      LobbyController(UserService userService,LobbyService lobbyService) {
@@ -104,7 +103,7 @@ import java.util.Map;
 
            if (player.isPrivateLobbyOwner()) {
                throw new IllegalStateException("User already has an existing private lobby.");
-           }
+           } 
 
            player.setPrivateLobbyOwner(true);
            userService.updateUser(player, player);
