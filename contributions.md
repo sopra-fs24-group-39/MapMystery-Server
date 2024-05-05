@@ -201,14 +201,14 @@ copmleted for 03.05.2024
 [#55](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/55)
 #### What will I do next week?
 
+### Joshua
+#### What did I do this week?
+[#115](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/115)
+[#116](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/116)
+[#117](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/117)
 
-
-
-
-
-
-
-
+### What will I do next week?
+- Implement a more casual - play promoting points distribution inbewtween player while ensuring that the global leaderboard doesnt overflow
 
 
 ### Nils
