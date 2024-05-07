@@ -8,6 +8,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.*;
 import ch.uzh.ifi.hase.constants.GameModes;
+import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.GuessResultPutDTO;
+import ch.uzh.ifi.hase.soprafs24.entity.GuessResult;
  
 import java.util.HashMap;
 import java.util.Map;
@@ -31,8 +34,9 @@ import java.util.Map;
   @Autowired
   private UtilityService util;
 
- 
-  LobbyController(UserService userService,LobbyService lobbyService) {
+
+
+     LobbyController(UserService userService,LobbyService lobbyService) {
     this.userService = userService;
     this.lobbyService = lobbyService;
    }
@@ -84,19 +88,28 @@ import java.util.Map;
     }
      
    }
-   @PutMapping("/Lobby/private/GameMode1")
+   @PostMapping("/Lobby/private/GameMode1")
    @ResponseStatus(HttpStatus.OK)
    @ResponseBody
    public Map<String, Object> createPrivateLobby(@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
        try {
            User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
            User player = userService.getUser(user.getId());
-           //util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+           util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+           System.out.println(player.isPrivateLobbyOwner());
 
 
            // Create Private Lobby we need to return the lobbyId and authKey so the player can share it
            Lobby newLobby = lobbyService.createPrivateLobby(GameModes.Gamemode1);
            String authKey = newLobby.getAuthKey();
+
+           if (player.isPrivateLobbyOwner()) {
+               throw new IllegalStateException("User already has an existing private lobby.");
+           } 
+
+           player.setPrivateLobbyOwner(true);
+           userService.updateUser(player, player);
+
 
            Map<String, Object> response = new HashMap<>();
            response.put("lobbyId", newLobby.getId());
@@ -121,19 +134,20 @@ import java.util.Map;
     @PutMapping("/Lobby/GameMode1/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void sendGuess(@PathVariable long lobbyId,@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
+    public void sendGuess(@PathVariable long lobbyId,@RequestBody GuessResultPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
   
      try{
-       User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
-       User player = userService.getUser(user.getId());
+       GuessResult results = DTOMapper.INSTANCE.convertGuessResultDTOtoEntity(UserData);
+       Long userId = results.getPlayerId();
+       User player = userService.getUser(userId);
        util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
       
-       Long userId = user.getId();
-       float score = user.getScore();
+       float distance = results.getDistance();
+       float timeDelta = results.getTimeDelta();
 
        Lobby lob = lobbyService.getLobby(lobbyId);
        
-       lobbyService.submitScore(score, userId, lob);
+       lobbyService.submitScore(distance,timeDelta, userId, lob);
  
      } 
      catch (AssertionError e){

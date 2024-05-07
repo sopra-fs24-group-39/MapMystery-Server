@@ -29,15 +29,15 @@ public class GameMode1 extends Lobby {
       return (2400*1000 - Distance)/1000;
     }
   }
-
+  
   @Override
-  public void setPoints(float points,Long playerId){
-    if(points < 0.0){
+  public void setPoints(float distance,float timeDelta,Long playerId){
+    if(distance < 0.0){
       this.points.put(playerId, 0.0f);
     }
     else{
       float prevPoints = this.getPoints().getOrDefault(playerId, 0.0f);
-      prevPoints += this.computePoints(points);
+      prevPoints += this.computePoints(distance);
       this.points.put(playerId,prevPoints);
     }
     

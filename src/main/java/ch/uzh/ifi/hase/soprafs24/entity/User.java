@@ -49,6 +49,9 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
+    @Column(name = "is_private_lobby_owner", nullable = false, columnDefinition = "boolean default false")
+    private boolean isPrivateLobbyOwner = false;
+
     // TODO: needs to be changed to type Date according to class diagram
     // Then the DTOs must also be changed
     private String creationdate;
@@ -59,8 +62,8 @@ public class User implements Serializable {
     @Column
     private float score;
 
-    @Transient // Marking this as transient to avoid persistence issues, adjust according to your JPA implementation details
-    private List<User> friends;
+    @ElementCollection // Marking this as transient to avoid persistence issues, adjust according to your JPA implementation details
+    private List<String> friends;
 
     @ElementCollection
     private List<String> friendrequests;
@@ -161,11 +164,11 @@ public class User implements Serializable {
         this.score = score;
     }
 
-    public List<User> getFriends() {
+    public List<String> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<User> friends) {
+    public void setFriends(List<String> friends) {
         this.friends = friends;
     }
 
@@ -190,6 +193,14 @@ public class User implements Serializable {
 
     public void setCurrentpoints(float currentpoints) {
         this.currentpoints = currentpoints;
+    }
+
+    public boolean isPrivateLobbyOwner() {
+        return isPrivateLobbyOwner;
+    }
+
+    public void setPrivateLobbyOwner(boolean isPrivateLobbyOwner) {
+        this.isPrivateLobbyOwner = isPrivateLobbyOwner;
     }
 
     public void update(User user_with_new_data){

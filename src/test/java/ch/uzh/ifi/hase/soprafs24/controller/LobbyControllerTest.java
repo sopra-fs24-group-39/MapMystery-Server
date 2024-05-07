@@ -27,17 +27,14 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
+import ch.uzh.ifi.hase.soprafs24.entity.GuessResult;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.GuessResultPutDTO;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
-import javax.xml.crypto.dsig.spec.ExcC14NParameterSpec;
 
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 /**
@@ -153,6 +150,11 @@ public class LobbyControllerTest {
   @Test
   public void testSendGuessSuccess() throws Exception {
     // given
+
+    GuessResult result = new GuessResult();
+    result.setDistance(40);
+    result.setTimeDelta(0);
+    result.setPlayerId(1L);
     User user = new User();
     user.setUsername("firstname@lastname");
     user.setStatus("OFFLINE");
@@ -173,7 +175,7 @@ public class LobbyControllerTest {
     // when
     MockHttpServletRequestBuilder request = put("/Lobby/GameMode1/{lobbyId}",lobbyId)
     .header("Authorization",token)
-    .content(new ObjectMapper().writeValueAsString(user))
+    .content(new ObjectMapper().writeValueAsString(result))
     .contentType(MediaType.APPLICATION_JSON);
 
     // then
@@ -184,6 +186,10 @@ public class LobbyControllerTest {
   @Test
   public void testSendGuessFAilure() throws Exception {
     // given
+    GuessResult result = new GuessResult();
+    result.setDistance(40);
+    result.setTimeDelta(0);
+    result.setPlayerId(1L);
     User user = new User();
     user.setUsername("firstname@lastname");
     user.setStatus("OFFLINE");
@@ -203,7 +209,7 @@ public class LobbyControllerTest {
     // when
     MockHttpServletRequestBuilder request = put("/Lobby/GameMode1/{lobbyId}",lobbyId)
     .header("Authorization",token)
-    .content(new ObjectMapper().writeValueAsString(user))
+    .content(new ObjectMapper().writeValueAsString(result))
     .contentType(MediaType.APPLICATION_JSON);
 
     // then

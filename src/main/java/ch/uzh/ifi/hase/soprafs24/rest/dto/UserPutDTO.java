@@ -17,7 +17,7 @@ public class UserPutDTO {
   private String userEmail = null;
   private float score;
   private boolean verified;
-  private List<UserPutDTO> friends;
+  private List<String> friends;
   private float currentpoints;
   private String token = null;
   private  Boolean featured_in_rankings = null;
@@ -56,11 +56,11 @@ public class UserPutDTO {
     this.verified = state;
   }
 
-  public List<UserPutDTO> getFriends(){
+  public List<String> getFriends(){
     return this.friends;
   }
 
-  public void setFreinds(List<UserPutDTO> friends){
+  public void setFreinds(List<String> friends){
     this.friends = friends;
   }
 

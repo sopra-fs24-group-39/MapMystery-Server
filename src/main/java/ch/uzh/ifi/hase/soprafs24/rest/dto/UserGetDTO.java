@@ -17,7 +17,7 @@ public class UserGetDTO {
   private String creationdate = null;
   private String userEmail = null;
   private float score;
-  private List<UserGetDTO> friends;
+  private List<String> friends;
 
   private List<String> friendrequests;
   private float currentpoints;
@@ -56,11 +56,11 @@ public class UserGetDTO {
     this.score = score;
   }
 
-  public List<UserGetDTO> getFriends(){
+  public List<String> getFriends(){
     return this.friends;
   }
 
-  public void setFriends(List<UserGetDTO> friends){
+  public void setFriends(List<String> friends){
     this.friends = friends;
   }
 

@@ -80,7 +80,7 @@ public class LobbyServiceTest {
                 Runnable task = invocation.getArgument(0, Runnable.class);
                 task.run();  // Execute the task immediately
                 return null;  // Since it's a void method, return null
-            });
+        });
 
 
     }
@@ -108,6 +108,7 @@ public class LobbyServiceTest {
 
     @Test
     public void testStateTransitionToPlaying() throws Exception {
+        when(taskScheduler.schedule(any(Runnable.class), any(Date.class))).thenReturn(null);
         List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
         when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
         lobbyService.joinLobby(user1,lobby,null);
@@ -127,6 +128,8 @@ public class LobbyServiceTest {
 
     @Test
     public void removePlayer_success_state_unchanged() throws Exception {
+        when(taskScheduler.schedule(any(Runnable.class), any(Date.class))).thenReturn(null);
+
         List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
         when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
         lobbyService.joinLobby(user1,lobby,null);
@@ -141,6 +144,7 @@ public class LobbyServiceTest {
     public void joinLobbyMessagesSend() throws Exception {
         List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
         when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
+        // when(lobbyService.kickOutInactivePlayers(lobby.getId())).thenReturn(true);
         lobbyService.joinLobby(user1,lobby,null);
         lobbyService.joinLobby(user2,lobby,null);
         lobbyService.joinLobby(user3,lobby,null);
@@ -173,6 +177,7 @@ public class LobbyServiceTest {
 
     @Test
     public void checkNextRound_falseForMismatch() throws Exception {
+        when(taskScheduler.schedule(any(Runnable.class), any(Date.class))).thenReturn(null);
         lobbyService.addPlayer(user1,lobby);
         lobbyService.addPlayer(user2,lobby);
         lobbyService.advanceRound(user1.getId(),lobby);
@@ -237,9 +242,11 @@ public class LobbyServiceTest {
     public void submitScore_Success() throws Exception {
         List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
         when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
+        // when(lobbyService.kickOutInactivePlayers(lobby.getId())).thenReturn(true);
+
         lobbyService.addPlayer(user1, lobby);
         lobby.setLobbyState(lobbyStates.PLAYING);
-        lobbyService.submitScore(100, user1.getId(), lobby);
+        lobbyService.submitScore(100,0, user1.getId(), lobby);
         assertEquals(2399, lobby.getPoints().get(user1.getId()).intValue());
         verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/coordinates/%s", lobby.getId())), anyMap());
 
@@ -247,10 +254,12 @@ public class LobbyServiceTest {
 
     @Test
     public void submitScore_AdvanceRoundAndCheckNextRound() throws Exception {
+        when(taskScheduler.schedule(any(Runnable.class), any(Date.class))).thenReturn(null);
+
         lobbyService.addPlayer(user1, lobby);
         lobbyService.addPlayer(user2, lobby);
-        lobbyService.submitScore(100, user1.getId(), lobby);
-        lobbyService.submitScore(100, user2.getId(), lobby);
+        lobbyService.submitScore(100,0, user1.getId(), lobby);
+        lobbyService.submitScore(100,0, user2.getId(), lobby);
         assertTrue(lobbyService.checkNextRound(lobby));
     }
 
@@ -351,6 +360,8 @@ public class LobbyServiceTest {
 
     @Test 
     public void testCompleteGameFlow() throws Exception{
+      when(taskScheduler.schedule(any(Runnable.class), any(Date.class))).thenReturn(null);
+
       List<Lobby> returnList = new ArrayList<>();
       returnList.add(lobby);
       when(lobbyService.getAllLobbies()).thenReturn(returnList);
@@ -361,7 +372,7 @@ public class LobbyServiceTest {
       lobbyService.putToSomeLobby(user2, GameModes.Gamemode1);
       lobbyService.putToSomeLobby(user3, GameModes.Gamemode1);
 
-      assertEquals(lobbyStates.CLOSED,lobby.getState());
+      assertEquals(lobbyStates.PLAYING,lobby.getState());
       List<User> expectedPlayers = new ArrayList<User>();
       expectedPlayers.add(user1);
       expectedPlayers.add(user2);
@@ -370,30 +381,137 @@ public class LobbyServiceTest {
 
       assertEquals(expectedPlayers, lobby.getPlayers());
 
-      lobbyService.submitScore(200, user1.getId(), lobby);
-      lobbyService.submitScore(200, user2.getId(), lobby);
-      lobbyService.submitScore(200, user3.getId(), lobby);
+      lobbyService.submitScore(200,0, user1.getId(), lobby);
+      lobbyService.submitScore(200,0, user2.getId(), lobby);
+      lobbyService.submitScore(200,0, user3.getId(), lobby);
 
       assertEquals(lobby.getCurrRound().get(user1.getId()), 1);
       assertEquals(lobby.getCurrRound().get(user2.getId()), 1);
       assertEquals(lobby.getCurrRound().get(user3.getId()), 1);
 
-      lobbyService.submitScore(200, user1.getId(), lobby);
-      lobbyService.submitScore(200, user2.getId(), lobby);
-      lobbyService.submitScore(200, user3.getId(), lobby);
+      lobbyService.submitScore(200,0, user1.getId(), lobby);
+      lobbyService.submitScore(200,0, user2.getId(), lobby);
+      lobbyService.submitScore(200,0, user3.getId(), lobby);
 
       assertEquals(lobby.getCurrRound().get(user1.getId()), 2);
       assertEquals(lobby.getCurrRound().get(user2.getId()), 2);
       assertEquals(lobby.getCurrRound().get(user3.getId()), 2);
 
-      lobbyService.submitScore(200, user1.getId(), lobby);
-      lobbyService.submitScore(200, user2.getId(), lobby);
-      lobbyService.submitScore(200, user3.getId(), lobby);
+      lobbyService.submitScore(200,0, user1.getId(), lobby);
+      lobbyService.submitScore(200,0, user2.getId(), lobby);
+      lobbyService.submitScore(200,0, user3.getId(), lobby);
 
       assertEquals(lobby.getCurrRound().get(user1.getId()), 3);
       assertEquals(lobby.getCurrRound().get(user2.getId()), 3);
       assertEquals(lobby.getCurrRound().get(user3.getId()), 3);
 
+      
 
+      assertEquals(lobbyStates.CLOSED,lobby.getState());
     }
+
+
+  //   @Test
+  //   public void kickOutInactivePlayers_AllPlayersActive() throws Exception {
+  //     lobby.setRoundDuration(400L); // 1 second for quick test
+  //     lobbyService.addPlayer(user1, lobby);
+  //     lobbyService.addPlayer(user2, lobby);
+  //     lobby.currRound.put(user1.getId(), 1);
+  //     lobby.currRound.put(user2.getId(), 1);
+      
+  //     lobbyService.createKickOutInactivePlayers(lobby); // Current round is 1
+  //     Thread.sleep(500L); // Wait a bit longer than the round duration to ensure the task executes
+      
+  //     assertEquals(2, lobby.getPlayers().size());
+  //     assertTrue(lobby.getPlayers().containsAll(Arrays.asList(user1, user2)));
+  // }
+
+  // @Test
+  // public void kickOutInactivePlayers_OnePlayerInactive() throws Exception {
+  //     lobby.setRoundDuration(400L); // 1 second for quick test
+  //     lobbyService.addPlayer(user1, lobby);
+  //     lobbyService.addPlayer(user2, lobby);
+  //     lobby.setPlayingRound(1);
+  //     lobby.currRound.put(user1.getId(), 1);
+  //     lobby.currRound.put(user2.getId(), 0); // user2 is inactive
+      
+  //     lobbyService.createKickOutInactivePlayers(lobby); // Current round is 1
+  //     Thread.sleep(500L); // Wait a bit longer than the round duration to ensure the task executes
+      
+  //     assertEquals(1, lobby.getPlayers().size());
+  //     assertTrue(lobby.getPlayers().contains(user1));
+  //     assertFalse(lobby.getPlayers().contains(user2));
+  // }
+
+  // @Test
+  // public void kickOutInactivePlayers_NoPlayersInactive() throws Exception {
+  //     lobby.setRoundDuration(400L); // 1 second for quick test
+  //     lobbyService.addPlayer(user1, lobby);
+  //     lobbyService.addPlayer(user2, lobby);
+      
+  //     lobbyService.createKickOutInactivePlayers(lobby); // Checking before any round starts
+  //     Thread.sleep(500L); // Wait a bit longer than the round duration to ensure the task executes
+      
+  //     assertEquals(2, lobby.getPlayers().size());
+  // }
+
+  // @Test
+  // public void kickOutInactivePlayers_AllPlayersInactive() throws Exception {
+  //     lobby.setRoundDuration(400L); // 1 second for quick test
+  //     lobbyService.addPlayer(user1, lobby);
+  //     lobbyService.addPlayer(user2, lobby);
+  //     lobby.setPlayingRound(1);
+
+      
+  //     lobbyService.createKickOutInactivePlayers(lobby); // Current round is 1, but no players have moved
+  //     Thread.sleep(500L); // Wait a bit longer than the round duration to ensure the task executes
+      
+  //     assertTrue(lobby.getPlayers().isEmpty());
+  // }
+
+
+  // @Test
+  // public void completeGameFlow_AllPlayersLeaveDuringGame() throws Exception {
+  //     lobby.setRoundDuration(400L); // Set a short duration for testing
+  //     lobbyService.addPlayer(user1, lobby);
+  //     lobbyService.addPlayer(user2, lobby);
+  //     lobbyService.addPlayer(user3, lobby);
+  
+  //     lobby.currRound.put(user1.getId(), 1);
+  //     lobby.currRound.put(user2.getId(), 0); // user2 does not progress
+  //     lobby.currRound.put(user3.getId(), 1);
+  //     lobby.setPlayingRound(1);
+
+  
+  //     lobbyService.createKickOutInactivePlayers(lobby);
+  //     Thread.sleep(1200); // Wait to ensure the scheduled task executes
+  
+  //     assertEquals(2, lobby.getPlayers().size());
+  //     assertFalse(lobby.getPlayers().contains(user2));
+  
+  //     // Now user3 leaves
+  //     lobby.currRound.remove(user3.getId());
+  //     lobbyService.createKickOutInactivePlayers(lobby);
+  //     Thread.sleep(500L); // Allow for task execution
+  
+  //     assertEquals(1, lobby.getPlayers().size());
+  //     assertFalse(lobby.getPlayers().contains(user3));
+  // }
+  
+  // @Test
+  // public void completeGameFlow_ImmediateAllPlayerExit() throws Exception {
+  //     lobby.setRoundDuration(400L); // Set a short duration for testing
+  //     lobbyService.addPlayer(user1, lobby);
+  //     lobbyService.addPlayer(user2, lobby);
+  //     lobby.setPlayingRound(1);
+
+  //     // All players are inactive from the start
+  //     lobbyService.createKickOutInactivePlayers(lobby);
+  //     Thread.sleep(500L); // Wait to ensure the scheduled task executes
+  
+  //     assertTrue(lobby.getPlayers().isEmpty());
+  // }
+  
+
+
 }
