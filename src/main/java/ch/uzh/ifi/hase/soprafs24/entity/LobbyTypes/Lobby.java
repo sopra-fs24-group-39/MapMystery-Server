@@ -25,7 +25,7 @@ import org.springframework.lang.Nullable;
   @GeneratedValue
   private Long lobbyId;
 
-  @OneToMany(cascade = CascadeType.ALL)
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
   public List<User> players = new ArrayList<User>();
 
   @Column
@@ -33,7 +33,13 @@ import org.springframework.lang.Nullable;
   private String authKey;
 
   @Column
+  private int playingRound = 0;
+
+  @Column
   private Boolean public_lobby = true;
+
+  @Column
+  private Long roundDuration = 1000L*40L;
 
   @Column
   protected int playerLimit;
@@ -79,6 +85,14 @@ import org.springframework.lang.Nullable;
     return rounds;
   }
 
+  public void setPlayingRound(int round){
+    this.playingRound = round;
+  }
+
+  public int getPlayingRound(){
+    return playingRound;
+  }
+
   public void setRounds(int rounds){
     this.rounds = rounds;
   }
@@ -97,6 +111,14 @@ import org.springframework.lang.Nullable;
 
   public void setPlayerLimit(int limit){
     playerLimit = limit;
+  }
+
+  public void setRoundDuration(Long duration){
+    this.roundDuration = duration;
+  }
+
+  public Long getRoundDuration(){
+    return roundDuration;
   }
 
   public void setPrivate(){this.public_lobby = false;}

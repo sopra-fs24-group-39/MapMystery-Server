@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.GuessResultPutDTO;
+import ch.uzh.ifi.hase.soprafs24.entity.GuessResult;
  
 import java.util.HashMap;
 import java.util.Map;
@@ -132,20 +134,20 @@ import java.util.Map;
     @PutMapping("/Lobby/GameMode1/{lobbyId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void sendGuess(@PathVariable long lobbyId,@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
+    public void sendGuess(@PathVariable long lobbyId,@RequestBody GuessResultPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
   
      try{
-       User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
-       User player = userService.getUser(user.getId());
+       GuessResult results = DTOMapper.INSTANCE.convertGuessResultDTOtoEntity(UserData);
+       Long userId = results.getPlayerId();
+       User player = userService.getUser(userId);
        util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
       
-       Long userId = user.getId();
-       float score = user.getScore();
-       float timeDelta = 0;
+       float distance = results.getDistance();
+       float timeDelta = results.getTimeDelta();
 
        Lobby lob = lobbyService.getLobby(lobbyId);
        
-       lobbyService.submitScore(score,timeDelta, userId, lob);
+       lobbyService.submitScore(distance,timeDelta, userId, lob);
  
      } 
      catch (AssertionError e){

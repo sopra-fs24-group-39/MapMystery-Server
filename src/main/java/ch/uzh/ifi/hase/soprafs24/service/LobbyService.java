@@ -71,7 +71,7 @@ public class LobbyService {
 
   public Long getLobbyCount(){
     return this.lobbyRepository.count();
-  }
+}
 
   public int getLobbyLimit(){
     return this.LobbyLimit;
@@ -109,7 +109,7 @@ public class LobbyService {
   }
     
   @Async
-  public void createSendTaskLeaderB(Lobby lob,Long miliseconds){
+  public void createSendTaskLeaderB(Lobby lob,Long miliseconds) throws Exception{ 
     taskScheduler.schedule(() -> {
       try {
           createAndSendLeaderBoard(lob);
@@ -118,6 +118,18 @@ public class LobbyService {
           throw new RuntimeException(e.getMessage());
       }
     }, new Date(System.currentTimeMillis() + miliseconds));
+  }
+
+  @Async
+  public void createKickOutInactivePlayers(Lobby lob) throws Exception{
+    taskScheduler.schedule(() -> {
+      try {
+        this.kickOutInactivePlayers(lob.getId());
+      } catch (Exception e) {
+          lob.setLobbyState(lobbyStates.CLOSED);
+          throw new RuntimeException(e.getMessage());
+      }
+    }, new Date(System.currentTimeMillis() + lob.getRoundDuration()+800L));
   }
 
   @Async
@@ -149,17 +161,8 @@ public class LobbyService {
     lob.setPoints(distance,timeDelta, userId);
     this.advanceRound(userId,lob);
     boolean nextRound = this.checkNextRound(lob);
-
-    if(nextRound && lob.getState() == lobbyStates.PLAYING){
-      try{
-        this.createSendTaskCoord(lob,6000L);
-        this.createSendTaskLeaderB(lob,2000L);
-      }
-      catch (Exception e){
-        lob.setState(lobbyStates.CLOSED);
-        throw new Exception("Game could not initialize, create new lobby");
-      }
-    }
+    lobbyRepository.saveAndFlush(lob);
+    this.triggerNextRound(nextRound, lob);
 
   }
 
@@ -281,8 +284,7 @@ public class LobbyService {
     if ( lob.getPlayers().size() == lob.getPlayerLimit()){
       try{
         lob.setState(lobbyStates.PLAYING);
-        this.createSendTaskLeaderB(lob,2000L);
-        this.createSendTaskCoord(lob, 6000L);
+        this.triggerNextRound(true, lob);
         return lobbyStates.PLAYING;
       }
       catch (Exception e){
@@ -337,6 +339,25 @@ public class LobbyService {
   
   /*FUNCTIONS FOR MANAGING THE GAME STATE#######################################################################################################################33 */
 
+  public boolean kickOutInactivePlayers(Long lobbyId) throws Exception{
+    Lobby lob = lobbyRepository.findByLobbyId(lobbyId);
+    List<User> tobeDel = new ArrayList<>();
+    for(User player : lob.players){
+      Long playerId = player.getId();
+      if (!lob.currRound.containsKey(playerId) || lob.currRound.get(playerId) < lob.getPlayingRound()) {
+        tobeDel.add(player);
+      }
+    }
+    // delete players afterwards to avoid concurrency errors
+    for(User player:tobeDel){
+      this.removePlayer(player, lob);
+    }
+    boolean nextRound = this.checkNextRound(lob);
+
+    this.triggerNextRound(nextRound, lob);
+    return true;
+  }
+
   /*
    * after settting the state to finished
    * it sends the results to all players
@@ -348,6 +369,27 @@ public class LobbyService {
       lob.setState(lobbyStates.CLOSED);
     createAndSendLeaderBoard(lob);
 
+  }
+
+  public void triggerNextRound(boolean nextRound, Lobby lob) throws Exception{
+    if(nextRound && lob.getState() == lobbyStates.PLAYING){
+      try{
+        this.createSendTaskCoord(lob,6000L);
+        this.createSendTaskLeaderB(lob,2000L);
+        // this.createKickOutInactivePlayers(lob);
+
+        
+        int NextPlayingRound = lob.getPlayingRound();
+
+        if(NextPlayingRound < lob.getRounds()){
+          lob.setPlayingRound(NextPlayingRound+1);
+        }
+      }
+      catch (Exception e){
+        lob.setState(lobbyStates.CLOSED);
+        throw new Exception("Game could not initialize, create new lobby");
+      }
+    }
   }
 
   public void resetPrivateLobbyOwnerStatus(User user) throws Exception {
@@ -363,7 +405,9 @@ public class LobbyService {
     if(oldRound < lob.getRounds()){
       lob.currRound.put(playerId, ++oldRound);
     }
-    checkGameState(lob);
+
+
+    boolean gameEnded = checkGameState(lob);
     
   }
 
@@ -375,7 +419,7 @@ public class LobbyService {
   public boolean checkGameState(Lobby lob) throws Exception{
     for (int k = 0; k < lob.players.size(); k++){ 
       Long playerId = lob.players.get(k).getId();
-      if(lob.currRound.get(playerId) <5){
+      if(lob.currRound.get(playerId) <lob.getRounds()){
         return false;
       }
     }
@@ -384,20 +428,24 @@ public class LobbyService {
   }
 
   public boolean checkNextRound(Lobby lob){
-    Long playerId = lob.players.get(0).getId();
-    int currentRound = lob.currRound.get(playerId);
-
-    for (int k = 1; k < lob.players.size(); k++){ 
-      playerId = lob.players.get(k).getId();
-      int currentRound2 = lob.currRound.get(playerId);
-
-      if(currentRound != currentRound2 ){
-        return false;
+    if(lob.players.size()!= 0){
+      Long playerId = lob.players.get(0).getId();
+      int currentRound = lob.currRound.get(playerId);
+  
+      for (int k = 1; k < lob.players.size(); k++){ 
+        playerId = lob.players.get(k).getId();
+        int currentRound2 = lob.currRound.get(playerId);
+  
+        if(currentRound != currentRound2 ){
+          return false;
+        }
+  
+        currentRound = currentRound2;
       }
-
-      currentRound = currentRound2;
+      return true;
     }
-    return true;
+    return false;
+    
   }
 
     public boolean hasExistingPrivateLobby(User user) {

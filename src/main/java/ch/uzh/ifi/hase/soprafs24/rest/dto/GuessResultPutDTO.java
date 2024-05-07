@@ -1,8 +1,9 @@
-package ch.uzh.ifi.hase.soprafs24.entity;
+package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-public class guessResult {
+public class GuessResultPutDTO {
   private float distance;
   private float timeDelta;
+  private Long playerId;
 
   public void setDistance(float distance){
     this.distance = distance;
@@ -18,4 +19,14 @@ public class guessResult {
   public float getTimeDelta(){
     return timeDelta;
   }
+
+  public Long getPlayerId(){
+    return playerId;
+  }
+
+  public void setPlayerId(Long playerId){
+    this.playerId = playerId;
+  }
+
+
 }

@@ -1,13 +1,12 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.entity.guessResult;
+import ch.uzh.ifi.hase.soprafs24.entity.GuessResult;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.CredPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.FriendrequestGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.guessResultPutDTO;
-import ch.uzh.ifi.hase.soprafs24.entity.guessResult;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.GuessResultPutDTO;
 
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
@@ -65,5 +64,6 @@ public interface DTOMapper {
 
   @Mapping(source="distance",target="distance")
   @Mapping(source="timeDelta",target="timeDelta")
-  guessResult convertGuessResultDTOtoEntity(guessResultPutDTO resuls);
+  @Mapping(source="playerId",target="playerId")
+  GuessResult convertGuessResultDTOtoEntity(GuessResultPutDTO resuls);
 }
