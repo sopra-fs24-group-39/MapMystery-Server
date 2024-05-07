@@ -58,6 +58,9 @@ copmleted for 03.05.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/111)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/112)
 
+completed for 09.05.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/118)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/119)
 
 #### What are the obstacles to progress?
 ### Joshua:
