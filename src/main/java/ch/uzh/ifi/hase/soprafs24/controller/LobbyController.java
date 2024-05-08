@@ -50,7 +50,9 @@ import java.util.Map;
    @ResponseStatus(HttpStatus.OK)
    @ResponseBody
    public Map<String, Long> joinLobby(@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) {
- 
+       // TODO - CLEAN UP REPEATED CODE AHHHHH
+
+
     try{
       User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
       User player = userService.getUser(user.getId());
@@ -59,11 +61,18 @@ import java.util.Map;
       // CHeck if the lobby is private and if the auth key matches
       String authKey = UserData.getAuthKey();
       if(authKey != null && !authKey.isEmpty()){
+          util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+
           //Get Lobby ID from User
 
           Long lobbyID = UserData.getLobbyID();
           Lobby lobby = lobbyService.getLobby(lobbyID);
+
           lobbyService.joinLobby(player, lobby, authKey);
+
+          Map<String,Long> response = new HashMap<>();
+          response.put("lobbyId", lobbyID);
+          return response;
       }
       util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
@@ -73,9 +82,6 @@ import java.util.Map;
 
       response.put("lobbyId", lobbyId);
       return response;
-
-
-
     } 
     catch (AssertionError e){
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,e.getMessage());
