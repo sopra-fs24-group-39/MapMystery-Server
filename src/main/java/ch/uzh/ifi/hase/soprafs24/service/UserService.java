@@ -126,6 +126,21 @@ public class UserService {
         }
     }
 
+    public void removefriend(User user, User friend_to_be_removed){
+        if (user == null || friend_to_be_removed == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "One of the 2 user inputs is equal to null");
+        }
+        List<String> friends =  user.getFriends();
+        if(!friends.contains(friend_to_be_removed.getUsername())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The user with the username "+ friend_to_be_removed.getUsername() + "was not found in the friends list of the user with username" + user.getUsername());
+        }
+        friends.remove(friend_to_be_removed.getUsername());
+        user.setFriends(friends);
+
+        userRepository.save(user);
+        userRepository.flush();
+    }
+
     /**
      * This is a helper method that will check the uniqueness criteria of the
      * username and the name
