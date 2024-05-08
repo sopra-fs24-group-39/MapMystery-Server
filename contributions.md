@@ -254,3 +254,6 @@ copmleted for 03.05.2024
 - Logging Data Base Class (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/104)
 - Implementation of Private Lobbies (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/113)
 - Implementation of Countries (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/114)
+
+completed for 10.05.2024
+- Server Side websockets for chat (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/120)
