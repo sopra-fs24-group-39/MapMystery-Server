@@ -53,9 +53,12 @@ import java.util.Map;
        // TODO - CLEAN UP REPEATED CODE AHHHHH
 
 
+
+
     try{
       User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
       User player = userService.getUser(user.getId());
+
 
 
       // CHeck if the lobby is private and if the auth key matches
@@ -67,6 +70,11 @@ import java.util.Map;
 
           Long lobbyID = UserData.getLobbyID();
           Lobby lobby = lobbyService.getLobby(lobbyID);
+
+          if(lobbyService.isPlayerInLobby(player,
+                  lobbyID)){
+              throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Player is already in a lobby.");
+          }
 
           lobbyService.joinLobby(player, lobby, authKey);
 

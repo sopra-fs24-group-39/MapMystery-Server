@@ -451,4 +451,17 @@ public class LobbyService {
     public boolean hasExistingPrivateLobby(User user) {
       return false;
     }
+
+    public boolean isPlayerInLobby(User player, Long lobbyID) {
+        try {
+            Lobby lobby = getLobby(lobbyID);
+            List<User> players = lobby.getPlayers();
+            return players.contains(player);
+        }
+        catch (Exception e) {
+            throw new RuntimeException("Failed to check if player is in the lobby: " + e.getMessage(), e);
+        }
+
+
+    }
 }
