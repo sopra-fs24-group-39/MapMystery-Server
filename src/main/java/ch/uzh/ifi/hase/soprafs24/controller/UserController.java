@@ -275,10 +275,9 @@ public class UserController {
     public void sendfriendrequest(@PathVariable long userId, @RequestBody UserPutDTO FromUserData, @RequestHeader(value = "Authorization") String token) {
         try {
             User user_who_sent_friend_request = userService.getUser(userId);
+            //util.Assert(user_who_sent_friend_request.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
             User user_to_which_friend_request_is_sent = userService.getUser(DTOMapper.INSTANCE.convertUserPutDTOtoEntity(FromUserData).getUsername());
-
-            assert user_who_sent_friend_request.getToken().equals(token);
 
             userService.addfriendrequest(user_to_which_friend_request_is_sent, user_who_sent_friend_request);
 
@@ -300,6 +299,7 @@ public class UserController {
     public FriendrequestGetDTO getfriendrequests(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
         try {
             User user = userService.getUser(userId);
+            //util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
             return DTOMapper.INSTANCE.convertEntityToFriendrequestGetDTO(user);
 
         }
@@ -321,6 +321,8 @@ public class UserController {
         try {
             User receiver = userService.getUser(userId);
             User sender = userService.getUser(friendrequestPutDTO.getUsername());
+
+            //util.Assert(receiver.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
             if(friendrequestPutDTO.getAccepted()){
                 userService.acceptfriendrequest(receiver, sender);
@@ -349,6 +351,7 @@ public class UserController {
     public List<UserGetDTO> returnfriendsofuser(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
         try {
             User user = userService.getUser(userId);
+            // util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
             List<UserGetDTO> userGetDTOS = new ArrayList<>();
             List<String> friends = user.getFriends();
 

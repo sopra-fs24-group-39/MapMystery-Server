@@ -73,29 +73,20 @@ public class UserService {
 
     public void addfriendrequest(User user_recipient, User user_sender) {
         // Null check for the user to whom the friend request is sent
-        if (user_recipient != null) {
-            List<String> friendRequests = user_recipient.getFriendrequests();
-
-            // Null check for the list of friend requests
-            if (friendRequests != null) {
-                // Check if the friend request doesn't already exist
-                if (!friendRequests.contains(user_sender.getUsername())) {
-                    friendRequests.add(user_sender.getUsername());
-                    user_recipient.setFriendrequests(friendRequests);
-                }
-            }
-            else {
-
-                List<String> usernameList = new ArrayList<>(); // Create a new ArrayList to store usernames
-                String secondUsername = user_sender.getUsername(); // Assuming getUsername() returns the username of the user
-                usernameList.add(secondUsername); // Add the second user's username to the list
-                user_recipient.setFriendrequests(usernameList);
-
-            }
+        if (user_recipient == null || user_sender == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Either the user who receives the friendrequest or the user who sent the friend request is null");
         }
-        else {
-            // Handle the case where the user to whom the friend request is sent is null
-            // You might choose to throw an exception or log a message
+        List<String> friendRequests = user_recipient.getFriendrequests();
+        if (friendRequests == null) {
+            List<String> usernameList = new ArrayList<>(); // Create a new ArrayList to store usernames
+            String secondUsername = user_sender.getUsername(); // Assuming getUsername() returns the username of the user
+            usernameList.add(secondUsername); // Add the second user's username to the list
+            user_recipient.setFriendrequests(usernameList);
+        }
+                // Check if the friend request doesn't already exist
+        if (!friendRequests.contains(user_sender.getUsername())) {
+            friendRequests.add(user_sender.getUsername());
+            user_recipient.setFriendrequests(friendRequests);
         }
         userRepository.save(user_recipient);
         userRepository.flush();
