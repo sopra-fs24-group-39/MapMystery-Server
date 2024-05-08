@@ -227,6 +227,24 @@ completed for 09.05.2024
 - Working with backend implementation of API
 - Working with websockets
 
+## M4 4.05.2024 - 10.05.2024:
+### Tim:
+#### What did I do this week?
+[#63](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/63)
+[#62](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/62)
+
+#### What will I do next week?
+
+
+
+
+
+
+
+
+
+
+
 #### Samuel
 ## What Have I done in Total?
 
