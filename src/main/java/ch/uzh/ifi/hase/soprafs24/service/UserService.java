@@ -163,7 +163,6 @@ public class UserService {
     public void checkPassword(User userToBeCreated) {
         String pwd = userToBeCreated.getPassword();
 
-
         Pattern uppCase = Pattern.compile("[A-Z]");
         Matcher uppCaseMatch = uppCase.matcher(pwd);
         boolean HasUpperCase = uppCaseMatch.find();
