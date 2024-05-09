@@ -338,7 +338,7 @@ public class LobbyService {
 
   
   /*FUNCTIONS FOR MANAGING THE GAME STATE#######################################################################################################################33 */
-
+  @Transactional
   public boolean kickOutInactivePlayers(Long lobbyId) throws Exception{
     Lobby lob = lobbyRepository.findByLobbyId(lobbyId);
     List<User> tobeDel = new ArrayList<>();

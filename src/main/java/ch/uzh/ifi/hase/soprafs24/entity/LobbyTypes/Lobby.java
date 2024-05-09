@@ -53,13 +53,13 @@ import org.springframework.lang.Nullable;
   @Column    
   private lobbyStates state = lobbyStates.OPEN;
    
-  @ElementCollection
+  @ElementCollection(fetch = FetchType.EAGER)
   @CollectionTable(name = "game_rounds", joinColumns = @JoinColumn(name = "game_id"))
   @MapKeyColumn(name = "player_id")
   @Column(name = "current_round")
   public Map<Long, Integer> currRound = new HashMap<>();  
  
-  @ElementCollection
+  @ElementCollection( fetch = FetchType.EAGER)
   @CollectionTable(name = "lobby_points", joinColumns = @JoinColumn(name = "lobby_id"))
   @MapKeyColumn(name = "player_id")
   @Column(name = "points")
