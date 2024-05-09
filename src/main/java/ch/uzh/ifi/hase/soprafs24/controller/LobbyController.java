@@ -220,15 +220,6 @@ import java.util.Map;
      @ResponseStatus(HttpStatus.OK)
      @ResponseBody
      public Map<String, String> get_country(@RequestBody UserPutDTO UserData, @RequestHeader(value = "Authorization") String token){
-//        try{
-//            User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
-//            User player = userService.getUser(user.getId());
-//            System.out.println(player);
-//            util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
-//        }
-//        catch (Exception e) {
-//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "the provided token did not match the token expected in the Usercontroller");
-//        }
 
         Map<String, String> country = gameCountryService.randomCountry();
         Map<String, String> response =  new HashMap<>();
