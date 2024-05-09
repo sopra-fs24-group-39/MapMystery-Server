@@ -39,7 +39,7 @@ import org.springframework.lang.Nullable;
   private Boolean public_lobby = true;
 
   @Column
-  private Long roundDuration = 1000L*40L;
+  private Long roundDuration = 1000L*70L;
 
   @Column
   protected int playerLimit;

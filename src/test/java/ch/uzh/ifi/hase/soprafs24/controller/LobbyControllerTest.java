@@ -14,11 +14,14 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 // import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.server.ResponseStatusException;
 
 import ch.uzh.ifi.hase.constants.GameModes;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -133,7 +136,8 @@ public class LobbyControllerTest {
     String token = user.getToken();
 
     // Mocking UserService to return a specific user when getUser() is called
-    given(lobbyService.putToSomeLobby(any(),any())).willThrow(new Exception());
+    given(lobbyService.putToSomeLobby(any(),any())).willThrow(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"could not put to some lobby"));
+
     given(userService.getUser(1L)).willReturn(user);
 
     // when
@@ -203,7 +207,7 @@ public class LobbyControllerTest {
     lobbyService.addPlayer(user,lob);
 
     // Mocking UserService to return a specific user when getUser() is called
-    given(lobbyService.getLobby(1L)).willThrow(new Exception());
+    given(lobbyService.getLobby(1L)).willThrow(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
     given(userService.getUser(1L)).willReturn(user);
 
     // when
@@ -267,7 +271,7 @@ public class LobbyControllerTest {
 
     // Mocking UserService to return a specific user when getUser() is called
     given(userService.getUser(userId)).willReturn(user);
-    given(lobbyService.getLobby(lobbyId)).willThrow(new Exception());
+    given(lobbyService.getLobby(lobbyId)).willThrow(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
     // when
     MockHttpServletRequestBuilder Request = delete("/Lobby/GameMode1/{lobbyId}/{userId}",lobbyId,userId)
     .header("Authorization",token)

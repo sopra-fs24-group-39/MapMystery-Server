@@ -2,6 +2,8 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.*;
+
+import org.hibernate.internal.ExceptionConverterImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +21,9 @@ import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import ch.uzh.ifi.hase.constants.GameModes;
 import ch.uzh.ifi.hase.constants.lobbyStates;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.server.ResponseStatusException;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpStatus;
 
 /**
  * User Service
@@ -45,6 +49,7 @@ public class LobbyService {
 
   @Autowired 
   UserRepository userRepository;
+
 
   @Autowired
   private TaskScheduler taskScheduler;
@@ -78,9 +83,15 @@ public class LobbyService {
   }
 
   public Lobby getLobby(Long lobbyId) throws Exception{
-    Lobby foundLobby =  this.lobbyRepository.findByLobbyId(lobbyId);
-    util.Assert(foundLobby != null, "no Lobby found with LobbyId: "+lobbyId);
-    return foundLobby;
+    try{
+      Lobby foundLobby =  this.lobbyRepository.findByLobbyId(lobbyId);
+      util.Assert(foundLobby != null, "no Lobby found with LobbyId: "+lobbyId);
+      return foundLobby;
+
+    }
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND,"Lobby not found with given ID");
+    }
   }
 
 /*FUNCTIONS FOR COMMUNICATION #######################################################################################################################33 */
@@ -88,13 +99,19 @@ public class LobbyService {
   /*
   * prepares coordinates for sending to client 
   */
-  private Map<String,String> createCoordResp( List<Double> coordinates){
-    Map<String, String> response = new HashMap<>();
+  private Map<String,String> createCoordResp( List<Double> coordinates) throws Exception{
+    try{
+      Map<String, String> response = new HashMap<>();
 
-    response.put(coordinates.get(0).toString(),"longitude");
-    response.put(coordinates.get(1).toString(),"lattitude");
-    return response;
-  }
+      response.put(coordinates.get(0).toString(),"longitude");
+      response.put(coordinates.get(1).toString(),"lattitude");
+      return response;
+  
+    }
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+    }
+ }
 
   @Async
   public void createSendTaskCoord(Lobby lob,Long miliseconds) throws Exception{
@@ -103,8 +120,8 @@ public class LobbyService {
           sendCoord(lob.getId());
       } catch (Exception e) {
           lob.setState(lobbyStates.CLOSED);
-          throw new RuntimeException(e.getMessage());
-      }
+          throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+        }
     }, new Date(System.currentTimeMillis() + miliseconds));
   }
     
@@ -115,39 +132,46 @@ public class LobbyService {
           createAndSendLeaderBoard(lob);
       } catch (Exception e) {
           lob.setState(lobbyStates.CLOSED);
-          throw new RuntimeException(e.getMessage());
-      }
+          throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
+        }
     }, new Date(System.currentTimeMillis() + miliseconds));
   }
 
   @Async
-  public void createKickOutInactivePlayers(Lobby lob) throws Exception{
+  public boolean createKickOutInactivePlayers(Lobby lob,int roundToCheck) throws Exception{
     taskScheduler.schedule(() -> {
       try {
-        this.kickOutInactivePlayers(lob.getId());
+        util.Assert(lob!=null, "provided lobby was null");
+        this.kickOutInactivePlayers(lob.getId(),roundToCheck);
       } catch (Exception e) {
           lob.setLobbyState(lobbyStates.CLOSED);
-          throw new RuntimeException(e.getMessage());
+          throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage());
       }
     }, new Date(System.currentTimeMillis() + lob.getRoundDuration()+800L));
+    return true;
   }
 
   @Async
   public void createAndSendLeaderBoard(Lobby lob) throws Exception{
-   
-    Map<Long,Float> results = lob.getPoints();
-    List<User> players = lob.getPlayers();
-    Map<String,Float> response = new HashMap<>();
+    try{
+      Map<Long,Float> results = lob.getPoints();
+      List<User> players = lob.getPlayers();
+      Map<String,Float> response = new HashMap<>();
 
-    for(int k = 0; k < players.size();k++){
-      User player = players.get(k);
-      float score = results.getOrDefault(player.getId(),0.0f);
-      response.put(player.getUsername(), score);
-      score += player.getCurrentpoints();
-      player.setCurrentpoints(score);
-      userRepository.saveAndFlush(player);
+      for(int k = 0; k < players.size();k++){
+        User player = players.get(k);
+        float score = results.getOrDefault(player.getId(),0.0f);
+        response.put(player.getUsername(), score);
+        score += player.getCurrentpoints();
+        player.setCurrentpoints(score);
+      }
+      this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lob.getId()),response);
+
     }
-    this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lob.getId()),response);
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"could not create and send Leaderboard");
+    }
+   
 
     
   }
@@ -160,8 +184,9 @@ public class LobbyService {
   public void submitScore(float distance,float timeDelta,Long userId,Lobby lob) throws Exception{
     lob.setPoints(distance,timeDelta, userId);
     this.advanceRound(userId,lob);
-    boolean nextRound = this.checkNextRound(lob);
     lobbyRepository.saveAndFlush(lob);
+
+    boolean nextRound = this.checkNextRound(lob);
     this.triggerNextRound(nextRound, lob);
 
   }
@@ -196,7 +221,7 @@ public class LobbyService {
       lob = new GameMode1();
     }
     else{
-      throw new Exception("no valid gamemode");
+      throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,"no valid gamemode");
     }
 
     this.lobbyRepository.saveAndFlush(lob);
@@ -212,7 +237,7 @@ public class LobbyService {
           lob.setAuthKey(generateAuthKey());
           }
       else{
-          throw new Exception("no valid gamemode");
+        throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,"no valid gamemode");
       }
       this.lobbyRepository.saveAndFlush(lob);
       return lob;
@@ -236,6 +261,9 @@ public class LobbyService {
       // Only iterate through public lobbies
       if(lob.getState() == lobbyStates.OPEN && lob.getGamemode() == gamemode && lob.isPublic()){
         try{
+          if(this.isPlayerInLobby(user,lob.getId())){
+            return lob.getId();
+          }
           this.joinLobby(user,lob,null);
           return lob.getId();
         }
@@ -251,7 +279,7 @@ public class LobbyService {
       return lob.getId();
 
     }
-    throw new Exception("all lobbies are full");
+    throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"could not put player to some lobby");
   }
   
   /**    * 
@@ -264,34 +292,20 @@ public class LobbyService {
     // Check for private lobby
     if(!lob.isPublic()){
         if(providedAuthKey == null || providedAuthKey.isEmpty()){
-            throw new Exception("Please provide an authentication key to join the private lobby");
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Please provide an authentication key to join the private lobby");
         }
         if(!lob.getAuthKey().equals(providedAuthKey)){
-            throw new Exception("Invalid Authentication key");
+          throw new ResponseStatusException(HttpStatus.UNAUTHORIZED,"Please provide a valid auth key to join the private lobby");
         }
 
     }
     
-    try{
-      this.addPlayer(user, lob);
-    }
-    catch (Exception e){
-      lob.setState(lobbyStates.CLOSED);
-      throw new Exception("Player could not join lobby "+e.getMessage());
-    }
-
+    this.addPlayer(user, lob);
 
     if ( lob.getPlayers().size() == lob.getPlayerLimit()){
-      try{
-        lob.setState(lobbyStates.PLAYING);
-        this.triggerNextRound(true, lob);
-        return lobbyStates.PLAYING;
-      }
-      catch (Exception e){
-        lob.setState(lobbyStates.CLOSED);
-        throw new Exception("Game could not initialize, create new lobby");
-      }
-      
+      lob.setState(lobbyStates.PLAYING);
+      this.triggerNextRound(true, lob);
+      return lobbyStates.PLAYING;      
     }
     else{
       return lob.getState();
@@ -305,23 +319,28 @@ public class LobbyService {
    * @return lobbyId if successfull -1 otherwise
    * @throws Exception
    */
-  public Long addPlayer(User user,Lobby lob) {
- 
-    int numberOfMembers = lob.players.size();
+  public Long addPlayer(User user,Lobby lob) throws Exception {
+    try{
+      int numberOfMembers = lob.players.size();
 
-    if (numberOfMembers < lob.getPlayerLimit() ) {
-      lob.players.add(user);
-      lob.currRound.put(user.getId(),0);
-      lob.setPoints(-1,0, user.getId());
-      lobbyRepository.saveAndFlush(lob);
-      this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lob.getId()),user.getUsername()+" just joined the lobby");
+      if (numberOfMembers < lob.getPlayerLimit() ) {
+        lob.players.add(user);
+        lob.currRound.put(user.getId(),0);
+        lob.setPoints(-1,0, user.getId());
+        lobbyRepository.saveAndFlush(lob);
+        this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lob.getId()),user.getUsername()+" just joined the lobby");
 
-      return lob.getId();
-    } 
-    else {
-      return -1L;
+        return lob.getId();
+      } 
+      else {
+        return -1L;
+      }
+  
     }
-    
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Could not add player: "+user.getUsername()+" to the lobby with Id: "+lob.getId());
+    }
+   
   } 
 
   public void removePlayer(User user,Lobby lob) throws Exception {
@@ -332,63 +351,76 @@ public class LobbyService {
         throw new Exception("User not found in players list");
       }
     } catch (Exception e) {
-        throw new Exception("Failed to remove players: " + e.getMessage());
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Could not remove player: "+user.getUsername()+" to the lobby with Id: "+lob.getId());
       }
   }
 
   
   /*FUNCTIONS FOR MANAGING THE GAME STATE#######################################################################################################################33 */
-  @Transactional
-  public boolean kickOutInactivePlayers(Long lobbyId) throws Exception{
-    Lobby lob = lobbyRepository.findByLobbyId(lobbyId);
-    List<User> tobeDel = new ArrayList<>();
-    for(User player : lob.players){
-      Long playerId = player.getId();
-      if (!lob.currRound.containsKey(playerId) || lob.currRound.get(playerId) < lob.getPlayingRound()) {
-        tobeDel.add(player);
+  public boolean kickOutInactivePlayers(Long lobbyId, int roundToCheck) throws Exception{
+    try{
+      Lobby lob = lobbyRepository.findByLobbyId(lobbyId);
+      List<User> tobeDel = new ArrayList<>();
+      for(User player : lob.players){
+        Long playerId = player.getId();
+        if (!lob.currRound.containsKey(playerId) || lob.currRound.get(playerId) < roundToCheck) {
+          tobeDel.add(player);
+        }
       }
-    }
-    // delete players afterwards to avoid concurrency errors
-    for(User player:tobeDel){
-      this.removePlayer(player, lob);
-    }
-    boolean nextRound = this.checkNextRound(lob);
+      // delete players afterwards to avoid concurrency errors
+      for(User player:tobeDel){
+        this.removePlayer(player, lob);
+      }
+      if(tobeDel.size()>0){
+        lobbyRepository.saveAndFlush(lob);
+        boolean nextRound = this.checkNextRound(lob);
 
-    this.triggerNextRound(nextRound, lob);
-    return true;
-  }
+        this.triggerNextRound(nextRound, lob);
+      }
+      
+      return true;
+ 
+    }
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Could not kick out inactive players from the lobby with Id: "+lobbyId);
+    }
+ }
 
   /*
    * after settting the state to finished
    * it sends the results to all players
    */
   public void endGame(Lobby lob) throws Exception{
+    try{
       for (User user : lob.getPlayers()) {
           resetPrivateLobbyOwnerStatus(user);
       }
       lob.setState(lobbyStates.CLOSED);
-    createAndSendLeaderBoard(lob);
-
+      createAndSendLeaderBoard(lob);
+    }
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Could not end game properly with lobbyId: "+lob.getId());
+    }
   }
 
   public void triggerNextRound(boolean nextRound, Lobby lob) throws Exception{
-    if(nextRound && lob.getState() == lobbyStates.PLAYING){
-      try{
-        this.createSendTaskCoord(lob,6000L);
-        this.createSendTaskLeaderB(lob,2000L);
-        // this.createKickOutInactivePlayers(lob);
+    try{
+      if(nextRound && lob.getState() == lobbyStates.PLAYING){          
+          int NextPlayingRound = lob.getPlayingRound();
 
+          if(NextPlayingRound < lob.getRounds()){
+            lob.setPlayingRound(NextPlayingRound+1);
+            lobbyRepository.saveAndFlush(lob);
+          }
+          this.createSendTaskCoord(lob,6000L);
+          this.createSendTaskLeaderB(lob,2000L);
+          this.createKickOutInactivePlayers(lob,lob.getPlayingRound());
         
-        int NextPlayingRound = lob.getPlayingRound();
-
-        if(NextPlayingRound < lob.getRounds()){
-          lob.setPlayingRound(NextPlayingRound+1);
-        }
       }
-      catch (Exception e){
-        lob.setState(lobbyStates.CLOSED);
-        throw new Exception("Game could not initialize, create new lobby");
-      }
+    }
+    catch (Exception e){
+      lob.setState(lobbyStates.CLOSED);
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Could not initialize next round: "+lob.getId());
     }
   }
 
@@ -401,13 +433,20 @@ public class LobbyService {
 
 
   public void advanceRound(Long playerId, Lobby lob)throws Exception{
-    int oldRound = lob.currRound.get(playerId);
-    if(oldRound < lob.getRounds()){
-      lob.currRound.put(playerId, ++oldRound);
+    try{
+      int oldRound = lob.currRound.get(playerId);
+      if(oldRound < lob.getRounds()){
+        lob.currRound.put(playerId, ++oldRound);
+      }
+      boolean gameEnded = checkGameState(lob);
+
+      if(gameEnded){
+        this.endGame(lob);
+      }
     }
-
-
-    boolean gameEnded = checkGameState(lob);
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Could not advance round at lobby with lobbyId: "+lob.getId());
+    }
     
   }
 
@@ -417,49 +456,58 @@ public class LobbyService {
   * iff when all players have submitted their geuss for the previous round
   */
   public boolean checkGameState(Lobby lob) throws Exception{
-    for (int k = 0; k < lob.players.size(); k++){ 
-      Long playerId = lob.players.get(k).getId();
-      if(lob.currRound.get(playerId) <lob.getRounds()){
-        return false;
-      }
-    }
-    this.endGame(lob);
-    return true;
-  }
-
-  public boolean checkNextRound(Lobby lob){
-    if(lob.players.size()!= 0){
-      Long playerId = lob.players.get(0).getId();
-      int currentRound = lob.currRound.get(playerId);
-  
-      for (int k = 1; k < lob.players.size(); k++){ 
-        playerId = lob.players.get(k).getId();
-        int currentRound2 = lob.currRound.get(playerId);
-  
-        if(currentRound != currentRound2 ){
+    try{
+      for (int k = 0; k < lob.players.size(); k++){ 
+        Long playerId = lob.players.get(k).getId();
+        if(lob.currRound.get(playerId) <lob.getRounds()){
           return false;
         }
-  
-        currentRound = currentRound2;
       }
       return true;
+
     }
-    return false;
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Could not check game state at lobby with lobbyId: "+lob.getId());
+    }
+  }
+
+  public boolean checkNextRound(Lobby lob)throws Exception{
+    try{
+      int playingRound = lob.getPlayingRound();
+      if(lob.players.size()!= 0){
+    
+        for (int k = 0; k < lob.players.size(); k++){ 
+          Long playerId = lob.players.get(k).getId();
+          int currentRound = lob.currRound.get(playerId);
+    
+          if(playingRound != currentRound ){
+            return false;
+          }
+    
+        }
+        return true;
+      }
+      return false;
+
+    }
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Could not check next round at lobby with lobbyId: "+lob.getId());
+    }
     
   }
 
-    public boolean hasExistingPrivateLobby(User user) {
+    public boolean hasExistingPrivateLobby(User user)throws Exception {
       return false;
     }
 
-    public boolean isPlayerInLobby(User player, Long lobbyID) {
+    public boolean isPlayerInLobby(User player, Long lobbyID) throws Exception{
         try {
             Lobby lobby = getLobby(lobbyID);
             List<User> players = lobby.getPlayers();
             return players.contains(player);
         }
         catch (Exception e) {
-            throw new RuntimeException("Failed to check if player is in the lobby: " + e.getMessage(), e);
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Failed to check if player is in the lobby: " + e.getMessage());
         }
 
 
