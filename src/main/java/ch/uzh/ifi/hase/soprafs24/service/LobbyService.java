@@ -220,6 +220,9 @@ public class LobbyService {
     if (gamemode == GameModes.Gamemode1){
       lob = new GameMode1();
     }
+    else if (gamemode == GameModes.Gamemode3){
+      lob = new GameMode3();
+    }
     else{
       throw new ResponseStatusException(HttpStatus.METHOD_NOT_ALLOWED,"no valid gamemode");
     }

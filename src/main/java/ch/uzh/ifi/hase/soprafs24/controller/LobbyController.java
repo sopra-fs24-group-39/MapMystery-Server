@@ -36,10 +36,6 @@ public class LobbyController {
   @Autowired
   private UtilityService util;
 
-
-
-
-
      public LobbyController(UserService userService, LobbyService lobbyService, GameCountryService gameCountryService) {
          this.userService = userService;
          this.lobbyService = lobbyService;
@@ -164,10 +160,34 @@ public class LobbyController {
     util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
   
     Lobby lob = lobbyService.getLobby(lobbyId);
-    
+    util.Assert(lob.getGamemode()==GameModes.Gamemode1,"wrong gamemode for this endpoint");
+
     lobbyService.removePlayer(user, lob);
     
   }
+
+
+
+  /*CONTROLLER FOR GAMEMMODE1################################################################################################## */
+  @PostMapping("/Lobby/GameMode3")
+  @ResponseStatus(HttpStatus.OK)
+  @ResponseBody
+  public Map<String, Long> joinLobby3(@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) throws Exception{
+    User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
+    User player = userService.getUser(user.getId());
+
+    util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");    
+
+
+    Long lobbyId = lobbyService.putToSomeLobby(player,GameModes.Gamemode3);
+
+    Map<String,Long> response = new HashMap<>();
+
+    response.put("lobbyId", lobbyId);
+    return response;
+  }
+
+  
   
 }
 
