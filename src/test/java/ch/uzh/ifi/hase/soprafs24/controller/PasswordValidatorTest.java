@@ -22,7 +22,7 @@ public class PasswordValidatorTest {
     UserService userService;
 
     @Test
-    public void testValidPassword() {
+    public void testValidPassword() throws Exception{
         when(user.getPassword()).thenReturn("Password123!");
         userService.checkPassword(user); // Should not throw an exception
     }

@@ -1,35 +1,39 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Random;
+import org.springframework.stereotype.Service;
 
+import java.util.*;
+
+@Service
 public class GameCountryService {
-    private List<String> countries;
+    private Map<String, String> countryMap; // Maps country code to country name
 
-    // Constructor to initialize the country list
+    // Constructor to initialize the country list and map
     public GameCountryService() {
-        countries = new ArrayList<>();
+        countryMap = new HashMap<>();
         String[] countryCodes = Locale.getISOCountries();
         for (String countryCode : countryCodes) {
             Locale locale = new Locale("", countryCode);
             String countryName = locale.getDisplayCountry();
             if (!countryName.isEmpty()) {
-                countries.add(countryName);
+                countryMap.put(countryCode, countryName);
             }
         }
     }
 
-    // Method to get a random country
-    public String random_country() {
+    // Method to get a random country along with its code
+    public Map<String, String> randomCountry() {
         Random rand = new Random();
-        int index = rand.nextInt(countries.size()); // Get a random index
-        return countries.get(index); // Return the country at the random index
+        List<String> keys = new ArrayList<>(countryMap.keySet());
+        String randomKey = keys.get(rand.nextInt(keys.size()));
+        Map<String, String> result = new HashMap<>();
+        result.put("code", randomKey);
+        result.put("name", countryMap.get(randomKey));
+        return result; // Return the country code and name
     }
 
     // Optional: Method to get all countries - useful for debugging or other features
-    public List<String> getAllCountries() {
-        return new ArrayList<>(countries); // Return a copy of the countries list
+    public Map<String, String> getAllCountries() {
+        return new HashMap<>(countryMap); // Return a copy of the country map
     }
 }

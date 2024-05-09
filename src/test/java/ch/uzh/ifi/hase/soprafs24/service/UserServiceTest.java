@@ -38,7 +38,7 @@ public class UserServiceTest {
   }
 
   @Test
-  public void createUser_validInputs_success() {
+  public void createUser_validInputs_success() throws Exception{
     // when -> any object is being save in the userRepository -> return the dummy
     // testUser
     User createdUser = userService.createUser(testUser);
@@ -53,7 +53,7 @@ public class UserServiceTest {
   }
 
   @Test
-  public void createUser_duplicateName_throwsException() {
+  public void createUser_duplicateName_throwsException() throws Exception{
     // given -> a first user has already been created
     userService.createUser(testUser);
 
@@ -66,7 +66,7 @@ public class UserServiceTest {
   }
 
   @Test
-  public void createUser_duplicateInputs_throwsException() {
+  public void createUser_duplicateInputs_throwsException() throws Exception{
     // given -> a first user has already been created
     userService.createUser(testUser);
 

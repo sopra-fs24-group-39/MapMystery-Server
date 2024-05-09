@@ -16,11 +16,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 // import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 // import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Arrays;
@@ -98,7 +100,7 @@ public class UserControllerTest {
     user.setId(userId);
 
     // Mocking UserService to return a specific user when getUser() is called
-    given(userService.getUser(userId)).willThrow(new RuntimeException("user not found by id"));
+    given(userService.getUser(userId)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"user not found by id"));
 
     // when
     MockHttpServletRequestBuilder Request = get("/users/{userId}", userId)
@@ -155,7 +157,7 @@ public class UserControllerTest {
       existingUser.setStatus("OFFLINE");
       String token = existingUser.getToken();
 
-      given(userService.getUser(userId)).willThrow(new RuntimeException("user not found by id"));
+      given(userService.getUser(userId)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"user not found by id"));
       // No need to mock userService.updateUser() as it does not return a value, but ensure it does not throw exceptions
 
       MockHttpServletRequestBuilder Request = put("/users/{userId}", userId)
@@ -193,7 +195,7 @@ public class UserControllerTest {
     newUser.setUsername("newUser");
     newUser.setPassword("password");
 
-    given(userService.createUser(any())).willThrow(new RuntimeException("user not found by id"));
+    given(userService.createUser(any())).willThrow(new ResponseStatusException(HttpStatus.CONFLICT,"user not found by id"));
 
     // When & Then
     mockMvc.perform(post("/users")
@@ -265,7 +267,7 @@ public class UserControllerTest {
         existingUser.setStatus("OFFLINE");
         String token = existingUser.getToken();
 
-        given(userService.getUser(userId)).willReturn(null);
+        given(userService.getUser(userId)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND,"user not found by id"));
 
         MockHttpServletRequestBuilder Request = delete("/users/{userId}", userId)
           .header("Authorization",token)
