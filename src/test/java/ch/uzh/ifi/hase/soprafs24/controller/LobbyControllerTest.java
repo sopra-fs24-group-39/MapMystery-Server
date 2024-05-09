@@ -5,10 +5,12 @@ import ch.uzh.ifi.hase.constants.lobbyStates;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.Lobby;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
+import ch.uzh.ifi.hase.soprafs24.service.GameCountryService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import ch.uzh.ifi.hase.soprafs24.service.UtilityService;
 import io.jsonwebtoken.lang.Assert;
 
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +29,11 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import ch.uzh.ifi.hase.soprafs24.entity.GuessResult;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GuessResultPutDTO;
@@ -37,6 +41,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+
 /**
  * UserControllerTest
  * This is a WebMvcTest which allows to test the UserController i.e. GET/POST
@@ -57,6 +63,9 @@ public class LobbyControllerTest {
 
   @MockBean
   private UtilityService utilityService;
+
+  @MockBean
+  private GameCountryService gameCountryService;
 
   private Lobby lob;
 

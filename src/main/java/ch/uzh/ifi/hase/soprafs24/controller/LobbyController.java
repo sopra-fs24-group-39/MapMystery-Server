@@ -11,6 +11,7 @@ import ch.uzh.ifi.hase.constants.GameModes;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs24.service.GameCountryService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.UtilityService;
@@ -30,16 +31,20 @@ import java.util.Map;
  
   private final UserService userService;
   private final LobbyService lobbyService;
+  private final GameCountryService gameCountryService;
 
   @Autowired
   private UtilityService util;
 
 
 
-     LobbyController(UserService userService,LobbyService lobbyService) {
-    this.userService = userService;
-    this.lobbyService = lobbyService;
-   }
+
+
+     public LobbyController(UserService userService, LobbyService lobbyService, GameCountryService gameCountryService) {
+         this.userService = userService;
+         this.lobbyService = lobbyService;
+         this.gameCountryService = gameCountryService;
+     }
  
    /**
     * @param UserData is the User object with all of its attributes
@@ -154,6 +159,8 @@ import java.util.Map;
        GuessResult results = DTOMapper.INSTANCE.convertGuessResultDTOtoEntity(UserData);
        Long userId = results.getPlayerId();
        User player = userService.getUser(userId);
+       System.out.println(userId);
+       System.out.println(player);
        util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
       
        float distance = results.getDistance();
@@ -207,6 +214,27 @@ import java.util.Map;
        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage() );
      }
       
+    }
+
+    @GetMapping("Lobby/GameMode2/country")
+     @ResponseStatus(HttpStatus.OK)
+     @ResponseBody
+     public Map<String, String> get_country(@RequestBody UserPutDTO UserData, @RequestHeader(value = "Authorization") String token){
+//        try{
+//            User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
+//            User player = userService.getUser(user.getId());
+//            System.out.println(player);
+//            util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+//        }
+//        catch (Exception e) {
+//            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "the provided token did not match the token expected in the Usercontroller");
+//        }
+
+        Map<String, String> country = gameCountryService.randomCountry();
+        Map<String, String> response =  new HashMap<>();
+        response.put("country", country.get("name"));
+        response.put("code", country.get("code"));
+        return response;
     }
    
  }
