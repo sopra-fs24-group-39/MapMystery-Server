@@ -52,12 +52,8 @@ public class User implements Serializable {
     @Column(name = "is_private_lobby_owner", nullable = false, columnDefinition = "boolean default false")
     private boolean isPrivateLobbyOwner = false;
 
-    // TODO: needs to be changed to type Date according to class diagram
-    // Then the DTOs must also be changed
     private String creationdate;
 
-    // TODO: needs to be changed to type tuple according to class diagram
-    // then the DTOs must also be changed
    
     @Column
     private float score;
