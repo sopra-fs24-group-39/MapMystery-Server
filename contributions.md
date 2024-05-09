@@ -277,3 +277,5 @@ copmleted for 03.05.2024
 
 completed for 10.05.2024
 - Server Side websockets for chat (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/120)
+- Check for user in private lobby before sending to DB (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/86ab6478dded0c761ca5fcddc1b474af47f8c885)
+- Bug Fix private lobbies - (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/0ab01cee067fbb74053d57020341120e77103d9b)
