@@ -376,13 +376,13 @@ public class UserController {
     @DeleteMapping("/friends/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void removefriend(@PathVariable long userId, @RequestBody FriendrequestPutDTO friendrequestPutDTO, @RequestHeader(value = "Authorization") String token) {
+    public void removefriendship(@PathVariable long userId, @RequestBody FriendrequestPutDTO friendrequestPutDTO, @RequestHeader(value = "Authorization") String token) {
         try {
-            User user = userService.getUser(userId);
-            util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
-            User friend_to_be_removed = userService.getUser(friendrequestPutDTO.getUsername());
+            User friend1 = userService.getUser(userId);
+            util.Assert(friend1.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+            User friend2 = userService.getUser(friendrequestPutDTO.getUsername());
 
-            userService.removefriend(user, friend_to_be_removed);
+            userService.removefriendship(friend1, friend2);
 
         }
         catch (AssertionError e) {

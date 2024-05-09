@@ -93,22 +93,25 @@ public class UserService {
 
     }
     public void acceptfriendrequest(User receiver, User sender){
-        if(receiver.getFriendrequests().contains(sender.getUsername())){
-            List<String> friendrequestslist = receiver.getFriendrequests();
-            friendrequestslist.remove(sender.getUsername());
-            receiver.setFriendrequests(friendrequestslist);
-
-            List<String> friendslist = receiver.getFriends();
-            friendslist.add(sender.getUsername());
-            receiver.setFriends(friendslist);
-
-            userRepository.save(receiver);
-            userRepository.flush();
-
-        }
-        else{
+        if(!receiver.getFriendrequests().contains(sender.getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The friend to be added is not in the friendrequest list");
         }
+        List<String> friendrequestslist = receiver.getFriendrequests();
+        friendrequestslist.remove(sender.getUsername());
+        receiver.setFriendrequests(friendrequestslist);
+
+        List<String> friendslist = receiver.getFriends();
+        friendslist.add(sender.getUsername());
+        receiver.setFriends(friendslist);
+
+        List<String> senderfriend_list = sender.getFriends();
+        senderfriend_list.add(receiver.getUsername());
+        sender.setFriends(senderfriend_list);
+
+        userRepository.save(receiver);
+        userRepository.save(sender);
+        userRepository.flush();
+
     }
 
     public void declinefriendrequest(User receiver, User sender){
@@ -126,18 +129,28 @@ public class UserService {
         }
     }
 
-    public void removefriend(User user, User friend_to_be_removed){
-        if (user == null || friend_to_be_removed == null) {
+    public void removefriendship(User friend1, User friend2){
+        if (friend1 == null || friend2 == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "One of the 2 user inputs is equal to null");
         }
-        List<String> friends =  user.getFriends();
-        if(!friends.contains(friend_to_be_removed.getUsername())){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The user with the username "+ friend_to_be_removed.getUsername() + "was not found in the friends list of the user with username" + user.getUsername());
+        List<String> friends_of_friend1 =  friend1.getFriends();
+        if(!friends_of_friend1.contains(friend2.getUsername())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The user with the username "+ friend2.getUsername() + " was not found in the friends list of the user with username " + friend1.getUsername());
         }
-        friends.remove(friend_to_be_removed.getUsername());
-        user.setFriends(friends);
+        List<String> friends_of_friend2 = friend2.getFriends();
+        if(!friends_of_friend2.contains(friend1.getUsername())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The user with the username "+ friend1.getUsername() + " was not found in the friends list of the user with username " + friend2.getUsername());
+        }
 
-        userRepository.save(user);
+        friends_of_friend1.remove(friend2.getUsername());
+        friends_of_friend2.remove(friend1.getUsername());
+
+
+        friend1.setFriends(friends_of_friend1);
+        friend2.setFriends(friends_of_friend2);
+
+        userRepository.save(friend1);
+        userRepository.save(friend2);
         userRepository.flush();
     }
 
