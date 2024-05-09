@@ -133,6 +133,9 @@ import java.util.Map;
            Map<String, Object> response = new HashMap<>();
            response.put("lobbyId", newLobby.getId());
            response.put("authKey", authKey);
+
+           lobbyService.joinLobby(player, newLobby, authKey);
+
            return response;
        } catch (AssertionError e) {
            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
