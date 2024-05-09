@@ -147,6 +147,7 @@ public class UserController {
      * @param credentials username and password
      * @return the user object with all of its properties
      */
+    // To do throw a 401 when the password is incorrect
     @PutMapping("/users/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
