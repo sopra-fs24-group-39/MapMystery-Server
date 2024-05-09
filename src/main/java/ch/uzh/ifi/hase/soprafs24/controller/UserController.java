@@ -205,7 +205,7 @@ public class UserController {
             User user = userService.getUser(credentials.getUsername());
 
             if (!user.checkPassword(credentials.getPassword())) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "password is wrong");
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "password is wrong");
             }
 
             // TODO : verification somehow not working
