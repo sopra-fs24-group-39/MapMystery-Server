@@ -11,6 +11,7 @@ import ch.uzh.ifi.hase.constants.GameModes;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs24.service.GameCountryService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.UtilityService;
@@ -30,15 +31,20 @@ public class LobbyController {
  
   private final UserService userService;
   private final LobbyService lobbyService;
+  private final GameCountryService gameCountryService;
+
   @Autowired
   private UtilityService util;
 
 
 
-  LobbyController(UserService userService,LobbyService lobbyService) {
-    this.userService = userService;
-    this.lobbyService = lobbyService;
-  }
+
+
+     public LobbyController(UserService userService, LobbyService lobbyService, GameCountryService gameCountryService) {
+         this.userService = userService;
+         this.lobbyService = lobbyService;
+         this.gameCountryService = gameCountryService;
+     }
  
   /**
   * @param UserData is the User object with all of its attributes
