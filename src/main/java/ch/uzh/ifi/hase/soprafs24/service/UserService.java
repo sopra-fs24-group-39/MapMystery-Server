@@ -2,6 +2,8 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
+
+import org.hibernate.internal.ExceptionConverterImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,11 +39,18 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public List<User> getUsers() {
-        return this.userRepository.findAll();
+    public List<User> getUsers() throws Exception{
+        try{
+          return this.userRepository.findAll();
+        }
+        catch (Exception e){
+          throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage()+"Could not return all users from Userrepository");
+        }
+
     }
 
-    public User createUser(User newUser) {
+    public User createUser(User newUser) throws Exception{
+      try{
         checkIfUserExists(newUser);
         checkPassword(newUser);
         // saves the given entity but data is only persisted in the database once
@@ -55,72 +64,93 @@ public class UserService {
         userRepository.flush();
 
         return newUser;
+
+      }
+      catch (Exception e){
+        throw new ResponseStatusException(HttpStatus.CONFLICT,e.getMessage()+"Could not create User");
+      }
     }
 
 
-    public void updateUser(User to_be_updated_user, User user_with_new_data) {
+    public void updateUser(User to_be_updated_user, User user_with_new_data) throws Exception {
+      try{
         // TO DO: Implement Uniqueness check on the username, email?
         to_be_updated_user.update(user_with_new_data);
         userRepository.save(to_be_updated_user);
         userRepository.flush();
+
+      }
+      catch (Exception e){
+        throw new ResponseStatusException(HttpStatus.CONFLICT,e.getMessage()+"Could not update User");
+      }
     }
 
 
-    public User getUser(long user_Id) {
+    public User getUser(long user_Id) throws Exception {
+      try{
         User user = userRepository.findById(user_Id);
         return user;
+      }
+      catch (Exception e){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage()+"Could not find User with given UserId");
+      }
     }
 
-    public void addfriendrequest(User user_recipient, User user_sender) {
+    public void addfriendrequest(User user_recipient, User user_sender) throws Exception {
+      try{
         // Null check for the user to whom the friend request is sent
-        if (user_recipient != null) {
-            List<String> friendRequests = user_recipient.getFriendrequests();
-
-            // Null check for the list of friend requests
-            if (friendRequests != null) {
-                // Check if the friend request doesn't already exist
-                if (!friendRequests.contains(user_sender.getUsername())) {
-                    friendRequests.add(user_sender.getUsername());
-                    user_recipient.setFriendrequests(friendRequests);
-                }
-            }
-            else {
-
-                List<String> usernameList = new ArrayList<>(); // Create a new ArrayList to store usernames
-                String secondUsername = user_sender.getUsername(); // Assuming getUsername() returns the username of the user
-                usernameList.add(secondUsername); // Add the second user's username to the list
-                user_recipient.setFriendrequests(usernameList);
-
-            }
+        if (user_recipient == null || user_sender == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Either the user who receives the friendrequest or the user who sent the friend request is null");
         }
-        else {
-            // Handle the case where the user to whom the friend request is sent is null
-            // You might choose to throw an exception or log a message
+        List<String> friendRequests = user_recipient.getFriendrequests();
+        if (friendRequests == null) {
+            List<String> usernameList = new ArrayList<>(); // Create a new ArrayList to store usernames
+            String secondUsername = user_sender.getUsername(); // Assuming getUsername() returns the username of the user
+            usernameList.add(secondUsername); // Add the second user's username to the list
+            user_recipient.setFriendrequests(usernameList);
+        }
+                // Check if the friend request doesn't already exist
+        if (!friendRequests.contains(user_sender.getUsername())) {
+            friendRequests.add(user_sender.getUsername());
+            user_recipient.setFriendrequests(friendRequests);
         }
         userRepository.save(user_recipient);
         userRepository.flush();
+    }
+    catch (Exception e){
+      throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()+"Could not add Friends Request");
+    }
+
 
     }
-    public void acceptfriendrequest(User receiver, User sender){
-        if(receiver.getFriendrequests().contains(sender.getUsername())){
-            List<String> friendrequestslist = receiver.getFriendrequests();
-            friendrequestslist.remove(sender.getUsername());
-            receiver.setFriendrequests(friendrequestslist);
-
-            List<String> friendslist = receiver.getFriends();
-            friendslist.add(sender.getUsername());
-            receiver.setFriends(friendslist);
-
-            userRepository.save(receiver);
-            userRepository.flush();
-
-        }
-        else{
+    public void acceptfriendrequest(User receiver, User sender) throws Exception{
+      try{
+        if(!receiver.getFriendrequests().contains(sender.getUsername())) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The friend to be added is not in the friendrequest list");
         }
+        List<String> friendrequestslist = receiver.getFriendrequests();
+        friendrequestslist.remove(sender.getUsername());
+        receiver.setFriendrequests(friendrequestslist);
+
+        List<String> friendslist = receiver.getFriends();
+        friendslist.add(sender.getUsername());
+        receiver.setFriends(friendslist);
+
+        List<String> senderfriend_list = sender.getFriends();
+        senderfriend_list.add(receiver.getUsername());
+        sender.setFriends(senderfriend_list);
+
+        userRepository.save(receiver);
+        userRepository.save(sender);
+        userRepository.flush();
+      }
+      catch (Exception e){
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()+"Could not accept friendrequest");
+      }
     }
 
     public void declinefriendrequest(User receiver, User sender){
+      try{
         if(receiver.getFriendrequests().contains(sender.getUsername())){
             List<String> friendrequestslist = receiver.getFriendrequests();
             friendrequestslist.remove(sender.getUsername());
@@ -133,7 +163,43 @@ public class UserService {
         else{
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username, whose friendrequest is to be declined isnot in the list of friendrequests of the receiver");
         }
+
+      }
+      catch (Exception e){
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()+"Could decline Friends reqeuest");
+      }
     }
+
+    public void removefriendship(User friend1, User friend2) throws Exception{
+      try{
+        if (friend1 == null || friend2 == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "One of the 2 user inputs is equal to null");
+        }
+        List<String> friends_of_friend1 =  friend1.getFriends();
+        if(!friends_of_friend1.contains(friend2.getUsername())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The user with the username "+ friend2.getUsername() + " was not found in the friends list of the user with username " + friend1.getUsername());
+        }
+        List<String> friends_of_friend2 = friend2.getFriends();
+        if(!friends_of_friend2.contains(friend1.getUsername())){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The user with the username "+ friend1.getUsername() + " was not found in the friends list of the user with username " + friend2.getUsername());
+        }
+
+        friends_of_friend1.remove(friend2.getUsername());
+        friends_of_friend2.remove(friend1.getUsername());
+
+
+        friend1.setFriends(friends_of_friend1);
+        friend2.setFriends(friends_of_friend2);
+
+        userRepository.save(friend1);
+        userRepository.save(friend2);
+        userRepository.flush();
+ 
+      }
+      catch (Exception e){
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()+"Could not remove firends");
+      }
+   }
 
     /**
      * This is a helper method that will check the uniqueness criteria of the
@@ -146,7 +212,8 @@ public class UserService {
      * @see User
      */
 
-    private void checkIfUserExists(User userToBeCreated) {
+    private void checkIfUserExists(User userToBeCreated) throws Exception{
+      try{
         // Ensure email is unique
         // Ensure username is unique
         User userByUsername = userRepository.findByUsername(userToBeCreated.getUsername());
@@ -160,7 +227,13 @@ public class UserService {
         if (userByEmail != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format(baseErrorMessage, "email", "is"));
+ 
         }
+      }
+      catch (Exception e){
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()+"Could not check if user exists");
+
+      }
 
     }
 
@@ -169,9 +242,9 @@ public class UserService {
      *                        satisfies all password requirements
      *                        throws errors should the password not satisfy some requirements
      */
-    public void checkPassword(User userToBeCreated) {
+    public void checkPassword(User userToBeCreated) throws Exception{
+      try{
         String pwd = userToBeCreated.getPassword();
-
 
         Pattern uppCase = Pattern.compile("[A-Z]");
         Matcher uppCaseMatch = uppCase.matcher(pwd);
@@ -203,18 +276,33 @@ public class UserService {
         }
 
 
+      }
+      catch (Exception e){
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()+"Could not check Password");
+      }
+
     }
 
 
-    public User getUser(String username) {
+    public User getUser(String username) throws Exception {
+      try{
         return this.userRepository.findByUsername(username);
+      }
+      catch (Exception e){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage()+"Could not find Username with given username");
+      }
     }
 
-    public User getUserByVerificationToken(String verificationCode) {
+    public User getUserByVerificationToken(String verificationCode) throws Exception {
+      try{
         return this.userRepository.findByVerificationCode(verificationCode);
+      }
+      catch (Exception e){
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND,e.getMessage()+"Could not find user with given verificationToken");
+      }
     }
 
-    public void deleteUser(User user) {
+    public void deleteUser(User user) throws Exception{
         try {
             this.userRepository.delete(user);
         }

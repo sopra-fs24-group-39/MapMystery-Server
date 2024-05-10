@@ -12,6 +12,7 @@ import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import ch.uzh.ifi.hase.soprafs24.service.UtilityService;
 import ch.uzh.ifi.hase.soprafs24.service.AccountService;
 
+import org.hibernate.internal.ExceptionConverterImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -46,22 +47,17 @@ public class UserController {
     @GetMapping("/users")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserGetDTO> allUsersGet() {
+    public List<UserGetDTO> allUsersGet() throws Exception{
 
-        try {
-            // fetch all users in the internal representation
-            List<User> users = userService.getUsers();
-            List<UserGetDTO> userGetDTOs = new ArrayList<>();
+      // fetch all users in the internal representation
+      List<User> users = userService.getUsers();
+      List<UserGetDTO> userGetDTOs = new ArrayList<>();
 
-            // convert each user to the API representation
-            for (User user : users) {
-                userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
-            }
-            return userGetDTOs;
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unexpected Error occured " + e.getMessage());
-        }
+      // convert each user to the API representation
+      for (User user : users) {
+          userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+      }
+      return userGetDTOs;
 
     }
 
@@ -73,24 +69,11 @@ public class UserController {
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserGetDTO userGet(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
+    public UserGetDTO userGet(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) throws Exception {
+      User user = userService.getUser(userId);
+      util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
-        try {
-            User user = userService.getUser(userId);
-            util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
-
-            return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
-        }
-        catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-        catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
-
+      return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
 
     /**
@@ -100,23 +83,12 @@ public class UserController {
     @DeleteMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void userDeletion(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
+    public void userDeletion(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) throws Exception{
 
-        try {
-            User user = userService.getUser(userId);
-            util.Assert(user.getToken() == token, "the provided token did not match the token expected in the Usercontroller");
+      User user = userService.getUser(userId);
+      util.Assert(user.getToken() == token, "the provided token did not match the token expected in the Usercontroller");
 
-            userService.deleteUser(user);
-        }
-        catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-        catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+      userService.deleteUser(user);
 
     }
 
@@ -128,31 +100,21 @@ public class UserController {
     @PostMapping("/users")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public UserGetDTO userCeration(@RequestBody CredPostDTO credentials) {
-        try {
+    public UserGetDTO userCeration(@RequestBody CredPostDTO credentials) throws Exception {
+        // convert API user to internal representation
+        User userInput = DTOMapper.INSTANCE.convertCredPostDTOtoEntity(credentials);
 
-            // convert API user to internal representation
-            User userInput = DTOMapper.INSTANCE.convertCredPostDTOtoEntity(credentials);
+        // create user, throws Excpetion if username or email already exists
+        User createdUser = userService.createUser(userInput);
 
-            // create user, throws Excpetion if username or email already exists
-            User createdUser = userService.createUser(userInput);
+        // try {
+        //     accountService.sendVerificationEmail(createdUser);
+        // }
+        // catch (Exception e) {
+        //     throw new RuntimeException(e.getMessage());
+        // }
 
-            try {
-                accountService.sendVerificationEmail(createdUser);
-            }
-            catch (Exception e) {
-                throw new RuntimeException(e.getMessage());
-            }
-
-            return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
-
-        }
-        catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, e.getMessage());
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
 
@@ -167,26 +129,14 @@ public class UserController {
     @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     @ResponseBody
-    public void userUpdate(@PathVariable long userId, @RequestBody UserPutDTO NewUserData, @RequestHeader(value = "Authorization") String token) {
-        try {
-            User oldData = userService.getUser(userId);
-            util.Assert(oldData.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+    public void userUpdate(@PathVariable long userId, @RequestBody UserPutDTO NewUserData, @RequestHeader(value = "Authorization") String token) throws Exception{
+      User oldData = userService.getUser(userId);
+      util.Assert(oldData.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
 
-            User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(NewUserData);
+      User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(NewUserData);
 
-            userService.updateUser(oldData, userInput);
-
-        }
-        catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-        catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+      userService.updateUser(oldData, userInput);
 
     }
 
@@ -197,57 +147,40 @@ public class UserController {
      * @param credentials username and password
      * @return the user object with all of its properties
      */
+    // To do throw a 401 when the password is incorrect
     @PutMapping("/users/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Map<String, Object> userLogin(@RequestBody CredPostDTO credentials) {
-        try {
-            User user = userService.getUser(credentials.getUsername());
+    public Map<String, Object> userLogin(@RequestBody CredPostDTO credentials) throws Exception {
+      User user = userService.getUser(credentials.getUsername());
 
-            if (!user.checkPassword(credentials.getPassword())) {
-                throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "password is wrong");
-            }
+      if (!user.checkPassword(credentials.getPassword())) {
+          throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "password is wrong");
+      }
 
-            // TODO : verification somehow not working
-            // if (!user.getVerified()) {
-            //   throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Account is not verified");
-            // }
+      User newStatus = new User();
 
+      newStatus.setStatus("ONLINE");
 
-            User newStatus = new User();
-
-            newStatus.setStatus("ONLINE");
-
-            userService.updateUser(user, newStatus);
+      userService.updateUser(user, newStatus);
 
 
-            // the token needed for subsequent requests is in the authUser object
-            UserGetDTO authUser = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+      // the token needed for subsequent requests is in the authUser object
+      UserGetDTO authUser = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
 
-            String token = user.getToken();
+      String token = user.getToken();
 
-            //prepearing response
-            Map<String, Object> response = new HashMap<>();
-            response.put("user", authUser);
-            response.put("token", token);
+      //prepearing response
+      Map<String, Object> response = new HashMap<>();
+      response.put("user", authUser);
+      response.put("token", token);
 
-            return response;
-
-        }
-        catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
-        catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+      return response;
 
     }
 
     @GetMapping("/verify-account")
-    public ResponseEntity<String> verifyAccount(@RequestParam("token") String token) {
+    public ResponseEntity<String> verifyAccount(@RequestParam("token") String token) throws Exception{
         User user = userService.getUserByVerificationToken(token);
 
         if (user == null) {
@@ -275,10 +208,9 @@ public class UserController {
     public void sendfriendrequest(@PathVariable long userId, @RequestBody UserPutDTO FromUserData, @RequestHeader(value = "Authorization") String token) {
         try {
             User user_who_sent_friend_request = userService.getUser(userId);
+            util.Assert(user_who_sent_friend_request.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
             User user_to_which_friend_request_is_sent = userService.getUser(DTOMapper.INSTANCE.convertUserPutDTOtoEntity(FromUserData).getUsername());
-
-            assert user_who_sent_friend_request.getToken().equals(token);
 
             userService.addfriendrequest(user_to_which_friend_request_is_sent, user_who_sent_friend_request);
 
@@ -300,6 +232,7 @@ public class UserController {
     public FriendrequestGetDTO getfriendrequests(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
         try {
             User user = userService.getUser(userId);
+            util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
             return DTOMapper.INSTANCE.convertEntityToFriendrequestGetDTO(user);
 
         }
@@ -321,6 +254,8 @@ public class UserController {
         try {
             User receiver = userService.getUser(userId);
             User sender = userService.getUser(friendrequestPutDTO.getUsername());
+
+            util.Assert(receiver.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
             if(friendrequestPutDTO.getAccepted()){
                 userService.acceptfriendrequest(receiver, sender);
@@ -349,6 +284,7 @@ public class UserController {
     public List<UserGetDTO> returnfriendsofuser(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
         try {
             User user = userService.getUser(userId);
+            util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
             List<UserGetDTO> userGetDTOS = new ArrayList<>();
             List<String> friends = user.getFriends();
 
@@ -358,6 +294,29 @@ public class UserController {
                 userGetDTOS.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(tmpuser));
             }
             return userGetDTOS;
+        }
+        catch (AssertionError e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
+        }
+        catch (RuntimeException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
+    @DeleteMapping("/friends/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void removefriendship(@PathVariable long userId, @RequestBody FriendrequestPutDTO friendrequestPutDTO, @RequestHeader(value = "Authorization") String token) {
+        try {
+            User friend1 = userService.getUser(userId);
+            util.Assert(friend1.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+            User friend2 = userService.getUser(friendrequestPutDTO.getUsername());
+
+            userService.removefriendship(friend1, friend2);
+
         }
         catch (AssertionError e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
