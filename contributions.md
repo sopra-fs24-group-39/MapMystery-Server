@@ -58,6 +58,9 @@ copmleted for 03.05.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/111)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/112)
 
+completed for 09.05.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/118)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/119)
 
 #### What are the obstacles to progress?
 ### Joshua:
@@ -218,11 +221,47 @@ copmleted for 03.05.2024
 [#46](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/46)
 [#45](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/45)
 [#44](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/44)
-### What will I do next week?
+#### What will I do next week?
 - Fixing the entire implementation of the private lobbies and fully connect it to the backend such that it is playable
-### What are the obstacles in the progress?
+#### What are the obstacles in the progress?
 - Working with backend implementation of API
 - Working with websockets
+
+## M4 4.05.2024 - 10.05.2024:
+### Tim:
+#### What did I do this week?
+[#58](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/58)
+[#59](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/59)
+[#60](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/60)
+[#61](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/61)
+[#63](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/63)
+[#62](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/62)
+[#66](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/66)
+
+#### What will I do next week?
+
+### Nils:
+#### What did I do this week?
+[#47](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/47)
+[#57](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/57)
+[#65](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/65)
+
+#### What will I do next week?
+- I will try to finish up the project and solve/find bugs
+- Fix the issue with the viewports and cleanup the code
+
+#### What are the obstacles in the progress?
+- The needle in the haystack situation
+
+
+
+
+
+
+
+
+
+
 
 #### Samuel
 ## What Have I done in Total?
@@ -251,3 +290,8 @@ copmleted for 03.05.2024
 - Logging Data Base Class (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/104)
 - Implementation of Private Lobbies (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/113)
 - Implementation of Countries (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/114)
+
+completed for 10.05.2024
+- Server Side websockets for chat (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/120)
+- Check for user in private lobby before sending to DB (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/86ab6478dded0c761ca5fcddc1b474af47f8c885)
+- Bug Fix private lobbies - (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/0ab01cee067fbb74053d57020341120e77103d9b)
