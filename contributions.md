@@ -232,6 +232,7 @@ completed for 09.05.2024
 #### What did I do this week?
 [#58](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/58)
 [#59](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/59)
+[#60](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/60)
 [#61](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/61)
 [#63](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/63)
 [#62](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/62)
