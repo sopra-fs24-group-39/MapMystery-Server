@@ -110,6 +110,8 @@ public class LobbyController {
     player.setPrivateLobbyOwner(true);
     userService.updateUser(player, player);
 
+    lobbyService.joinLobby(player, newLobby, authKey);
+
 
     Map<String, Object> response = new HashMap<>();
     response.put("lobbyId", newLobby.getId());
@@ -186,6 +188,17 @@ public class LobbyController {
     response.put("lobbyId", lobbyId);
     return response;
   }
+    @GetMapping("Lobby/GameMode2/country")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public Map<String, String> get_country(@RequestBody UserPutDTO UserData, @RequestHeader(value = "Authorization") String token){
+
+        Map<String, String> country = gameCountryService.randomCountry();
+        Map<String, String> response =  new HashMap<>();
+        response.put("country", country.get("name"));
+        response.put("code", country.get("code"));
+        return response;
+    }
 
   
   
