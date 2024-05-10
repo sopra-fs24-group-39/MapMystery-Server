@@ -149,7 +149,7 @@ public class UserService {
       }
     }
 
-    public void declinefriendrequest(User receiver, User sender){
+    public void declinefriendrequest(User receiver, User sender) throws Exception{
       try{
         if(receiver.getFriendrequests().contains(sender.getUsername())){
             List<String> friendrequestslist = receiver.getFriendrequests();
@@ -161,7 +161,7 @@ public class UserService {
 
         }
         else{
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username, whose friendrequest is to be declined isnot in the list of friendrequests of the receiver");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username, whose friendrequest is to be declined isn't in the list of friendrequests of the receiver");
         }
 
       }
@@ -197,7 +197,7 @@ public class UserService {
  
       }
       catch (Exception e){
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()+"Could not remove firends");
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()+"Could not remove friends");
       }
    }
 

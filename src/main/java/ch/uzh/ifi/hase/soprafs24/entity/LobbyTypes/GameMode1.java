@@ -47,6 +47,14 @@ public class GameMode1 extends Lobby {
 
         return points;
     }
+    public float computePoints1(float Distance,float Timedelta){
+        if( Distance > 2000*1000){
+            return 0;
+        }
+        else {
+            return (2400*1000 - Distance)/1000;
+        }
+    }
 
     @Override
     public void setPoints(float distance, float timeDelta, Long playerId) {
@@ -62,7 +70,7 @@ public class GameMode1 extends Lobby {
         }
         else {
             float prevPoints = this.getPoints().getOrDefault(playerId, 0.0f);
-            prevPoints += this.computePoints(distance, timeDelta);
+            prevPoints += this.computePoints1(distance, timeDelta);
             this.points.put(playerId, prevPoints);
         }
 
