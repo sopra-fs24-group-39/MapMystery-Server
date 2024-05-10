@@ -46,11 +46,14 @@ public class PointsSystemTest {
     private User user3;
     private User user4;
 
+
     @Mock
     private SimpMessagingTemplate messagingTemplate;
 
+
     @Mock
     private LobbyRepository lobbyRepository;
+
 
     @Mock
     private GameService gameService;
@@ -60,10 +63,6 @@ public class PointsSystemTest {
 
     @Mock
     private TaskScheduler taskScheduler;
-
-    @Mock
-    private UtilityService utilityService;
-
 
     @InjectMocks
     private LobbyService lobbyService = new LobbyService();
@@ -76,9 +75,7 @@ public class PointsSystemTest {
         MockitoAnnotations.openMocks(this);
 
         user1 = new User(); user1.setId(1L); user1.setUsername("user1");
-        user2 = new User(); user2.setId(2L); user2.setUsername("user2");
-        user3 = new User(); user3.setId(3L); user3.setUsername("user3");
-        user4 = new User(); user4.setId(4L); user4.setUsername("user4");
+
 
         when(taskScheduler.schedule(any(Runnable.class), any(Date.class)))
                 .thenAnswer(invocation -> {
