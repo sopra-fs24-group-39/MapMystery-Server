@@ -170,7 +170,7 @@ public class LobbyController {
 
 
 
-  /*CONTROLLER FOR GAMEMMODE1################################################################################################## */
+  /*CONTROLLER FOR GAMEMMODE3################################################################################################## */
   @PostMapping("/Lobby/GameMode3")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
@@ -188,6 +188,7 @@ public class LobbyController {
     response.put("lobbyId", lobbyId);
     return response;
   }
+  
     @GetMapping("Lobby/GameMode2/country")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
