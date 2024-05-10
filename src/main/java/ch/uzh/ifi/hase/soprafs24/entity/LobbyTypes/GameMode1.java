@@ -30,11 +30,11 @@ public class GameMode1 extends Lobby {
     public float computePoints(float Distance, float timeDelta) {
         float maxDistance = 40075.017f *1000/2; // Maximum distance around the world in meters
         float maxTimeDelta = 130.0f; // Maximum time delta in seconds + 10 seconds to account for connection
-        float maxPoints = 100.0f; // Maximum points to award
+        float maxPoints = 1000.0f; // Maximum points to award
 
         float distanceSensitivity;
         if (Distance < 1000.0f*1000) {
-            distanceSensitivity = 1.0f - 0.10f*Distance/1000.0f*1000; // the 0.10f to reward the players for their near guess
+            distanceSensitivity = 1.0f - 0.10f*Distance/maxDistance; // the 0.10f to reward the players for their near guess
         } else {
             distanceSensitivity = 1.0f - Distance/maxDistance; // Linear Decrease for any Distance bigger than the average countrysize
         }
@@ -45,7 +45,7 @@ public class GameMode1 extends Lobby {
         // Combine distance and time sensitivity to calculate points
         float points = (float) Math.ceil(maxPoints * distanceSensitivity * timeSensitivity);
 
-        return points;
+        return Math.max(points,0);
     }
     public float computePoints1(float Distance,float Timedelta){
         if( Distance > 2000*1000){
@@ -70,7 +70,7 @@ public class GameMode1 extends Lobby {
         }
         else {
             float prevPoints = this.getPoints().getOrDefault(playerId, 0.0f);
-            prevPoints += this.computePoints1(distance, timeDelta);
+            prevPoints += this.computePoints(distance, timeDelta);
             this.points.put(playerId, prevPoints);
         }
 

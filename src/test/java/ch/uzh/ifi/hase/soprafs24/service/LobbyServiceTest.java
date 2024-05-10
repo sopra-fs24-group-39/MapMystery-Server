@@ -241,20 +241,7 @@ public class LobbyServiceTest {
         assertNotEquals(-1L, result);
     }
 
-    @Test
-    @Disabled // Needs new Test since new points system
-    public void submitScore_Success() throws Exception {
-        List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
-        when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
-        // when(lobbyService.kickOutInactivePlayers(lobby.getId())).thenReturn(true);
 
-        lobbyService.addPlayer(user1, lobby);
-        lobby.setLobbyState(lobbyStates.PLAYING);
-        lobbyService.submitScore(100,0, user1.getId(), lobby);
-        assertEquals(2399, lobby.getPoints().get(user1.getId()).intValue());
-        verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/coordinates/%s", lobby.getId())), anyMap());
-
-    }
 
     @Test
     public void submitScore_AdvanceRoundAndCheckNextRound() throws Exception {
