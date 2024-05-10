@@ -192,7 +192,7 @@ public class LobbyController {
     @GetMapping("Lobby/GameMode2/country")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Map<String, String> get_country(@RequestBody UserPutDTO UserData, @RequestHeader(value = "Authorization") String token){
+    public Map<String, String> get_country(@RequestHeader(value = "Authorization") String token){
 
         Map<String, String> country = gameCountryService.randomCountry();
         Map<String, String> response =  new HashMap<>();
@@ -200,8 +200,6 @@ public class LobbyController {
         response.put("code", country.get("code"));
         return response;
     }
-
-  
   
 }
 
