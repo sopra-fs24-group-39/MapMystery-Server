@@ -50,8 +50,8 @@ public class GameMode1 extends Lobby {
 
     @Override
     public void setPoints(float distance, float timeDelta, Long playerId) {
-        if(distance > 40075.017/2){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The maximum distance between any two points on earth is " + 40075.017/2 + " but the actual distance parsed is " + distance);
+        if(distance > 40075.017*1000/2){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The maximum distance between any two points on earth is " + 40075.017*1000/2 + " but the actual distance parsed is " + distance);
         }
         if(timeDelta > 130){
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Any guess should be submitted within 130 seconds, but some guess exceed it : "+ timeDelta);
