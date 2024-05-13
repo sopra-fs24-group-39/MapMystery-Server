@@ -163,4 +163,14 @@ public class PointsSystemTest {
         assertEquals(939, lobby.getPoints().get(user1.getId()).intValue());
     }
 
+    @Test
+    public void direct_test_time_delta_100_distance_2000000() throws Exception{
+      lobbyService.addPlayer(user1, lobby);
+
+      lobby.setPoints(2000, 0,user1.getId());
+      assertEquals(1000, lobby.getPoints().get(user1.getId()).intValue());
+
+
+    }
+
 }
