@@ -547,6 +547,9 @@ public class LobbyServiceTest {
       lobbyService.submitScore(2, 0, user2.getId(), lobby);
       lobbyService.submitScore(2, 0, user3.getId(), lobby);
 
+      assertEquals(lobby.getState(), lobbyStates.PLAYING);
+
+
       assertEquals(3, lobby.getPlayers().size());
       assertEquals(lobby.getPlayingRound(),2);
 
@@ -555,6 +558,7 @@ public class LobbyServiceTest {
       lobbyService.submitScore(2, 0, user3.getId(), lobby);
 
       assertEquals(lobby.getState(), lobbyStates.CLOSED);
+      verify(messagingTemplate, times(3)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lobby.getId())), anyString());
 
 
 
