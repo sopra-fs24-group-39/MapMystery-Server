@@ -153,8 +153,14 @@ public class PointsSystemTest {
         lobby.setLobbyState(lobbyStates.PLAYING);
         assertThrows(ResponseStatusException.class,()-> {lobbyService.submitScore(210000,135, user1.getId(), lobby);});
     }
-
-
-
+    @Test
+    public void test_severalsubmits_success() throws Exception {
+        lobbyService.addPlayer(user1, lobby);
+        lobby.setLobbyState(lobbyStates.PLAYING);
+        lobbyService.submitScore(2000000,100, user1.getId(), lobby); // Should be 208
+        lobbyService.advanceRound(user1.getId(),lobby);
+        lobbyService.submitScore(1000000,30, user1.getId(), lobby); // Should be 731
+        assertEquals(939, lobby.getPoints().get(user1.getId()).intValue());
+    }
 
 }
