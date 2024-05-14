@@ -12,7 +12,7 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   
-    private static final String ORIGIN_LOCALHOST = "http://localhost:5050";
+    private static final String ORIGIN_LOCALHOST = "http://localhost:5500";
     private static final String ORIGIN_8080 = "http://localhost:8080";
     private static final String ORIGIN_PROD = "https://sopra-fs24-group-39-client.oa.r.appspot.com";
 
