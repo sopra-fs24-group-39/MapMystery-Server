@@ -295,23 +295,11 @@ public class UserController {
     @PutMapping("/settings/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void updateuser(@PathVariable long userId, @RequestBody FriendrequestPutDTO friendrequestPutDTO, @RequestHeader(value = "Authorization") String token) {
-        try {
-            User friend1 = userService.getUser(userId);
-            util.Assert(friend1.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
-            User friend2 = userService.getUser(friendrequestPutDTO.getUsername());
+    public void updateuser(@PathVariable long userId, @RequestBody SettingsPutDTO settingsPutDTO, @RequestHeader(value = "Authorization") String token) throws Exception{
 
-            userService.removefriendship(friend1, friend2);
+            User user = userService.getUser(userId);
+            User updated_user = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
 
-        }
-        catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-        catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+
     }
 }
