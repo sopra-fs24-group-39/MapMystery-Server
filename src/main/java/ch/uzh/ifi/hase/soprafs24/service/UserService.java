@@ -309,6 +309,7 @@ public class UserService {
         catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User could not be deleted");
         }
+
     }
 
 

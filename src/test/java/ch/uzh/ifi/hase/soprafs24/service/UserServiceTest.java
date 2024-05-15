@@ -8,9 +8,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.verify;
 
 public class UserServiceTest {
 
@@ -44,7 +48,7 @@ public class UserServiceTest {
     User createdUser = userService.createUser(testUser);
 
     // then
-    Mockito.verify(userRepository, Mockito.times(1)).save(Mockito.any());
+    verify(userRepository, Mockito.times(1)).save(Mockito.any());
 
     assertEquals(testUser.getId(), createdUser.getId());
     assertEquals(testUser.getUsername(), createdUser.getUsername());
@@ -77,6 +81,42 @@ public class UserServiceTest {
     // is thrown
     assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
   }
+
+    @Test
+    public void testGetUserSuccess() throws Exception {
+        // given
+        String username = "testUsername";
+        User user = new User();
+        user.setUsername(username);
+
+        given(userRepository.findByUsername(username)).willReturn(user);
+
+        // when
+        User foundUser = userService.getUser(username);
+
+        // then
+        assertNotNull(foundUser);
+        assertEquals(username, foundUser.getUsername());
+    }
+
+    @Test
+    public void testDeleteUserSuccess() throws Exception {
+        // given
+        User user = new User();
+        user.setId(1L);
+        user.setUsername("testUsername");
+
+        // Mocking the repository to do nothing on delete
+        doNothing().when(userRepository).delete(user);
+
+        // when
+        userService.deleteUser(user);
+
+        // then
+        verify(userRepository, Mockito.times(1)).delete(user);
+    }
+
+
 
 
 }

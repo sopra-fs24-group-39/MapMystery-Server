@@ -33,15 +33,15 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import ch.uzh.ifi.hase.soprafs24.entity.GuessResult;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GuessResultPutDTO;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -291,4 +291,29 @@ public class LobbyControllerTest {
     mockMvc.perform(Request)
         .andExpect(status().isInternalServerError());
   }
+
+
+
+    @Test
+    public void testGetCountrySuccess() throws Exception {
+        // given
+        String token = "validToken";
+        Map<String, String> mockCountry = new HashMap<>();
+        mockCountry.put("name", "Switzerland");
+        mockCountry.put("code", "CH");
+
+        given(gameCountryService.randomCountry()).willReturn(mockCountry);
+
+        // when
+        MockHttpServletRequestBuilder getRequest = get("/Lobby/GameMode2/country")
+                .header("Authorization", token);
+
+        // then
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.country").value("Switzerland"))
+                .andExpect(jsonPath("$.code").value("CH"));
+    }
+
+
 }
