@@ -228,6 +228,17 @@ completed for 09.05.2024
 - Working with websockets
 
 ## M4 04.05.2024 - 10.05.2024:
+
+### Joshua
+#### What did I do this week?
+[#76](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/76)
+[#128](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/128)
+
+### What will I do next week?
+
+ - Do a new Points System
+ - Try different features for settings
+
 ### Tim:
 #### What did I do this week?
 [#58](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/58)
@@ -257,6 +268,11 @@ completed for 09.05.2024
 ### Tim
 #### What did I do:
 [#74](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/74)
+
+### Joshua
+#### What did I do this week?
+[#129](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/129)
+
 
 
 
