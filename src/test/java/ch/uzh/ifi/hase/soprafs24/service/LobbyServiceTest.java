@@ -143,6 +143,19 @@ public class LobbyServiceTest {
 
     }
 
+
+    @Test
+    public void removePlayer_Endgame() throws Exception {
+        when(taskScheduler.schedule(any(Runnable.class), any(Date.class))).thenReturn(null);
+
+        List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
+        when(gameService.get_image_coordinates()).thenReturn(mockCoordinates);
+        lobbyService.joinLobby(user1,lobby,null);
+        lobbyService.removePlayer(user1, lobby);
+        assertEquals(lobbyStates.CLOSED, lobby.getState());
+
+    }
+
     @Test
     public void joinLobbyMessagesSend() throws Exception {
         List<Double> mockCoordinates = Arrays.asList(1.234, 5.678);  // Example coordinates
