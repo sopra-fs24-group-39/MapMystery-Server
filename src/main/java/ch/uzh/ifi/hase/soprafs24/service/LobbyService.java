@@ -379,12 +379,6 @@ public class LobbyService {
             for(User player:tobeDel){
                 this.removePlayer(player, lob);
             }
-            if(tobeDel.size()>0){
-                lobbyRepository.saveAndFlush(lob);
-                boolean nextRound = this.checkNextRound(lob);
-
-                this.triggerNextRound(nextRound, lob);
-            }
 
             return true;
 
@@ -405,6 +399,7 @@ public class LobbyService {
             }
             lob.setState(lobbyStates.CLOSED);
             createAndSendLeaderBoard(lob);
+            lobbyRepository.saveAndFlush(lob);
         }
         catch (Exception e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Could not end game properly with lobbyId: "+lob.getId());
@@ -424,13 +419,11 @@ public class LobbyService {
                     this.createKickOutInactivePlayers(lob,lob.getPlayingRound());
                 }
                 else {
-                    this.createSendTaskLeaderB(lob,2000L);
                     this.endGame(lob);
                     lobbyRepository.saveAndFlush(lob);
                 }
-
-
             }
+
         }
         catch (Exception e){
             lob.setState(lobbyStates.CLOSED);
@@ -501,7 +494,10 @@ public class LobbyService {
                 }
                 return true;
             }
-            return false;
+            else{
+              this.endGame(lob);
+              return false;
+            }
 
         }
         catch (Exception e){
