@@ -60,6 +60,7 @@ User convertSettingsPutDTOtoEntity(SettingsPutDTO settingsPutDTO);
   @Mapping(source = "currentpoints",target = "currentpoints")
   @Mapping(source = "featured_in_rankings",target = "featured_in_rankings")
   @Mapping(source = "verified",target = "verified")
+  @Mapping(source = "pointsthismonth", target = "pointsthismonth")
   UserGetDTO convertEntityToUserGetDTO(User user);
 
   @Mapping(source = "friendrequests", target = "friendrequests")

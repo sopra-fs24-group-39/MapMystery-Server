@@ -47,14 +47,6 @@ public class GameMode1 extends Lobby {
 
         return Math.max(points,0);
     }
-    public float computePoints1(float Distance,float Timedelta){
-        if( Distance > 2000*1000){
-            return 0;
-        }
-        else {
-            return (2400*1000 - Distance)/1000;
-        }
-    }
 
     @Override
     public void setPoints(float distance, float timeDelta, Long playerId) {

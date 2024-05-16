@@ -83,8 +83,6 @@ public class PointsSystemTest {
                     task.run();  // Execute the task immediately
                     return null;  // Since it's a void method, return null
                 });
-
-
     }
 
     @Test
