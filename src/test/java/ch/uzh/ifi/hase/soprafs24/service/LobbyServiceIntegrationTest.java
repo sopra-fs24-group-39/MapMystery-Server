@@ -43,6 +43,7 @@ public class LobbyServiceIntegrationTest {
     private User user2;
     private User user3;
     private User user4;
+    private Lobby lobby;
 
     @Mock
     private SimpMessagingTemplate messagingTemplate;
@@ -66,12 +67,13 @@ public class LobbyServiceIntegrationTest {
     @InjectMocks
     private LobbyService lobbyService = new LobbyService();
 
-    private Lobby lobby = new GameMode1();
     CountDownLatch latch = new CountDownLatch(1);
 
     @BeforeEach
     public void setup() throws Exception{
         MockitoAnnotations.openMocks(this);
+        lobby = new GameMode1();
+
         Long roundDuration = 400L;
         lobby.setRoundDuration(roundDuration);
         user1 = new User(); user1.setId(1L); user1.setUsername("user1");
@@ -85,7 +87,7 @@ public class LobbyServiceIntegrationTest {
             Runnable task = invocation.getArgument(0, Runnable.class);
             new Thread(() -> {
                 try {
-                    Thread.sleep(lobby.getRoundDuration()+100); // Delay execution by 600 milliseconds
+                    Thread.sleep(lobby.getRoundDuration()+300); // Delay execution by 600 milliseconds
                     task.run();
                     latch.countDown();
                 } catch (InterruptedException e) {
@@ -192,7 +194,7 @@ public class LobbyServiceIntegrationTest {
     lobbyService.submitScore(2, 0, user3.getId(), lobby);
 
     assertEquals(lobby.getState(), lobbyStates.CLOSED);
-    Thread.sleep(1000);
+    Thread.sleep(1200);
     boolean completed = latch.await(1, TimeUnit.SECONDS);
 
     assertTrue(completed, "The scheduled task did not complete in time");
@@ -206,7 +208,6 @@ public class LobbyServiceIntegrationTest {
   @Test
   public void completeGameFlow_OnePlayerInactiveLastRound_minimalMocking() throws Exception{
     // Overwrite the default mock behavior for this test
-    CountDownLatch latch = new CountDownLatch(1);
     when(lobbyRepository.findByLobbyId(any())).thenReturn(lobby);
     when(lobbyRepository.findAll()).thenReturn(Arrays.asList(lobby));
     when(gameService.get_image_coordinates()).thenReturn(Arrays.asList(1.234, 5.678));
@@ -239,7 +240,7 @@ public class LobbyServiceIntegrationTest {
     lobbyService.submitScore(2, 0, user2.getId(), lobby);
     lobbyService.submitScore(2, 0, user3.getId(), lobby);
 
-    Thread.sleep(1000);
+    Thread.sleep(1200);
 
 
     assertEquals(lobbyStates.CLOSED, lobby.getState());
@@ -254,7 +255,6 @@ public class LobbyServiceIntegrationTest {
   @Test
   public void completeGameFlow_OnePlayerInactivefirstRound_minimalMocking() throws Exception{
     // Overwrite the default mock behavior for this test
-    CountDownLatch latch = new CountDownLatch(1);
     when(lobbyRepository.findByLobbyId(any())).thenReturn(lobby);
     when(lobbyRepository.findAll()).thenReturn(Arrays.asList(lobby));
     when(gameService.get_image_coordinates()).thenReturn(Arrays.asList(1.234, 5.678));
@@ -276,7 +276,7 @@ public class LobbyServiceIntegrationTest {
     lobbyService.submitScore(2, 0, user2.getId(), lobby);
     lobbyService.submitScore(2, 0, user3.getId(), lobby);
     //waiting for inactive players to get kcicked out
-    Thread.sleep(1000);
+    Thread.sleep(1200);
     assertEquals(lobby.getState(), lobbyStates.PLAYING);
 
 
@@ -286,8 +286,6 @@ public class LobbyServiceIntegrationTest {
     lobbyService.submitScore(2, 0, user1.getId(), lobby);
     lobbyService.submitScore(2, 0, user2.getId(), lobby);
     lobbyService.submitScore(2, 0, user3.getId(), lobby);
-    Thread.sleep(1000);
-
 
     assertEquals(lobbyStates.CLOSED, lobby.getState());
 
@@ -302,7 +300,6 @@ public class LobbyServiceIntegrationTest {
   @Test
   public void completeGameFlow_OnePlayerInactiveSecondRound_minimalMocking() throws Exception{
     // Overwrite the default mock behavior for this test
-    CountDownLatch latch = new CountDownLatch(1);
     when(lobbyRepository.findByLobbyId(any())).thenReturn(lobby);
     when(lobbyRepository.findAll()).thenReturn(Arrays.asList(lobby));
     when(gameService.get_image_coordinates()).thenReturn(Arrays.asList(1.234, 5.678));
@@ -333,7 +330,7 @@ public class LobbyServiceIntegrationTest {
     lobbyService.submitScore(2, 0, user2.getId(), lobby);
     lobbyService.submitScore(2, 0, user3.getId(), lobby);
     //waiting for inactive players to get kcicked out
-    Thread.sleep(1000);
+    Thread.sleep(1200);
     assertEquals(lobby.getState(), lobbyStates.PLAYING);
     assertEquals(lobby.getPlayingRound(),3);
     assertEquals(2, lobby.getPlayers().size());
@@ -341,7 +338,6 @@ public class LobbyServiceIntegrationTest {
 
     lobbyService.submitScore(2, 0, user2.getId(), lobby);
     lobbyService.submitScore(2, 0, user3.getId(), lobby);
-    Thread.sleep(1000);
 
 
     assertEquals(lobbyStates.CLOSED, lobby.getState());

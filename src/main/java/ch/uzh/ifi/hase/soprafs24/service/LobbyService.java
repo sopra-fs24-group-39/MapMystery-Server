@@ -368,7 +368,7 @@ public class LobbyService {
   public boolean kickOutInactivePlayers(Long lobbyId, int roundToCheck) throws Exception{
     try{
       Lobby lob = lobbyRepository.findByLobbyId(lobbyId);
-      List<User> tobeDel = new ArrayList<>();
+      List<User> tobeDel = new ArrayList<>(); 
       for(User player : lob.players){
         Long playerId = player.getId();
         if (!lob.currRound.containsKey(playerId) || lob.currRound.get(playerId) < roundToCheck) {
