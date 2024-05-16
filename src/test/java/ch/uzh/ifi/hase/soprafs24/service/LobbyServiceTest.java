@@ -13,6 +13,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.TaskScheduler;
+import java.util.concurrent.TimeUnit;
 
 import ch.uzh.ifi.hase.constants.lobbyStates;
 
@@ -27,6 +28,7 @@ import java.util.Map;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.concurrent.CountDownLatch;
 
 import ch.uzh.ifi.hase.constants.GameModes;
 
@@ -580,6 +582,4 @@ public class LobbyServiceTest {
       assertTrue(lobby.getPlayers().isEmpty());
   }
   
-
-
 }

@@ -1,3 +1,5 @@
+package ch.uzh.ifi.hase.soprafs24.rest.mapper;
+
 import ch.uzh.ifi.hase.soprafs24.rest.dto.SettingsPutDTO;
 import org.junit.jupiter.api.Test;
 
