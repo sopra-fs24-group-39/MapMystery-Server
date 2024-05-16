@@ -266,7 +266,7 @@ completed for 09.05.2024
 
 
 
-#### Samuel
+# Samuel
 ## What Have I done in Total?
 
 copmleted for 05.04.2024
@@ -298,3 +298,7 @@ completed for 10.05.2024
 - Server Side websockets for chat (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/120)
 - Check for user in private lobby before sending to DB (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/86ab6478dded0c761ca5fcddc1b474af47f8c885)
 - Bug Fix private lobbies - (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/0ab01cee067fbb74053d57020341120e77103d9b)
+
+completed for 19.05.2024    
+- Maintainable backend -  (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/127#issue-2300118306)
+- Testable Code - (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/5bf24f0a420ecac71a8e256c706efb7db0afb7af) , (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/d684535d4b28e3bd6e65d27b42963e2324da771b)
