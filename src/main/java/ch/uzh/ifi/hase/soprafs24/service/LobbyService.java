@@ -350,6 +350,11 @@ public class LobbyService {
     try {
       boolean removed = lob.players.remove(user);
       lobbyRepository.saveAndFlush(lob);
+      //for preventing deadlocks, we may need to initialize the next round from here
+      boolean nextRound = this.checkNextRound(lob);
+      this.triggerNextRound(nextRound, lob);
+
+
       if (!removed) {
         throw new Exception("User not found in players list");
       }
@@ -414,10 +419,16 @@ public class LobbyService {
           if(NextPlayingRound < lob.getRounds()){
             lob.setPlayingRound(NextPlayingRound+1);
             lobbyRepository.saveAndFlush(lob);
+            this.createSendTaskCoord(lob,6000L);
+            this.createSendTaskLeaderB(lob,2000L);
+            this.createKickOutInactivePlayers(lob,lob.getPlayingRound());
           }
-          this.createSendTaskCoord(lob,6000L);
-          this.createSendTaskLeaderB(lob,2000L);
-          this.createKickOutInactivePlayers(lob,lob.getPlayingRound());
+          else {
+            this.createSendTaskLeaderB(lob,2000L);
+            this.endGame(lob);
+            lobbyRepository.saveAndFlush(lob);
+          }
+          
         
       }
     }
