@@ -322,3 +322,4 @@ completed for 10.05.2024
 completed for 19.05.2024    
 - Maintainable backend -  (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/127#issue-2300118306)
 - Testable Code - (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/5bf24f0a420ecac71a8e256c706efb7db0afb7af) , (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/d684535d4b28e3bd6e65d27b42963e2324da771b)
+- New endpoint for gathering active online users - (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/973c8b13becd0cdca82d01f251fafef2a7698fa3)
