@@ -267,9 +267,10 @@ completed for 09.05.2024
 ## M4: 11.05.2024-17.05.2024
 ### Tim
 #### What did I do:
-[#74](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/74)
-[67](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/67)
 [#64](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/64)
+[#67](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/67)
+[#68](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/68)
+[#74](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/74)
 
 ### Joshua
 #### What did I do this week?
