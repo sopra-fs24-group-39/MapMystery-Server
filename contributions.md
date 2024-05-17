@@ -268,6 +268,7 @@ completed for 09.05.2024
 ### Tim
 #### What did I do:
 [#74](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/74)
+[67](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/67)
 [#64](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/64)
 
 ### Joshua
