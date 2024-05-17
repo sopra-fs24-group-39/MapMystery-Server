@@ -234,7 +234,7 @@ public class LobbyServiceIntegrationTest {
     lobbyService.submitScore(2, 0, user2.getId(), lobby);
     lobbyService.submitScore(2, 0, user3.getId(), lobby);
 
-    Thread.sleep(600);
+    Thread.sleep(1000);
 
 
     assertEquals(lobbyStates.CLOSED, lobby.getState());
@@ -484,7 +484,7 @@ public class LobbyServiceIntegrationTest {
     assertEquals(lobby.getPlayingRound(),1);
 
 
-    Thread.sleep(600);
+    Thread.sleep(1000);
     assertEquals(0, lobby.getPlayers().size());
     assertEquals(lobbyStates.CLOSED, lobby.getState());
 
@@ -528,7 +528,7 @@ public class LobbyServiceIntegrationTest {
     assertEquals(lobby.getPlayingRound(),2);
 
 
-    Thread.sleep(600);
+    Thread.sleep(1000);
     assertEquals(0, lobby.getPlayers().size());
     assertEquals(lobbyStates.CLOSED, lobby.getState());
 

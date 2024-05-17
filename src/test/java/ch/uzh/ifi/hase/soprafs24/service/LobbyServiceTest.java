@@ -586,7 +586,6 @@ public class LobbyServiceTest {
 
       assertEquals(lobby.getState(), lobbyStates.CLOSED);
       verify(messagingTemplate, times(3)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lobby.getId())), anyString());
-      verify(messagingTemplate, times(1)).convertAndSend(eq(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lobby.getId())), anyMap());
 
 
 

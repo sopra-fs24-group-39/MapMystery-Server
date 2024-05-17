@@ -398,7 +398,7 @@ public class LobbyService {
                 resetPrivateLobbyOwnerStatus(user);
             }
             lob.setState(lobbyStates.CLOSED);
-            createAndSendLeaderBoard(lob);
+            this.createSendTaskLeaderB(lob,4000L);
             lobbyRepository.saveAndFlush(lob);
         }
         catch (Exception e){
@@ -414,8 +414,8 @@ public class LobbyService {
                 if(NextPlayingRound < lob.getRounds()){
                     lob.setPlayingRound(NextPlayingRound+1);
                     lobbyRepository.saveAndFlush(lob);
-                    this.createSendTaskCoord(lob,6000L);
-                    this.createSendTaskLeaderB(lob,2000L);
+                    this.createSendTaskCoord(lob,6500L);
+                    this.createSendTaskLeaderB(lob,3000L);
                     this.createKickOutInactivePlayers(lob,lob.getPlayingRound());
                 }
                 else {
