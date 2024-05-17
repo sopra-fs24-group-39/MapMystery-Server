@@ -142,6 +142,28 @@ public class UserController {
 
     }
 
+    @GetMapping("/active-users")
+    public Map<String,Object> activeUsers(@RequestBody UserPutDTO userData, @RequestHeader(value = "Authorization") String token) throws Exception{
+
+        User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userData);
+        User player = userService.getUser(user.getId());
+
+        util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+
+        List<User> users = userService.getUsers();
+        int count = 0;
+
+        for (User user2 : users) {
+            if(user2.getStatus() == "ONLINE"){count++;}
+        }
+
+        Map<String,Object> response = new HashMap<>();
+        response.put("Users", count);
+
+        return response;
+
+    }
+
     /**
      * endpoint which changes the user state and returns the user Object with all of its properties
      * in particular the token which will be used in requests using id as a pathvarible example : get Usres/Id
