@@ -180,7 +180,7 @@ public class LobbyController {
     util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
   
     Lobby lob = lobbyService.getLobby(lobbyId);
-    util.Assert(lob.getGamemode()==GameModes.Gamemode1 || lob.getGamemode()==GameModes.Gamemode3,"wrong gamemode for this endpoint");
+    util.Assert(lob.getGamemode()==GameModes.Gamemode1,"wrong gamemode for this endpoint");
 
     lobbyService.removePlayer(user, lob);
     
