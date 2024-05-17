@@ -243,7 +243,6 @@ public class LobbyServiceTest {
     @Test
     public void testPutToSomeLobby_Success() throws Exception {
         when(lobbyRepository.findAll()).thenReturn(Arrays.asList(lobby));
-
         Long result = lobbyService.putToSomeLobby(user1, GameModes.Gamemode1);
         assertEquals(lobby.getId(), result);
     }
