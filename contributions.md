@@ -278,6 +278,22 @@ completed for 09.05.2024
 #### What did I do this week?
 [#129](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/129)
 
+### Nils
+#### What did I do this week?
+[#69](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/69)
+[#70](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/70)
+[#73](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/73)
+[#79](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/79)
+[#80](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/80)
+
+#### What will I do next week?
+- I will conduct some testing this weekend and see where we need further fixes
+- If time allowes it I will create an Invite friend to a game functionality
+
+#### What are the obstacles in the progress?
+- I had troubles with the axios library
+- Same needle in the haystack problem as last week. Finding and fixing issues takes time now.
+
 
 
 
