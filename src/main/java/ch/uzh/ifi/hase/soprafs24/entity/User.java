@@ -68,6 +68,9 @@ public class User implements Serializable {
     private float currentpoints;
 
     @Column
+    private float pointsthismonth;
+
+    @Column
     private Boolean featured_in_rankings = true;
 
     private String generateToken() {
@@ -149,9 +152,6 @@ public class User implements Serializable {
         this.creationdate = creationdate;
     }
 
-
-    
-
     public float getScore() {
         return score;
     }
@@ -189,6 +189,14 @@ public class User implements Serializable {
 
     public void setCurrentpoints(float currentpoints) {
         this.currentpoints = currentpoints;
+    }
+
+    public void setPointsthismonth(float pointsthismonth) {
+        this.pointsthismonth = pointsthismonth;
+    }
+
+    public float getPointsthismonth() {
+        return pointsthismonth;
     }
 
     public boolean isPrivateLobbyOwner() {

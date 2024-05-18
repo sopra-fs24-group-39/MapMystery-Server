@@ -41,7 +41,7 @@ public class Application {
   @Bean
     public TaskScheduler taskScheduler() {
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();
-        scheduler.setPoolSize(5);  // Adjust pool size as necessary
+        scheduler.setPoolSize(10);  // Adjust pool size as necessary
         return scheduler;
     }
 

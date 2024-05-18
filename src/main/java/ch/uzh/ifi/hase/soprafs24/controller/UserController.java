@@ -30,6 +30,7 @@ import java.util.Map;
 public class UserController {
 
 
+
     private final UserService userService;
     private AccountService accountService;
 
@@ -40,6 +41,7 @@ public class UserController {
         this.userService = userService;
         this.accountService = accountService;
     }
+
 
     /**
      * @return returns a list of Users with all of their properties, where the passwords are hashed
@@ -140,6 +142,28 @@ public class UserController {
 
     }
 
+    @GetMapping("/active-users")
+    public Map<String,Object> activeUsers(@RequestBody UserPutDTO userData, @RequestHeader(value = "Authorization") String token) throws Exception{
+
+        User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userData);
+        User player = userService.getUser(user.getId());
+
+        util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+
+        List<User> users = userService.getUsers();
+        int count = 0;
+
+        for (User user2 : users) {
+            if(user2.getStatus() == "ONLINE"){count++;}
+        }
+
+        Map<String,Object> response = new HashMap<>();
+        response.put("Users", count);
+
+        return response;
+
+    }
+
     /**
      * endpoint which changes the user state and returns the user Object with all of its properties
      * in particular the token which will be used in requests using id as a pathvarible example : get Usres/Id
@@ -229,106 +253,77 @@ public class UserController {
     @GetMapping("/friends/friendrequests/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public FriendrequestGetDTO getfriendrequests(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
-        try {
-            User user = userService.getUser(userId);
-            util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
-            return DTOMapper.INSTANCE.convertEntityToFriendrequestGetDTO(user);
-
-        }
-        catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-        catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+    public FriendrequestGetDTO getfriendrequests(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) throws Exception{
+        User user = userService.getUser(userId);
+        util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+        return DTOMapper.INSTANCE.convertEntityToFriendrequestGetDTO(user);
     }
 
     @PutMapping("/friends/friendrequests/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void accept_or_decline_friend_request(@PathVariable long userId, @RequestBody FriendrequestPutDTO friendrequestPutDTO, @RequestHeader(value = "Authorization") String token) {
-        try {
-            User receiver = userService.getUser(userId);
-            User sender = userService.getUser(friendrequestPutDTO.getUsername());
+    public void accept_or_decline_friend_request(@PathVariable long userId, @RequestBody FriendrequestPutDTO friendrequestPutDTO, @RequestHeader(value = "Authorization") String token) throws Exception{
 
-            util.Assert(receiver.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+        User receiver = userService.getUser(userId);
+        User sender = userService.getUser(friendrequestPutDTO.getUsername());
 
-            if(friendrequestPutDTO.getAccepted()){
-                userService.acceptfriendrequest(receiver, sender);
-            }
-            else{
-                userService.declinefriendrequest(receiver, sender);
-            }
+        util.Assert(receiver.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+
+        if(friendrequestPutDTO.getAccepted()){
+            userService.acceptfriendrequest(receiver, sender);
+        }
+        else{
+            userService.declinefriendrequest(receiver, sender);
+        }
 
 
-        }
-        catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-        catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+
     }
 
 
     @GetMapping("/friends/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public List<UserGetDTO> returnfriendsofuser(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) {
-        try {
-            User user = userService.getUser(userId);
-            util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
-            List<UserGetDTO> userGetDTOS = new ArrayList<>();
-            List<String> friends = user.getFriends();
+    public List<UserGetDTO> returnfriendsofuser(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) throws Exception{
+        User user = userService.getUser(userId);
+        util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+        List<UserGetDTO> userGetDTOS = new ArrayList<>();
+        List<String> friends = user.getFriends();
 
-            // convert each user to the API representation
-            for (String username : friends ) {
-                User tmpuser = userService.getUser(username);
-                userGetDTOS.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(tmpuser));
-            }
-            return userGetDTOS;
+        // convert each user to the API representation
+        for (String username : friends ) {
+            User tmpuser = userService.getUser(username);
+            userGetDTOS.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(tmpuser));
         }
-        catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-        catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
+        return userGetDTOS;
+
     }
 
     @DeleteMapping("/friends/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void removefriendship(@PathVariable long userId, @RequestBody FriendrequestPutDTO friendrequestPutDTO, @RequestHeader(value = "Authorization") String token) {
-        try {
-            User friend1 = userService.getUser(userId);
-            util.Assert(friend1.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
-            User friend2 = userService.getUser(friendrequestPutDTO.getUsername());
+    public void removefriendship(@PathVariable long userId, @RequestBody FriendrequestPutDTO friendrequestPutDTO, @RequestHeader(value = "Authorization") String token) throws Exception{
+        User friend1 = userService.getUser(userId);
+        util.Assert(friend1.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+        User friend2 = userService.getUser(friendrequestPutDTO.getUsername());
+        userService.removefriendship(friend1, friend2);
 
-            userService.removefriendship(friend1, friend2);
-
-        }
-        catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-        catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
     }
 
 // ##################################### End Friends Section #################################################################
 
+
+
+// ##################################### Start Settings Section #################################################################
+
+    @PutMapping("/settings/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public void updateuser(@PathVariable long userId, @RequestBody SettingsPutDTO settingsPutDTO, @RequestHeader(value = "Authorization") String token) throws Exception{
+
+            User user = userService.getUser(userId);
+            User updated_user = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
+
+
+    }
 }

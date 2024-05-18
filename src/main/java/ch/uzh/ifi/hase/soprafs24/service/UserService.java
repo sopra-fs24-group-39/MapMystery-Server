@@ -8,7 +8,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -19,6 +22,11 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.List;
+
+
 /**
  * User Service
  * This class is the "worker" and responsible for all functionality related to
@@ -28,12 +36,30 @@ import java.util.regex.Pattern;
  */
 @Service
 @Transactional
+@EnableScheduling
 public class UserService {
 
     private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
 
+
+    // demo : Evey minute at 10 seconds into the minute @Scheduled(cron = "10 * * * * ?")
+    @Scheduled(cron = "0 0 0 1 * ?")
+    public void updatepointsofthismonthforallusers() throws Exception {
+        try {
+            List<User> users = userRepository.findAll();
+            for (User user : users) {
+                user.setPointsthismonth(0);
+                userRepository.save(user);
+                userRepository.flush();
+                System.out.println("All pointsthismonth of users set to 0");
+            }
+        }
+        catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "When getting all of the users from the respository went wrong");
+        }
+    }
     @Autowired
     public UserService(@Qualifier("userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
@@ -149,7 +175,7 @@ public class UserService {
       }
     }
 
-    public void declinefriendrequest(User receiver, User sender){
+    public void declinefriendrequest(User receiver, User sender) throws Exception{
       try{
         if(receiver.getFriendrequests().contains(sender.getUsername())){
             List<String> friendrequestslist = receiver.getFriendrequests();
@@ -161,7 +187,7 @@ public class UserService {
 
         }
         else{
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username, whose friendrequest is to be declined isnot in the list of friendrequests of the receiver");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username, whose friendrequest is to be declined isn't in the list of friendrequests of the receiver");
         }
 
       }
@@ -197,7 +223,7 @@ public class UserService {
  
       }
       catch (Exception e){
-        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()+"Could not remove firends");
+        throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()+"Could not remove friends");
       }
    }
 
@@ -309,6 +335,7 @@ public class UserService {
         catch (Exception e) {
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "User could not be deleted");
         }
+
     }
 
 

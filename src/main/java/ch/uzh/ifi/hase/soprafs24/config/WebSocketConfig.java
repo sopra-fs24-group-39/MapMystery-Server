@@ -12,8 +12,9 @@ import org.springframework.web.socket.config.annotation.WebSocketTransportRegist
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   
-    private static final String ORIGIN_LOCALHOST = "http://localhost:5050";
+    private static final String ORIGIN_LOCALHOST = "http://localhost:5500";
     private static final String ORIGIN_8080 = "http://localhost:8080";
+    private static final String ORIGIN_5050 = "http://localhost:5050";
     private static final String ORIGIN_PROD = "https://sopra-fs24-group-39-client.oa.r.appspot.com";
 
     @Override
@@ -31,8 +32,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // Configure the endpoint 6 enable CORS
-        // registry.addEndpoint("/ws").setAllowedOrigins("http://localhost:5500","http://localhost:3000","http://sopra-fs24-group-39-client.oa.r.appspot.com:5500","http://sopra-fs24-group-39-client.oa.r.appspot.com:3000","http://sopra-fs24-group-39-client.oa.r.appspot.com:443").withSockJS();
-        registry.addEndpoint("/ws").setAllowedOrigins(ORIGIN_LOCALHOST, ORIGIN_PROD,ORIGIN_8080).withSockJS();
+        registry.addEndpoint("/ws").setAllowedOrigins(ORIGIN_LOCALHOST, ORIGIN_PROD,ORIGIN_8080,ORIGIN_5050).withSockJS();
 
 
     }

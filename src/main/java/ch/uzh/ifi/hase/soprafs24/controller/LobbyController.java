@@ -24,8 +24,9 @@ import ch.uzh.ifi.hase.soprafs24.entity.GuessResult;
 import ch.uzh.ifi.hase.constants.lobbyStates;
 import java.util.HashMap;
 import java.util.Map;
- 
- 
+import java.util.Objects;
+
+
 @RestController
 public class LobbyController {
  
@@ -47,43 +48,59 @@ public class LobbyController {
   * please ensure that its really all attributes
   * @return returns only the status codes
   */
+
+
   @PostMapping("/Lobby/GameMode1")
   @ResponseStatus(HttpStatus.OK)
   @ResponseBody
-  public Map<String, Long> joinLobby(@RequestBody UserPutDTO UserData,@RequestHeader(value = "Authorization") String token) throws Exception{
-    // TODO - CLEAN UP REPEATED CODE AHHHHH
-    User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(UserData);
-    User player = userService.getUser(user.getId());
+  public Map<String, Long> joinLobby(@RequestBody UserPutDTO userData, @RequestHeader(value = "Authorization") String token) throws Exception {
+      User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userData);
+      User player = userService.getUser(user.getId());
 
+      // Check for token
+      validateToken(player, token);
 
+      String authKey = userData.getAuthKey();
 
-    // CHeck if the lobby is private and if the auth key matches
-    String authKey = UserData.getAuthKey();
-    if(authKey != null && !authKey.isEmpty()){
-        util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+      // Differentiate between a public join and a private join
+      if (isAuthKeyValid(authKey)) {
+          return joinPrivateLobby(player, userData, authKey);
+      } else {
+          return joinPublicLobby(player);
+      }
+  }
 
-        //Get Lobby ID from User
-
-        Long lobbyID = UserData.getLobbyID();
-        Lobby lobby = lobbyService.getLobby(lobbyID);
-
-        if(lobbyService.isPlayerInLobby(player,
-                lobbyID)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Player is already in a lobby.");
-        }
-
-        lobbyService.joinLobby(player, lobby, authKey);
-
-        Map<String,Long> response = new HashMap<>();
-        response.put("lobbyId", lobbyID);
-        return response;
-    }
+  private void validateToken(User player, String token) throws Exception {
       util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
-  
-      Long lobbyId = lobbyService.putToSomeLobby(player,GameModes.Gamemode1);
-  
-      Map<String,Long> response = new HashMap<>();
-  
+  }
+
+  private boolean isAuthKeyValid(String authKey) {
+      return authKey != null && !authKey.isEmpty();
+  }
+
+  private Map<String, Long> joinPrivateLobby(User player, UserPutDTO userData, String authKey) throws Exception {
+      Long lobbyID = userData.getLobbyID();
+      Lobby lobby = lobbyService.getLobby(lobbyID);
+
+      if (lobbyService.isPlayerInLobby(player, lobbyID)) {
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Player is already in a lobby.");
+      }
+
+      if(!Objects.equals(lobby.getAuthKey(), authKey)){
+          throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Unauthorized to join this lobby, bad auth key");
+      }
+
+      lobbyService.joinLobby(player, lobby, authKey);
+
+      Map<String, Long> response = new HashMap<>();
+      response.put("lobbyId", lobbyID);
+      return response;
+}
+
+  private Map<String, Long> joinPublicLobby(User player) throws Exception {
+      Long lobbyId = lobbyService.putToSomeLobby(player, GameModes.Gamemode1);
+
+      Map<String, Long> response = new HashMap<>();
       response.put("lobbyId", lobbyId);
       return response;
   }
@@ -103,11 +120,12 @@ public class LobbyController {
     Lobby newLobby = lobbyService.createPrivateLobby(GameModes.Gamemode1);
     String authKey = newLobby.getAuthKey();
 
-    if (player.isPrivateLobbyOwner()) {
-        throw new IllegalStateException("User already has an existing private lobby.");
-    } 
+    //if (player.isPrivateLobbyOwner()) {
+    //    throw new IllegalStateException("User already has an existing private lobby.");
+    //
 
-    player.setPrivateLobbyOwner(true);
+    //player.setPrivateLobbyOwner(true);
+
     userService.updateUser(player, player);
 
     lobbyService.joinLobby(player, newLobby, authKey);
@@ -162,7 +180,7 @@ public class LobbyController {
     util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
   
     Lobby lob = lobbyService.getLobby(lobbyId);
-    util.Assert(lob.getGamemode()==GameModes.Gamemode1,"wrong gamemode for this endpoint");
+    // util.Assert(lob.getGamemode()==GameModes.Gamemode1,"wrong gamemode for this endpoint");
 
     lobbyService.removePlayer(user, lob);
     
@@ -192,7 +210,7 @@ public class LobbyController {
     @GetMapping("Lobby/GameMode2/country")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public Map<String, String> get_country(@RequestBody UserPutDTO UserData, @RequestHeader(value = "Authorization") String token){
+    public Map<String, String> get_country(@RequestHeader(value = "Authorization") String token){
 
         Map<String, String> country = gameCountryService.randomCountry();
         Map<String, String> response =  new HashMap<>();
@@ -200,8 +218,6 @@ public class LobbyController {
         response.put("code", country.get("code"));
         return response;
     }
-
-  
   
 }
 
