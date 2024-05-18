@@ -227,7 +227,18 @@ completed for 09.05.2024
 - Working with backend implementation of API
 - Working with websockets
 
-## M4 4.05.2024 - 10.05.2024:
+## M4 04.05.2024 - 10.05.2024:
+
+### Joshua
+#### What did I do this week?
+[#76](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/76)
+[#128](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/128)
+
+### What will I do next week?
+
+ - Do a new Points System
+ - Try different features for settings
+
 ### Tim:
 #### What did I do this week?
 [#58](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/58)
@@ -253,6 +264,19 @@ completed for 09.05.2024
 #### What are the obstacles in the progress?
 - The needle in the haystack situation
 
+## M4: 11.05.2024-17.05.2024
+### Tim
+#### What did I do:
+[#53](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/53)
+[#64](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/64)
+[#67](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/67)
+[#68](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/68)
+[#74](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/74)
+[#75](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/75)
+
+### Joshua
+#### What did I do this week?
+[#129](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/129)
 
 
 
@@ -263,7 +287,7 @@ completed for 09.05.2024
 
 
 
-#### Samuel
+# Samuel
 ## What Have I done in Total?
 
 copmleted for 05.04.2024
@@ -295,3 +319,8 @@ completed for 10.05.2024
 - Server Side websockets for chat (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/120)
 - Check for user in private lobby before sending to DB (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/86ab6478dded0c761ca5fcddc1b474af47f8c885)
 - Bug Fix private lobbies - (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/0ab01cee067fbb74053d57020341120e77103d9b)
+
+completed for 19.05.2024    
+- Maintainable backend -  (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/127#issue-2300118306)
+- Testable Code - (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/5bf24f0a420ecac71a8e256c706efb7db0afb7af) , (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/d684535d4b28e3bd6e65d27b42963e2324da771b)
+- New endpoint for gathering active online users - (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/973c8b13becd0cdca82d01f251fafef2a7698fa3)
