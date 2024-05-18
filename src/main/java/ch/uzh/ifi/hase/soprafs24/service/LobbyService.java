@@ -164,6 +164,8 @@ public class LobbyService {
                 response.put(player.getUsername(), score);
                 score += player.getCurrentpoints();
                 player.setCurrentpoints(score);
+                player.setPointsthismonth(score);
+                userRepository.saveAndFlush(player);
             }
             this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lob.getId()),response);
 
