@@ -160,11 +160,15 @@ public class LobbyService {
 
             for(int k = 0; k < players.size();k++){
                 User player = players.get(k);
-                float score = results.getOrDefault(player.getId(),0.0f);
-                response.put(player.getUsername(), score);
-                score += player.getCurrentpoints();
-                player.setCurrentpoints(score);
-                player.setPointsthismonth(score);
+                float current_score = results.getOrDefault(player.getId(),0.0f);
+                float this_month_score = results.getOrDefault(player.getId(),0.0f);
+
+                response.put(player.getUsername(), current_score);
+                current_score += player.getCurrentpoints();
+                player.setCurrentpoints(current_score);
+
+                this_month_score += player.getPointsthismonth();
+                player.setPointsthismonth(this_month_score);
                 userRepository.saveAndFlush(player);
             }
             this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lob.getId()),response);

@@ -73,6 +73,9 @@ public class User implements Serializable {
     @Column
     private Boolean featured_in_rankings = true;
 
+    @Column
+    private Boolean accept_friendrequests = true;
+
     private String generateToken() {
       return Jwts.builder()
         .setSubject(this.username)
@@ -119,6 +122,9 @@ public class User implements Serializable {
     public void setFeatured_in_rankings(Boolean featured_in_rankings) {
         this.featured_in_rankings = featured_in_rankings;
     }
+    public Boolean getAccept_friendrequests(){return  this.accept_friendrequests;}
+
+    public void setAccept_friendrequests(Boolean accept_friendrequests){this.accept_friendrequests = accept_friendrequests;}
 
     public String getToken() {
         return this.generateToken();
@@ -207,8 +213,11 @@ public class User implements Serializable {
         this.isPrivateLobbyOwner = isPrivateLobbyOwner;
     }
 
+
     public void update(User user_with_new_data){
-        if (user_with_new_data.getPassword() != null && !user_with_new_data.getPassword().isEmpty()) {
+        // set Pasword
+        if (user_with_new_data.getPassword() != null ) {
+
             this.setPassword(user_with_new_data.getPassword());
         }
 

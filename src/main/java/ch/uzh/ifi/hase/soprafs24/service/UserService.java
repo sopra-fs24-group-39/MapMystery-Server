@@ -263,6 +263,7 @@ public class UserService {
 
     }
 
+
     /**
      * @param userToBeCreated the user whose password should be checked if it
      *                        satisfies all password requirements

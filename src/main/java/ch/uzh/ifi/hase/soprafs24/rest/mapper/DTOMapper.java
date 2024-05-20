@@ -36,17 +36,11 @@ public interface DTOMapper {
   @Mapping(source = "verified",target = "verified",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
   User convertUserPutDTOtoEntity(UserPutDTO user);
 
-@Mapping(source = "id", target = "id",  nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 @Mapping(source = "username", target = "username",  nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 @Mapping(source = "password", target = "password",  nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-@Mapping(source = "creationdate", target = "creationdate",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-@Mapping(source = "status", target = "status",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 @Mapping(source = "userEmail",target = "userEmail",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-@Mapping(source = "score", target = "score",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-@Mapping(source = "friends", target = "friends",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-@Mapping(source = "currentpoints",target = "currentpoints",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 @Mapping(source = "featured_in_rankings",target = "featured_in_rankings",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
-@Mapping(source = "verified",target = "verified",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+@Mapping(source = "accept_friendrequests",target = "accept_friendrequests",nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
 User convertSettingsPutDTOtoEntity(SettingsPutDTO settingsPutDTO);
 
   @Mapping(source = "id", target = "id")

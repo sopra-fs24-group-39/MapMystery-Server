@@ -323,6 +323,7 @@ public class UserController {
 
             User user = userService.getUser(userId);
             User updated_user = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
+            userService.updateUser(user,updated_user);
 
 
     }
