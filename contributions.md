@@ -347,5 +347,6 @@ completed for 19.05.2024
 - New endpoint for gathering active online users - (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/973c8b13becd0cdca82d01f251fafef2a7698fa3)
 
 completed for 26.05.2024
+- Human readable private Lobby codes (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/134#issue-2305714729)
 
 - Licensing + README - (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/133#issue-2305556832)
