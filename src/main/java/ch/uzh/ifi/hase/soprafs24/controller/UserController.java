@@ -150,14 +150,19 @@ public class UserController {
         util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
         List<User> users = userService.getUsers();
+        List<String> onlineUsers = new ArrayList<>();
         int count = 0;
 
         for (User user2 : users) {
-            if(user2.getStatus() == "ONLINE"){count++;}
+            if(user2.getStatus() == "ONLINE"){
+                count++;
+                onlineUsers.add(user2.getUsername());
+                }
         }
 
         Map<String,Object> response = new HashMap<>();
-        response.put("Users", count);
+        response.put("Users", onlineUsers);
+        response.put("Online users", count);
 
         return response;
 
