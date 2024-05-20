@@ -1,28 +1,37 @@
-# SoPra RESTful Service Template FS24
+# MapMystery
 
-## Getting started with Spring Boot
--   Documentation: https://docs.spring.io/spring-boot/docs/current/reference/html/index.html
--   Guides: http://spring.io/guides
-    -   Building a RESTful Web Service: http://spring.io/guides/gs/rest-service/
-    -   Building REST services with Spring: https://spring.io/guides/tutorials/rest/
+## Introduction
+**MapMystery** is a Geoguessr-like game designed to test your geographical knowledge and observational skills. The goal of this project is to create an engaging and educational experience that allows users to guess locations based on images provided by the Google API. This project is developed using Java with Springboot for the backend and React for the frontend.
 
-## Setup this Template with your IDE of choice
-Download your IDE of choice (e.g., [IntelliJ](https://www.jetbrains.com/idea/download/), [Visual Studio Code](https://code.visualstudio.com/), or [Eclipse](http://www.eclipse.org/downloads/)). Make sure Java 17 is installed on your system (for Windows, please make sure your `JAVA_HOME` environment variable is set to the correct version of Java).
+## Technologies Used
+- **Java** with **Springboot**: Backend development
+- **Websockets**: Real-time communication
+- **Spring Boot Starter Mail**, **JavaMailAPI**: Email service
+- **JPA (Java Persistence API)**: Database management
+- **Google API**: Image gathering for the game
+- **JUnit**: Testing
+- **Spring Security**: Password Management
+- **SonarQube**: Static code analysis
 
-### IntelliJ
-If you consider to use IntelliJ as your IDE of choice, you can make use of your free educational license [here](https://www.jetbrains.com/community/education/#students).
-1. File -> Open... -> SoPra server template
-2. Accept to import the project as a `gradle project`
-3. To build right click the `build.gradle` file and choose `Run Build`
+## High-level Components
 
-### VS Code
-The following extensions can help you get started more easily:
--   `vmware.vscode-spring-boot`
--   `vscjava.vscode-spring-initializr`
--   `vscjava.vscode-spring-boot-dashboard`
--   `vscjava.vscode-java-pack`
+1. **UserController**: [link](https://github.com/sopra-fs24-group-39/MapMystery-Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs24/controller/UserController.java): Manages endpoints for creating users, managing friend request and settings
+2. **LobbyController** [link](https://github.com/sopra-fs24-group-39/MapMystery-Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs24/controller/LobbyController.java): Main game logic for initalising games both public and private, tracking scoring
+3. **LobbyService** [link](https://github.com/sopra-fs24-group-39/MapMystery-Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs24/service/LobbyService.java):
+    - "putToSomeLobby" - Logic for a public player joining any lobby
+    - "joinLobby" - Logic for joining a specific Lobby can be private just requires authentication parameter
+    - "kickOutInactivePlayers" - Logic for removing players who have left the lobby
+    - "createAndSendLeaderBoard" - tallying points and returing to the client side interface.
+4. **StreetViewService**: [link](https://github.com/sopra-fs24-group-39/MapMystery-Server/blob/main/src/main/java/ch/uzh/ifi/hase/soprafs24/service/StreetViewService.java): Managing API calls to google, has **exposed** API_KEY
 
-**Note:** You'll need to build the project first with Gradle, just click on the `build` command in the _Gradle Tasks_ extension. Then check the _Spring Boot Dashboard_ extension if it already shows `soprafs24` and hit the play button to start the server. If it doesn't show up, restart VS Code and check again.
+
+## Launch & Deployment
+To get started with **MapMystery**, follow these steps:
+
+1. **Clone the Repository**:
+    ```sh
+    git clone <repository_url>
+    ```
 
 ## Building with Gradle
 You can use the local Gradle Wrapper to build the application.
@@ -69,21 +78,22 @@ If you want to avoid running all tests with every change, use the following comm
 `./gradlew build --continuous -xtest`
 
 ## API Endpoint Testing with Postman
+
 We recommend using [Postman](https://www.getpostman.com) to test your API Endpoints.
 
-## Debugging
-If something is not working and/or you don't know what is going on. We recommend using a debugger and step-through the process step-by-step.
 
-To configure a debugger for SpringBoot's Tomcat servlet (i.e. the process you start with `./gradlew bootRun` command), do the following:
+## Roadmap
+Future enhancements and features for **MapMystery**:
+1. Multiplayer mode to compete with friends.
+2. Enhanced image processing and location diversity.
+3. Mobile application version.
 
-1. Open Tab: **Run**/Edit Configurations
-2. Add a new Remote Configuration and name it properly
-3. Start the Server in Debug mode: `./gradlew bootRun --debug-jvm`
-4. Press `Shift + F9` or the use **Run**/Debug "Name of your task"
-5. Set breakpoints in the application where you need it
-6. Step through the process one step at a time
+## Authors and Acknowledgment
+- **Your Name**: Lead Developer
+- **Contributor Name**: Frontend Developer
+- **Contributor Name**: Backend Developer
 
-## Testing
-Have a look here: https://www.baeldung.com/spring-boot-testing
+Special thanks to all contributors and testers.
 
-Something...
+## License
+This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
