@@ -164,15 +164,7 @@ public class LobbyService {
             for(int k = 0; k < players.size();k++){
                 User player = players.get(k);
                 float current_score = results.getOrDefault(player.getId(),0.0f);
-                float this_month_score = results.getOrDefault(player.getId(),0.0f);
-
                 response.put(player.getUsername(), current_score);
-                current_score += player.getCurrentpoints();
-                player.setCurrentpoints(current_score);
-
-                this_month_score += player.getPointsthismonth();
-                player.setPointsthismonth(this_month_score);
-                userRepository.saveAndFlush(player);
             }
             this.messagingTemplate.convertAndSend(String.format("/topic/lobby/GameMode1/LeaderBoard/%s", lob.getId()),response);
 
@@ -408,11 +400,37 @@ public class LobbyService {
             }
             lob.setState(lobbyStates.CLOSED);
             this.createSendTaskLeaderB(lob,4000L);
+            this.savePointsfromLobbytoUsers(lob);
             lobbyRepository.saveAndFlush(lob);
         }
         catch (Exception e){
             throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"Could not end game properly with lobbyId: "+lob.getId());
         }
+    }
+    public void savePointsfromLobbytoUsers(Lobby lobby){
+        try{
+            Map<Long,Float> results = lobby.getPoints();
+            List<User> players = lobby.getPlayers();
+
+            for(int k = 0; k < players.size();k++){
+                User player = players.get(k);
+                float gamescore = results.getOrDefault(player.getId(),0.0f);
+
+                float current_points = player.getCurrentpoints() + gamescore;
+                player.setCurrentpoints(current_points);
+
+                float pointsthismonth = player.getPointsthismonth() + gamescore;
+                player.setPointsthismonth(pointsthismonth);
+
+                userRepository.saveAndFlush(player);
+
+            }
+
+        }
+        catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,"could not create and send Leaderboard");
+        }
+
     }
 
     public void triggerNextRound(boolean nextRound, Lobby lob) throws Exception{
