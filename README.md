@@ -84,14 +84,21 @@ We recommend using [Postman](https://www.getpostman.com) to test your API Endpoi
 
 ## Roadmap
 Future enhancements and features for **MapMystery**:
-1. Multiplayer mode to compete with friends.
-2. Enhanced image processing and location diversity.
-3. Mobile application version.
+
+1. Better management of exposed API_KEYS and EMAIL information
+2. Addition of different rounds for main gamemode **Globe Guesser**
+       - A countries based point system (in the same country = max points)
+       - Head to head battle with depleting score
+       - Custom maps with only certain locations
+3. Improvement of **chat** functionality to allow individual chats between players
+4. Implementation of tip system for developers
 
 ## Authors and Acknowledgment
-- **Your Name**: Lead Developer
-- **Contributor Name**: Frontend Developer
-- **Contributor Name**: Backend Developer
+- **Sam Wallace**: backend developer
+- **David Sanchez** backend developer
+- **Nils Jacobi**: frontend developer
+- **Tim**: frontend developer
+- **Joshua Winterflood** frontend/backend developer
 
 Special thanks to all contributors and testers.
 
