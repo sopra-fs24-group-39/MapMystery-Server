@@ -302,6 +302,7 @@ completed for 09.05.2024
 #### What did I do:
 [#77](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/77)
 [#84](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/84)
+[#86](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/86)
 
 
 
