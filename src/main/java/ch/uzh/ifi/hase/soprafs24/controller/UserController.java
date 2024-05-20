@@ -143,22 +143,26 @@ public class UserController {
     }
 
     @GetMapping("/active-users")
-    public Map<String,Object> activeUsers(@RequestBody UserPutDTO userData, @RequestHeader(value = "Authorization") String token) throws Exception{
+    public Map<String,Object> activeUsers(@RequestParam Long userId, @RequestHeader(value = "Authorization") String token) throws Exception{
 
-        User user = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userData);
-        User player = userService.getUser(user.getId());
+        User player = userService.getUser(userId);
 
         util.Assert(player.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
         List<User> users = userService.getUsers();
+        List<String> onlineUsers = new ArrayList<>();
         int count = 0;
 
         for (User user2 : users) {
-            if(user2.getStatus() == "ONLINE"){count++;}
+            if(user2.getStatus() == "ONLINE"){
+                count++;
+                onlineUsers.add(user2.getUsername());
+                }
         }
 
         Map<String,Object> response = new HashMap<>();
-        response.put("Users", count);
+        response.put("Users", onlineUsers);
+        response.put("Online users", count);
 
         return response;
 

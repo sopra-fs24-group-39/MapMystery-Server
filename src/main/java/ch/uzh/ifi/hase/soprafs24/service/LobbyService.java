@@ -2,6 +2,9 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.entity.LobbyTypes.*;
+import ch.uzh.ifi.hase.soprafs24.service.HumanReadableIdGenerator;
+
+
 
 import org.hibernate.internal.ExceptionConverterImpl;
 import org.slf4j.Logger;
@@ -71,7 +74,7 @@ public class LobbyService {
 
     // Auth Key Gen for private lobbies
     public String generateAuthKey(){
-        return UUID.randomUUID().toString();
+        return HumanReadableIdGenerator.generate();
     }
 
     public Long getLobbyCount(){
