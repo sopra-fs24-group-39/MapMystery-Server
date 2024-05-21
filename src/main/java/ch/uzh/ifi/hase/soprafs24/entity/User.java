@@ -145,6 +145,10 @@ public class User implements Serializable {
     public void setPassword(String password) {
       this.password = encoder.encode(password);
     }
+
+    public void setPasswordAlreadyEncoded(String password){
+      this.password = password;
+    }
   
     public boolean checkPassword(String pw) {
         return encoder.matches(pw, this.password);
@@ -217,7 +221,7 @@ public class User implements Serializable {
     public void update(User user_with_new_data){
         if (user_with_new_data.getPassword() != null) {
             if(!user_with_new_data.getPassword().isEmpty()) {
-                this.setPassword(user_with_new_data.getPassword());
+                this.setPasswordAlreadyEncoded(user_with_new_data.getPassword());
             }
         }
         if (user_with_new_data.getUsername() != null ) {
