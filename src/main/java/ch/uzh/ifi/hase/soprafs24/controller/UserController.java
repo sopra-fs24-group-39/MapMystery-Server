@@ -239,7 +239,9 @@ public class UserController {
         util.Assert(user_who_sent_friend_request.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
         User user_to_which_friend_request_is_sent = userService.getUser(FromUserData.getUsername());
-
+        if(!user_to_which_friend_request_is_sent.getAccept_friendrequests()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The user "+ user_to_which_friend_request_is_sent.getUsername()+ "doesn't accept friendrequests");
+        }
         userService.addfriendrequest(user_to_which_friend_request_is_sent, user_who_sent_friend_request);
 
     }
@@ -269,8 +271,6 @@ public class UserController {
         else{
             userService.declinefriendrequest(receiver, sender);
         }
-
-
 
     }
 
