@@ -24,6 +24,8 @@ public class UserGetDTO {
     private Boolean verified;
     private Boolean featured_in_rankings = null;
 
+    private Boolean accept_friendrequests = null;
+
     public Long getId() {
         return this.id;
     }
@@ -95,6 +97,9 @@ public class UserGetDTO {
     public void setFeatured_in_rankings(Boolean featured_in_rankings) {
         this.featured_in_rankings = featured_in_rankings;
     }
+    public Boolean getAccept_friendrequests(){return this.accept_friendrequests;}
+
+    public void setAccept_friendrequests(Boolean accept_friendrequests){this.accept_friendrequests = accept_friendrequests;}
 
 
     public String getPassword() {

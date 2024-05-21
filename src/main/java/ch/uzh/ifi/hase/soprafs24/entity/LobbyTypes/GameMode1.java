@@ -44,7 +44,7 @@ public class GameMode1 extends Lobby {
 
         // Combine distance and time sensitivity to calculate points
         float points = (float) Math.ceil(maxPoints * distanceSensitivity * timeSensitivity);
-
+        points = (float) Math.min(points, 1000);
         return Math.max(points,0);
     }
 

@@ -73,6 +73,9 @@ public class User implements Serializable {
     @Column
     private Boolean featured_in_rankings = true;
 
+    @Column
+    private Boolean accept_friendrequests = true;
+
     private String generateToken() {
       return Jwts.builder()
         .setSubject(this.username)
@@ -119,6 +122,9 @@ public class User implements Serializable {
     public void setFeatured_in_rankings(Boolean featured_in_rankings) {
         this.featured_in_rankings = featured_in_rankings;
     }
+    public Boolean getAccept_friendrequests(){return  this.accept_friendrequests;}
+
+    public void setAccept_friendrequests(Boolean accept_friendrequests){this.accept_friendrequests = accept_friendrequests;}
 
     public String getToken() {
         return this.generateToken();
@@ -207,28 +213,35 @@ public class User implements Serializable {
         this.isPrivateLobbyOwner = isPrivateLobbyOwner;
     }
 
+
     public void update(User user_with_new_data){
-        if (user_with_new_data.getPassword() != null && !user_with_new_data.getPassword().isEmpty()) {
-            this.setPassword(user_with_new_data.getPassword());
+        if (user_with_new_data.getPassword() != null) {
+            if(!user_with_new_data.getPassword().isEmpty()) {
+                this.setPassword(user_with_new_data.getPassword());
+            }
         }
-
-        if (user_with_new_data.getUsername() != null && !user_with_new_data.getUsername().isEmpty()) {
-            this.setUsername(user_with_new_data.getUsername());
+        if (user_with_new_data.getUsername() != null ) {
+            if (!user_with_new_data.getUsername().isEmpty()) {
+                this.setUsername(user_with_new_data.getUsername());
+            }
         }
-
-        if (user_with_new_data.getStatus() != "UNDEF" && !user_with_new_data.getStatus().isEmpty()) {
-            this.setStatus(user_with_new_data.getStatus());
+        if (user_with_new_data.getStatus() != null){
+            if(user_with_new_data.getStatus().isEmpty() && !user_with_new_data.getStatus().equals("UNDEF")){
+                this.setStatus(user_with_new_data.getStatus());
+            }
         }
-
-        if (user_with_new_data.getUserEmail() != null && !user_with_new_data.getUserEmail().isEmpty()) {
-            this.setUserEmail(user_with_new_data.getUserEmail());
+        if (user_with_new_data.getUserEmail() != null) {
+            if(!user_with_new_data.getUserEmail().isEmpty()) {
+                this.setUserEmail(user_with_new_data.getUserEmail());
+            }
         }
-
-        if (user_with_new_data.getFeatured_in_rankings() != null && user_with_new_data.getFeatured_in_rankings() != null) {
+        if (user_with_new_data.getFeatured_in_rankings() != null){
             this.setFeatured_in_rankings(user_with_new_data.getFeatured_in_rankings());
+        }
+        if (user_with_new_data.getAccept_friendrequests() != null){
+            this.setAccept_friendrequests(user_with_new_data.getAccept_friendrequests());
         }
     }
 
-    
 }
 

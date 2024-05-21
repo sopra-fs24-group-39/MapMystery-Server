@@ -111,6 +111,44 @@ public class UserService {
       }
     }
 
+    public void updateUserSettings(User to_be_updated_user, User user_with_new_data) throws Exception{
+        if(user_with_new_data.getPassword() != null){
+            checkPassword(user_with_new_data);
+            }
+        if(user_with_new_data.getUsername() != null) {
+            checkifUsernameexists(user_with_new_data);
+        }
+        if(user_with_new_data.getUserEmail() != null) {
+            checkifEmailexists(user_with_new_data);
+        }
+        to_be_updated_user.update(user_with_new_data);
+        userRepository.saveAndFlush(to_be_updated_user);
+    }
+    public void checkifUsernameexists(User user_with_new_data)throws Exception{
+        try {
+            User user = userRepository.findByUsername(user_with_new_data.getUsername());
+            if(user != null){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The Username : "+ user_with_new_data.getUsername()+ " is already taken");
+            }
+        }
+        catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Something unexpected happened when looking for the user in the userRespository");
+
+        }
+    }
+
+    public void checkifEmailexists(User user_with_new_data)throws Exception{
+        try{
+            User user = userRepository.findByUserEmail(user_with_new_data.getUserEmail());
+            if(user != null){
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The Email : "+ user_with_new_data.getUserEmail()+ " is already taken");
+            }
+        }
+        catch (Exception e){
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Something unexpected happened when looking for the user in the userRespository");
+        }
+    }
+
 
     public User getUser(long user_Id) throws Exception {
       try{
@@ -124,11 +162,16 @@ public class UserService {
 
     public void addfriendrequest(User user_recipient, User user_sender) throws Exception {
       try{
+          List<String> friends = user_recipient.getFriends();
+          if(friends.contains(user_sender.getUsername())){
+              throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "You are already friends with " + user_recipient.getUsername());
+          }
         // Null check for the user to whom the friend request is sent
         if (user_recipient == null || user_sender == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Either the user who receives the friendrequest or the user who sent the friend request is null");
         }
         List<String> friendRequests = user_recipient.getFriendrequests();
+
         if (friendRequests == null) {
             List<String> usernameList = new ArrayList<>(); // Create a new ArrayList to store usernames
             String secondUsername = user_sender.getUsername(); // Assuming getUsername() returns the username of the user
@@ -142,6 +185,9 @@ public class UserService {
         }
         userRepository.save(user_recipient);
         userRepository.flush();
+    }
+    catch(ResponseStatusException e){
+          throw e;
     }
     catch (Exception e){
       throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR,e.getMessage()+"Could not add Friends Request");
@@ -262,6 +308,7 @@ public class UserService {
       }
 
     }
+
 
     /**
      * @param userToBeCreated the user whose password should be checked if it

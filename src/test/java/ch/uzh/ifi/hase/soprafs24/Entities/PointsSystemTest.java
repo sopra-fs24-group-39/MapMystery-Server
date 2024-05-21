@@ -44,9 +44,6 @@ public class PointsSystemTest {
     private User user1;
     private User user2;
     private User user3;
-    private User user4;
-
-
     @Mock
     private SimpMessagingTemplate messagingTemplate;
 
@@ -75,6 +72,8 @@ public class PointsSystemTest {
         MockitoAnnotations.openMocks(this);
 
         user1 = new User(); user1.setId(1L); user1.setUsername("user1");
+        user2 = new User(); user2.setId(2L); user2.setUsername("user2");
+        user3 = new User(); user3.setId(3L); user3.setUsername("user3");
 
 
         when(taskScheduler.schedule(any(Runnable.class), any(Date.class)))
@@ -168,6 +167,37 @@ public class PointsSystemTest {
       lobby.setPoints(2000, 0,user1.getId());
       assertEquals(1000, lobby.getPoints().get(user1.getId()).intValue());
 
+
+    }
+    @Test
+    public void test_severalsubmits_with_several_players_success() throws Exception {
+        lobbyService.addPlayer(user1, lobby);
+        lobbyService.addPlayer(user2, lobby);
+        lobbyService.addPlayer(user3, lobby);
+        lobby.setLobbyState(lobbyStates.PLAYING);
+        lobbyService.submitScore(2000000,100, user1.getId(), lobby); // Should be 208
+        lobbyService.submitScore(1700000,50, user2.getId(), lobby);
+        lobbyService.submitScore(7000000,35, user3.getId(), lobby);
+        lobbyService.advanceRound(user1.getId(),lobby);
+        lobbyService.submitScore(2000000,100, user1.getId(), lobby); // Should be 208
+        lobbyService.submitScore(1700000,50, user2.getId(), lobby);
+        lobbyService.submitScore(7000000,35, user3.getId(), lobby);
+        lobbyService.advanceRound(user1.getId(),lobby);
+        lobbyService.submitScore(2000000,100, user1.getId(), lobby); // Should be 208
+        lobbyService.submitScore(1700000,50, user2.getId(), lobby);
+        lobbyService.submitScore(7000000,35, user3.getId(), lobby);
+        lobbyService.advanceRound(user1.getId(),lobby);
+        lobbyService.submitScore(2000000,100, user1.getId(), lobby); // Should be 208
+        lobbyService.submitScore(1700000,50, user2.getId(), lobby);
+        lobbyService.submitScore(7000000,35, user3.getId(), lobby);
+        lobbyService.advanceRound(user1.getId(),lobby);
+        lobbyService.submitScore(2000000,100, user1.getId(), lobby); // Should be 208
+        lobbyService.submitScore(1700000,50, user2.getId(), lobby);
+        lobbyService.submitScore(7000000,35, user3.getId(), lobby);
+
+        assertEquals(1040, lobby.getPoints().get(user1.getId()).intValue());
+        assertEquals(2820, lobby.getPoints().get(user2.getId()).intValue());
+        assertEquals(2380, lobby.getPoints().get(user3.getId()).intValue());
 
     }
 
