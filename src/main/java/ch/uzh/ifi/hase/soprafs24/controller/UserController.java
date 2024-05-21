@@ -20,10 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 
 @RestController
@@ -149,6 +146,7 @@ public class UserController {
 
         List<User> users = userService.getUsers();
         List<String> onlineUsers = new ArrayList<>();
+
         int count = 0;
 
         for (User user2 : users) {

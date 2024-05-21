@@ -225,10 +225,8 @@ public class User implements Serializable {
                 this.setUsername(user_with_new_data.getUsername());
             }
         }
-        if (user_with_new_data.getStatus() != null){
-            if(user_with_new_data.getStatus().isEmpty() && !user_with_new_data.getStatus().equals("UNDEF")){
-                this.setStatus(user_with_new_data.getStatus());
-            }
+        if (user_with_new_data.getStatus() != "UNDEF" && !user_with_new_data.getStatus().isEmpty()) {
+            this.setStatus(user_with_new_data.getStatus());
         }
         if (user_with_new_data.getUserEmail() != null) {
             if(!user_with_new_data.getUserEmail().isEmpty()) {
