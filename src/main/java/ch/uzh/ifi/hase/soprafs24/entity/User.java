@@ -215,29 +215,33 @@ public class User implements Serializable {
 
 
     public void update(User user_with_new_data){
-        // set Pasword
-        if (user_with_new_data.getPassword() != null ) {
-
-            this.setPassword(user_with_new_data.getPassword());
+        if (user_with_new_data.getPassword() != null) {
+            if(!user_with_new_data.getPassword().isEmpty()) {
+                this.setPassword(user_with_new_data.getPassword());
+            }
         }
-
-        if (user_with_new_data.getUsername() != null && !user_with_new_data.getUsername().isEmpty()) {
-            this.setUsername(user_with_new_data.getUsername());
+        if (user_with_new_data.getUsername() != null ) {
+            if (!user_with_new_data.getUsername().isEmpty()) {
+                this.setUsername(user_with_new_data.getUsername());
+            }
         }
-
-        if (user_with_new_data.getStatus() != "UNDEF" && !user_with_new_data.getStatus().isEmpty()) {
-            this.setStatus(user_with_new_data.getStatus());
+        if (user_with_new_data.getStatus() != null){
+            if(user_with_new_data.getStatus().isEmpty() && !user_with_new_data.getStatus().equals("UNDEF")){
+                this.setStatus(user_with_new_data.getStatus());
+            }
         }
-
-        if (user_with_new_data.getUserEmail() != null && !user_with_new_data.getUserEmail().isEmpty()) {
-            this.setUserEmail(user_with_new_data.getUserEmail());
+        if (user_with_new_data.getUserEmail() != null) {
+            if(!user_with_new_data.getUserEmail().isEmpty()) {
+                this.setUserEmail(user_with_new_data.getUserEmail());
+            }
         }
-
-        if (user_with_new_data.getFeatured_in_rankings() != null && user_with_new_data.getFeatured_in_rankings() != null) {
+        if (user_with_new_data.getFeatured_in_rankings() != null){
             this.setFeatured_in_rankings(user_with_new_data.getFeatured_in_rankings());
+        }
+        if (user_with_new_data.getAccept_friendrequests() != null){
+            this.setAccept_friendrequests(user_with_new_data.getAccept_friendrequests());
         }
     }
 
-    
 }
 

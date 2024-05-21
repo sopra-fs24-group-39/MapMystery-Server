@@ -29,8 +29,6 @@ import java.util.Map;
 @RestController
 public class UserController {
 
-
-
     private final UserService userService;
     private AccountService accountService;
 
@@ -181,6 +179,9 @@ public class UserController {
     @ResponseBody
     public Map<String, Object> userLogin(@RequestBody CredPostDTO credentials) throws Exception {
       User user = userService.getUser(credentials.getUsername());
+      if(user == null){
+          throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"The User with Username : "+ credentials.getUsername()+ " does not exist");
+      }
 
       if (!user.checkPassword(credentials.getPassword())) {
           throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "password is wrong");
@@ -233,25 +234,14 @@ public class UserController {
     @PutMapping("/friends/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void sendfriendrequest(@PathVariable long userId, @RequestBody UserPutDTO FromUserData, @RequestHeader(value = "Authorization") String token) {
-        try {
-            User user_who_sent_friend_request = userService.getUser(userId);
-            util.Assert(user_who_sent_friend_request.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+    public void sendfriendrequest(@PathVariable long userId, @RequestBody UserPutDTO FromUserData, @RequestHeader(value = "Authorization") String token) throws Exception{
+        User user_who_sent_friend_request = userService.getUser(userId);
+        util.Assert(user_who_sent_friend_request.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
 
-            User user_to_which_friend_request_is_sent = userService.getUser(DTOMapper.INSTANCE.convertUserPutDTOtoEntity(FromUserData).getUsername());
+        User user_to_which_friend_request_is_sent = userService.getUser(FromUserData.getUsername());
 
-            userService.addfriendrequest(user_to_which_friend_request_is_sent, user_who_sent_friend_request);
+        userService.addfriendrequest(user_to_which_friend_request_is_sent, user_who_sent_friend_request);
 
-        }
-        catch (AssertionError e) {
-            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, e.getMessage());
-        }
-        catch (RuntimeException e) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format(e.getMessage(), userId));
-        }
-        catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
     }
 
     @GetMapping("/friends/friendrequests/{userId}")
@@ -327,8 +317,52 @@ public class UserController {
 
             User user = userService.getUser(userId);
             User updated_user = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
-            userService.updateUser(user,updated_user);
-
+            userService.updateUserSettings(user,updated_user);
 
     }
+// ##################################### End Settings Section #################################################################
+
+// ##################################### Start Rankings Section #################################################################
+
+    @GetMapping("/rankings")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> GetAllusersforranking() throws Exception{
+
+        // fetch all users in the internal representation
+        List<User> users = userService.getUsers();
+        List<UserGetDTO> userGetDTOs = new ArrayList<>();
+
+        // convert each user to the API representation
+        for (User user : users) {
+            if(user.getFeatured_in_rankings()) {
+                userGetDTOs.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(user));
+            }
+
+        }
+        return userGetDTOs;
+
+    }
+
+    @GetMapping("/rankings/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public List<UserGetDTO> GetAllfriendsofUserforRanking(@PathVariable long userId, @RequestHeader(value = "Authorization") String token) throws Exception{
+        User user = userService.getUser(userId);
+        util.Assert(user.getToken().equals(token), "the provided token did not match the token expected in the Usercontroller");
+        List<UserGetDTO> userGetDTOS = new ArrayList<>();
+        List<String> friends = user.getFriends();
+
+        // convert each user to the API representation
+        for (String username : friends ) {
+            User tmpuser = userService.getUser(username);
+            if(tmpuser.getFeatured_in_rankings()) {
+                userGetDTOS.add(DTOMapper.INSTANCE.convertEntityToUserGetDTO(tmpuser));
+            }
+        }
+        return userGetDTOS;
+
+    }
+// ##################################### End Rankings Section #################################################################
+
 }
