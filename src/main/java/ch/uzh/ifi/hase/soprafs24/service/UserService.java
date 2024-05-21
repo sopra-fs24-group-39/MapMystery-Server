@@ -102,8 +102,7 @@ public class UserService {
       try{
         // TO DO: Implement Uniqueness check on the username, email?
         to_be_updated_user.update(user_with_new_data);
-        userRepository.save(to_be_updated_user);
-        userRepository.flush();
+        userRepository.saveAndFlush(to_be_updated_user);
 
       }
       catch (Exception e){
@@ -112,9 +111,6 @@ public class UserService {
     }
 
     public void updateUserSettings(User to_be_updated_user, User user_with_new_data) throws Exception{
-        if(user_with_new_data.getPassword() != null){
-            checkPassword(user_with_new_data);
-            }
         if(user_with_new_data.getUsername() != null) {
             checkifUsernameexists(user_with_new_data);
         }
