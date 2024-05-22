@@ -355,5 +355,6 @@ completed for 19.05.2024
 
 completed for 26.05.2024
 - Human readable private Lobby codes (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/134#issue-2305714729)
-
+- Improved Front end for active users (https://github.com/sopra-fs24-group-39/MapMystery-client/commit/09ba66820f14787101fa6afbf2b11ca70ad61586)
+- Backend Now returns Player list (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/5249e8e93bfe4acf06a9bc70f8942d2d7d6e0fe8)
 - Licensing + README - (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/133#issue-2305556832)
