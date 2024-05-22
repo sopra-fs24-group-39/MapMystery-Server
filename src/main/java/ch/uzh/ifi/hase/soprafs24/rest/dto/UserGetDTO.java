@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
+import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
 
 
@@ -25,6 +26,8 @@ public class UserGetDTO {
     private Boolean featured_in_rankings = null;
 
     private Boolean accept_friendrequests = null;
+
+    private Integer profilepicture = null;
 
     public Long getId() {
         return this.id;
@@ -101,7 +104,9 @@ public class UserGetDTO {
 
     public void setAccept_friendrequests(Boolean accept_friendrequests){this.accept_friendrequests = accept_friendrequests;}
 
+    public Integer getProfilepicture(){return this.profilepicture;}
 
+    public void setProfilepicture(Integer profilepicture){this.profilepicture = profilepicture;}
     public String getPassword() {
         return password;
     }

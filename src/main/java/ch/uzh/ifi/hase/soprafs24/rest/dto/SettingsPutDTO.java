@@ -8,7 +8,17 @@ public class SettingsPutDTO {
     private String userEmail = null;
     private  Boolean featured_in_rankings = null;
     private Boolean accept_friendrequests = null;
+    private Integer profilepicture = null;
 
+    private String status = "UNDEF";
+
+    public String getStatus(){return this.status;}
+
+    public void setStatus(String status){this.status = status;}
+
+    public Integer getProfilepicture(){return this.profilepicture;}
+
+    public void setProfilepicture(Integer profilepicture){this.profilepicture = profilepicture;}
 
     public String getUserEmail(){
         return this.userEmail;

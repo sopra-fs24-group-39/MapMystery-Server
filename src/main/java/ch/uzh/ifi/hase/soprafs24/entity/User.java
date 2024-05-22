@@ -52,8 +52,10 @@ public class User implements Serializable {
     @Column(name = "is_private_lobby_owner", nullable = false, columnDefinition = "boolean default false")
     private boolean isPrivateLobbyOwner = false;
 
-    private String creationdate;
+    @Column()
+    private Integer profilepicture = null;
 
+    private String creationdate;
    
     @Column
     private float score;
@@ -133,6 +135,10 @@ public class User implements Serializable {
     public String getStatus() {
         return status;
     }
+
+    public Integer getProfilepicture(){return this.profilepicture;}
+
+    public void setProfilepicture(Integer profilepicture){this.profilepicture = profilepicture;}
 
     public void setStatus(String status) {
         this.status = status;
@@ -242,6 +248,9 @@ public class User implements Serializable {
         }
         if (user_with_new_data.getAccept_friendrequests() != null){
             this.setAccept_friendrequests(user_with_new_data.getAccept_friendrequests());
+        }
+        if (user_with_new_data.getProfilepicture() != null){
+            this.setProfilepicture(user_with_new_data.getProfilepicture());
         }
     }
 
