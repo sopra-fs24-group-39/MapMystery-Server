@@ -16,6 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.*;
 
+import java.util.List;
+
 public class UserServiceTest {
 
   @Mock
@@ -153,7 +155,42 @@ public class UserServiceTest {
     }
 
 
-
+    
+    
+    @Test
+    public void testGetUsersThrowsException() throws Exception {
+        // given
+        given(userRepository.findAll()).willThrow(new RuntimeException("Database error"));
+    
+        // then
+        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+            userService.getUsers();
+        });
+    
+        assertEquals(HttpStatus.NOT_FOUND, ((ResponseStatusException) exception).getStatus());
+        assertTrue(exception.getMessage().contains("Could not return all users from Userrepository"));
+    }
+    
+    
+    
+    
+    
+    
+    @Test
+    public void testGetUserByVerificationTokenSuccess() throws Exception {
+        // given
+        String token = "verificationToken";
+        User user = new User();
+    
+        given(userRepository.findByVerificationCode(token)).willReturn(user);
+    
+        // when
+        User foundUser = userService.getUserByVerificationToken(token);
+    
+        // then
+        assertNotNull(foundUser);
+    }
+    
 
 
 }
