@@ -316,4 +316,201 @@ public class LobbyControllerTest {
     }
 
 
+    @Test
+public void testCreatePrivateLobbySuccess() throws Exception {
+    // given
+    User user = new User();
+    user.setUsername("firstname@lastname");
+    user.setStatus("OFFLINE");
+    user.setPassword("null");
+    long userId = 1L; // Assuming IDs are long
+    user.setId(userId);
+    String token = user.getToken();
+
+    Lobby newLobby = new Lobby();
+    newLobby.setAuthKey("authKey");
+
+    given(userService.getUser(userId)).willReturn(user);
+    given(lobbyService.createPrivateLobby(GameModes.Gamemode1)).willReturn(newLobby);
+    given(lobbyService.joinLobby(user, newLobby, "authKey")).willReturn(lobbyStates.PLAYING);
+
+    // when
+    MockHttpServletRequestBuilder postRequest = post("/Lobby/private/GameMode1")
+    .header("Authorization", token)
+    .content(new ObjectMapper().writeValueAsString(user))
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(postRequest)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.lobbyId").value(1L))
+        .andExpect(jsonPath("$.authKey").value("authKey"));
+}
+
+@Test
+public void testCreatePrivateLobbyFailure() throws Exception {
+    // given
+    User user = new User();
+    user.setUsername("firstname@lastname");
+    user.setStatus("OFFLINE");
+    user.setPassword("null");
+    long userId = 1L; // Assuming IDs are long
+    user.setId(userId);
+    String token = user.getToken();
+
+    given(userService.getUser(userId)).willReturn(user);
+    given(lobbyService.createPrivateLobby(GameModes.Gamemode1)).willThrow(new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR));
+
+    // when
+    MockHttpServletRequestBuilder postRequest = post("/Lobby/private/GameMode1")
+    .header("Authorization", token)
+    .content(new ObjectMapper().writeValueAsString(user))
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(postRequest)
+        .andExpect(status().isInternalServerError());
+}
+
+@Test
+public void testJoinLobbyWithInvalidToken() throws Exception {
+    // given
+    User user = new User();
+    user.setUsername("firstname@lastname");
+    user.setStatus("OFFLINE");
+    user.setPassword("null");
+    long userId = 1L; // Assuming IDs are long
+    user.setId(userId);
+    String token = "invalidToken";
+
+    given(userService.getUser(userId)).willReturn(user);
+
+    // when
+    MockHttpServletRequestBuilder postRequest = post("/Lobby/GameMode1")
+    .header("Authorization", token)
+    .content(new ObjectMapper().writeValueAsString(user))
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(postRequest)
+        .andExpect(status().isUnauthorized());
+}
+
+@Test
+public void testJoinLobbyWithNoAuthKey() throws Exception {
+    // given
+    User user = new User();
+    user.setUsername("firstname@lastname");
+    user.setStatus("OFFLINE");
+    user.setPassword("null");
+    long userId = 1L; // Assuming IDs are long
+    user.setId(userId);
+    String token = user.getToken();
+
+    given(userService.getUser(userId)).willReturn(user);
+    given(lobbyService.putToSomeLobby(user, GameModes.Gamemode1)).willReturn(1L);
+
+    // when
+    MockHttpServletRequestBuilder postRequest = post("/Lobby/GameMode1")
+    .header("Authorization", token)
+    .content(new ObjectMapper().writeValueAsString(user))
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(postRequest)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.lobbyId").value(1L));
+}
+
+@Test
+public void testSendGuessWithInvalidLobbyId() throws Exception {
+    // given
+    GuessResult result = new GuessResult();
+    result.setDistance(40);
+    result.setTimeDelta(0);
+    result.setPlayerId(1L);
+    User user = new User();
+    user.setUsername("firstname@lastname");
+    user.setStatus("OFFLINE");
+    user.setPassword("null");
+    user.setScore(40);
+    long userId = 1L; // Assuming IDs are long
+    user.setId(userId);
+    String token = user.getToken();
+    Long lobbyId = 99L; // Invalid lobbyId
+
+    given(lobbyService.getLobby(lobbyId)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+    given(userService.getUser(userId)).willReturn(user);
+
+    // when
+    MockHttpServletRequestBuilder request = put("/Lobby/GameMode1/{lobbyId}", lobbyId)
+    .header("Authorization", token)
+    .content(new ObjectMapper().writeValueAsString(result))
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(request)
+        .andExpect(status().isNotFound());
+}
+
+@Test
+public void testLeaveLobbyWithInvalidUserId() throws Exception {
+    // given
+    long lobbyId = 1L;
+    long userId = 99L; // Invalid userId
+    String token = "invalidToken";
+
+    given(userService.getUser(userId)).willThrow(new ResponseStatusException(HttpStatus.NOT_FOUND));
+
+    // when
+    MockHttpServletRequestBuilder request = delete("/Lobby/GameMode1/{lobbyId}/{userId}", lobbyId, userId)
+    .header("Authorization", token);
+
+    // then
+    mockMvc.perform(request)
+        .andExpect(status().isNotFound());
+}
+
+@Test
+public void testJoinPrivateLobbyWithInvalidAuthKey() throws Exception {
+    // given
+    User user = new User();
+    user.setUsername("testUsername");
+    user.setPassword("testPassword");
+    user.setStatus("OFFLINE");
+    long userId = 1L;
+    user.setId(userId);
+    String token = user.getToken();
+    String authKey = "invalidAuthKey";
+    Lobby lobby = new Lobby();
+    lobby.setAuthKey("validAuthKey");
+
+    given(userService.getUser(userId)).willReturn(user);
+    given(lobbyService.getLobby(1L)).willReturn(lobby);
+
+    // when
+    MockHttpServletRequestBuilder postRequest = post("/Lobby/GameMode1")
+    .header("Authorization", token)
+    .content(new ObjectMapper().writeValueAsString(user))
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(postRequest)
+        .andExpect(status().isUnauthorized());
+}
+
+@Test
+public void testGetCountryWithInvalidToken() throws Exception {
+    // given
+    String token = "invalidToken";
+
+    // when
+    MockHttpServletRequestBuilder getRequest = get("/Lobby/GameMode2/country")
+    .header("Authorization", token);
+
+    // then
+    mockMvc.perform(getRequest)
+        .andExpect(status().isUnauthorized());
+}
+
 }
