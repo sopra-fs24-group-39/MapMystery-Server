@@ -278,6 +278,7 @@ completed for 09.05.2024
 ### Joshua
 #### What did I do this week?
 [#129](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/129)
+[#125](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/125)
 
 ### Nils
 #### What did I do this week?
@@ -309,7 +310,11 @@ completed for 09.05.2024
 [#87](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/87)
 [#91](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/91)
 [#92](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/92)
-
+### Joshua
+#### What did I do:
+[#141](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/141)
+[#142](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/142)
+[#94](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/94)
 
 
 
