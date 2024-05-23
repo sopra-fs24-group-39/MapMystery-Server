@@ -5,6 +5,7 @@
 
 package ch.uzh.ifi.hase.soprafs24.controller;
 
+import ch.uzh.ifi.hase.soprafs24.config.AppConfig;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
@@ -28,13 +29,15 @@ public class UserController {
 
     private final UserService userService;
     private AccountService accountService;
+    private final AppConfig appConfig;
 
     @Autowired
     private UtilityService util;
 
-    UserController(UserService userService, AccountService accountService) {
+    UserController(UserService userService, AccountService accountService,AppConfig appConfig) {
         this.userService = userService;
         this.accountService = accountService;
+        this.appConfig = appConfig;
     }
 
 
@@ -45,10 +48,15 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserGetDTO> allUsersGet() throws Exception{
+        
+
 
       // fetch all users in the internal representation
       List<User> users = userService.getUsers();
       List<UserGetDTO> userGetDTOs = new ArrayList<>();
+
+      String secretKey = appConfig.getSecretKey();
+      System.err.println("the secretKey is "+secretKey);
 
       // convert each user to the API representation
       for (User user : users) {
