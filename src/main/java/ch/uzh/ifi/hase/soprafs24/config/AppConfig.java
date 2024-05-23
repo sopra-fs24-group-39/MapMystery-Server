@@ -6,13 +6,14 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AppConfig {
 
-    @Value("${app.key:#{null}}")
-    private String secretKey;
+  // Disabled for deployment
+    // @Value("${app.key:#{null}}")
+    // private String secretKey;
 
-    public String getSecretKey() {
-        if (secretKey == null) {
-            secretKey = System.getenv("APP_KEY");
-        }
-        return secretKey;
-    }
+    // public String getSecretKey() {
+    //     if (secretKey == null) {
+    //         secretKey = System.getenv("APP_KEY");
+    //     }
+    //     return secretKey;
+    // }
 }

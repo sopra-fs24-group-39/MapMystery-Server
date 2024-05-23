@@ -55,8 +55,8 @@ public class UserController {
       List<User> users = userService.getUsers();
       List<UserGetDTO> userGetDTOs = new ArrayList<>();
 
-      String secretKey = appConfig.getSecretKey();
-      System.err.println("the secretKey is "+secretKey);
+      // String secretKey = appConfig.getSecretKey();
+      // System.err.println("the secretKey is "+secretKey);
 
       // convert each user to the API representation
       for (User user : users) {
