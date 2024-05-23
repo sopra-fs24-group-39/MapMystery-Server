@@ -12,7 +12,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
 
 public class StreetViewService {
-    private final static String API_KEY = "AIzaSyDzvhs747l7Z6kaNQZNAis23n_YPuF1W-s";
+    private final static String API_KEY = "AIzaSyB41DRUbKWJHPxaFjMAwdrzWzbVKartNGg";
 
     private final RestTemplate restTemplate;
 
