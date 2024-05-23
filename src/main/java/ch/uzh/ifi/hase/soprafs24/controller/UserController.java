@@ -5,7 +5,6 @@
 
 package ch.uzh.ifi.hase.soprafs24.controller;
 
-import ch.uzh.ifi.hase.soprafs24.config.AppConfig;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
@@ -29,15 +28,13 @@ public class UserController {
 
     private final UserService userService;
     private AccountService accountService;
-    private final AppConfig appConfig;
 
     @Autowired
     private UtilityService util;
 
-    UserController(UserService userService, AccountService accountService,AppConfig appConfig) {
+    UserController(UserService userService, AccountService accountService) {
         this.userService = userService;
         this.accountService = accountService;
-        this.appConfig = appConfig;
     }
 
 

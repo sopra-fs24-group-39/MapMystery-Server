@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
-import ch.uzh.ifi.hase.soprafs24.config.AppConfig;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.CredPostDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPutDTO;
@@ -63,9 +62,6 @@ public class UserControllerTest {
 
   @MockBean
   private UtilityService utilityService;
-
-  @MockBean
-  private AppConfig appConfig;
 
   
 
