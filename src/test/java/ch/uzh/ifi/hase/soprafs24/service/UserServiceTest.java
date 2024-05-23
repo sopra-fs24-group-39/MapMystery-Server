@@ -190,7 +190,95 @@ public class UserServiceTest {
         // then
         assertNotNull(foundUser);
     }
-    
+
+    @Test
+    public void checkifUsernameexists_UsernameNotExists_NoException() {
+        User user_with_new_data = new User();
+        user_with_new_data.setUsername("newUser");
+
+        when(userRepository.findByUsername("newUser")).thenReturn(null);
+
+        assertDoesNotThrow(() -> {
+            userService.checkifUsernameexists(user_with_new_data);
+        });
+
+        verify(userRepository, times(1)).findByUsername("newUser");
+    }
+
+    @Test
+    public void checkifUsernameexists_RepositoryThrowsException_ThrowsInternalServerError() {
+        User user_with_new_data = new User();
+        user_with_new_data.setUsername("testUser");
+
+        when(userRepository.findByUsername("testUser")).thenThrow(new RuntimeException());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            userService.checkifUsernameexists(user_with_new_data);
+        });
+
+        assertEquals("500 INTERNAL_SERVER_ERROR \"Something unexpected happened when looking for the user in the userRespository\"", exception.getMessage());
+        verify(userRepository, times(1)).findByUsername("testUser");
+    }
+
+    @Test
+    public void checkifEmailexists_EmailNotExists_NoException() {
+        User user_with_new_data = new User();
+        user_with_new_data.setUserEmail("new@example.com");
+
+        when(userRepository.findByUserEmail("new@example.com")).thenReturn(null);
+
+        assertDoesNotThrow(() -> {
+            userService.checkifEmailexists(user_with_new_data);
+        });
+
+        verify(userRepository, times(1)).findByUserEmail("new@example.com");
+    }
+
+    @Test
+    public void checkifEmailexists_RepositoryThrowsException_ThrowsInternalServerError() {
+        User user_with_new_data = new User();
+        user_with_new_data.setUserEmail("test@example.com");
+
+        when(userRepository.findByUserEmail("test@example.com")).thenThrow(new RuntimeException());
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            userService.checkifEmailexists(user_with_new_data);
+        });
+
+        assertEquals("500 INTERNAL_SERVER_ERROR \"Something unexpected happened when looking for the user in the userRespository\"", exception.getMessage());
+        verify(userRepository, times(1)).findByUserEmail("test@example.com");
+    }
+
+
+    @Test
+    public void testGetUserById_UserExists_ReturnsUser() throws Exception {
+        // given
+        User expectedUser = new User();
+        expectedUser.setId(1L);
+
+        when(userRepository.findById(1L)).thenReturn(expectedUser);
+
+        // when
+        User actualUser = userService.getUser(1L);
+
+        // then
+        assertEquals(expectedUser, actualUser);
+        verify(userRepository, times(1)).findById(1L);
+    }
+
+    @Test
+    public void testGetUserById_RepositoryThrowsException_ThrowsInternalServerError() {
+        // given
+        when(userRepository.findById(1L)).thenThrow(new RuntimeException("DB error"));
+
+        // then
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            userService.getUser(1L);
+        });
+
+        assertEquals("404 NOT_FOUND \"DB errorCould not find User with given UserId\"", exception.getMessage());
+        verify(userRepository, times(1)).findById(1L);
+    }
 
 
 }
