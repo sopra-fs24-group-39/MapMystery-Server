@@ -137,7 +137,7 @@ completed for 24.05.2024
 #### What will I do this week?
 - Create an interactive Map so that one can take a guess of the current location
 #### What are the obstacles to progress?
-- Integrating a functional module into a system
+- Integrating a functional module into a system, i.e. when having a complete working of the Geoguesser running in a module, how to integrate it into the Map Mystery System.
 ### Tim:
 #### What did I do last week?
 - Component that clalcualtes the distance between two points, given in latitude and longitude, on a sphere which can output the distnace in any unit of measurement for distance (m, km in, yd etc.) [#30](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/30)
@@ -216,6 +216,8 @@ completed for 24.05.2024
 
 ### What will I do next week?
 - Implement a more casual - play promoting points distribution inbewtween player while ensuring that the global leaderboard doesnt overflow
+#### What are the obstacles to progress?
+- Thinking about all of the functionalities first before starting to implement the friends-system. For instance, I forgot that if a user adds another user as a friend, the second user should have the the first user as a friend as well.
 
 
 ### Nils
@@ -239,9 +241,11 @@ completed for 24.05.2024
 [#128](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/128)
 
 ### What will I do next week?
-
- - Do a new Points System
+ - Fix & Refine the Point System
  - Try different features for settings
+   
+#### What are the obstacles to progress?
+- Ensuring that the output of the points-calculation function behaves as expected.
 
 ### Tim:
 #### What did I do this week?
@@ -284,6 +288,10 @@ completed for 24.05.2024
 [#129](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/129)
 [#125](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/125)
 
+#### What are the obstacles to progress?
+- Testing the Scheduling function
+- Null value handling
+
 ### Nils
 #### What did I do this week?
 [#69](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/69)
@@ -322,6 +330,8 @@ completed for 24.05.2024
 [#141](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/141)
 [#142](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/142)
 [#94](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/94)
+#### What are the obstacles to progress?
+- None
 
 ### Nils
 #### What did I do:
