@@ -23,11 +23,4 @@ public class HumanReadableIdGenerator {
 
         return adjective + '-' + noun + '-'+ number;
     }
-
-    public static void main(String[] args) {
-        // Example usage
-        for (int i = 0; i < 10; i++) {
-            System.out.println(generate());
-        }
-    }
 }
