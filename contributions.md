@@ -62,6 +62,9 @@ completed for 09.05.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/118)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/119)
 
+completed for 16.05.2024
+
+
 #### What are the obstacles to progress?
 ### Joshua:
 #### What did I do last week?
@@ -125,7 +128,6 @@ completed for 09.05.2024
 - Tally Points for players
 - Function to get coordinates https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/5#issue-2192439339
 
-### David:
 ### Joshua:
 #### What did I do last week?
 - Google Street View API call (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/43)
