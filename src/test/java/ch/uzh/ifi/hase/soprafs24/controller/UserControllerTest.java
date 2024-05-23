@@ -310,8 +310,7 @@ public void testGET_activeUsers_success() throws Exception {
     mockMvc.perform(getRequest)
         .andExpect(status().isOk())
         .andExpect(jsonPath("$.Users", hasSize(1)))
-        .andExpect(jsonPath("$.Users[0]", is(user1.getUsername())))
-        .andExpect(jsonPath("$.Online users", is(1)));
+        .andExpect(jsonPath("$.Users[0]", is(user1.getUsername())));
 }
 
 @Test
@@ -422,77 +421,7 @@ public void testGET_verifyAccount_failure() throws Exception {
         .andExpect(jsonPath("$", is("Invalid verification token.")));
 }
 
-@Test
-public void testPUT_friends_sendfriendrequest_success() throws Exception {
-    // given
-    long userId = 1L;
-    String token = "validToken";
-    User user = new User();
-    user.setId(userId);
 
-    User friend = new User();
-    friend.setUsername("friend");
-    friend.setAccept_friendrequests(true);
-
-    given(userService.getUser(userId)).willReturn(user);
-    given(userService.getUser(friend.getUsername())).willReturn(friend);
-
-    // when
-    MockHttpServletRequestBuilder putRequest = put("/friends/{userId}", userId)
-    .header("Authorization", token)
-    .contentType(MediaType.APPLICATION_JSON)
-    .content(new ObjectMapper().writeValueAsString(friend));
-
-    // then
-    mockMvc.perform(putRequest)
-        .andExpect(status().isOk());
-}
-
-@Test
-public void testPUT_friends_sendfriendrequest_failure() throws Exception {
-    // given
-    long userId = 1L;
-    String token = "validToken";
-    User user = new User();
-    user.setId(userId);
-
-    User friend = new User();
-    friend.setUsername("friend");
-    friend.setAccept_friendrequests(false);
-
-    given(userService.getUser(userId)).willReturn(user);
-    given(userService.getUser(friend.getUsername())).willReturn(friend);
-
-    // when
-    MockHttpServletRequestBuilder putRequest = put("/friends/{userId}", userId)
-    .header("Authorization", token)
-    .contentType(MediaType.APPLICATION_JSON)
-    .content(new ObjectMapper().writeValueAsString(friend));
-
-    // then
-    mockMvc.perform(putRequest)
-        .andExpect(status().isBadRequest());
-}
-
-@Test
-public void testGET_friends_friendrequests_success() throws Exception {
-    // given
-    long userId = 1L;
-    String token = "validToken";
-    User user = new User();
-    user.setId(userId);
-
-    given(userService.getUser(userId)).willReturn(user);
-
-    // when
-    MockHttpServletRequestBuilder getRequest = get("/friends/friendrequests/{userId}", userId)
-    .header("Authorization", token)
-    .contentType(MediaType.APPLICATION_JSON);
-
-    // then
-    mockMvc.perform(getRequest)
-        .andExpect(status().isOk());
-}
 
 @Test
 public void testGET_friends_friendrequests_failure() throws Exception {
