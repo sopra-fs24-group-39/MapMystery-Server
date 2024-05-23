@@ -323,6 +323,18 @@ completed for 24.05.2024
 [#142](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/142)
 [#94](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/94)
 
+### Nils
+#### What did I do:
+[#98](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/98)
+[#72](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/72)
+[#95](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/95)
+
+### What will I do next week?
+- The presentation! 🥳
+
+### What are the obstacles in the progress?
+- No particular obstacles in the process
+
 
 
 
