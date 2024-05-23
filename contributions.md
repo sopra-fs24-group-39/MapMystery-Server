@@ -304,12 +304,15 @@ completed for 09.05.2024
 [#77](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/77)
 [#78](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/78)
 [#81](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/81)
+[#82](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/82)
 [#83](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/83)
 [#84](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/84)
 [#86](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/86)
 [#87](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/87)
 [#91](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/91)
 [#92](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/92)
+
+
 ### Joshua
 #### What did I do:
 [#141](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/141)
