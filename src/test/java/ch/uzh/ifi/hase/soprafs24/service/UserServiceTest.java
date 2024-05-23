@@ -8,13 +8,13 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 public class UserServiceTest {
 
@@ -38,7 +38,7 @@ public class UserServiceTest {
 
     // when -> any object is being save in the userRepository -> return the dummy
     // testUser
-    Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
+    when(userRepository.save(Mockito.any())).thenReturn(testUser);
   }
 
   @Test
@@ -62,7 +62,7 @@ public class UserServiceTest {
     userService.createUser(testUser);
 
     // when -> setup additional mocks for UserRepository
-    Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
+    when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
     // then -> attempt to create second user with same user -> check that an error
     // is thrown
@@ -75,7 +75,7 @@ public class UserServiceTest {
     userService.createUser(testUser);
 
     // when -> setup additional mocks for UserRepository
-    Mockito.when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
+    when(userRepository.findByUsername(Mockito.any())).thenReturn(testUser);
 
     // then -> attempt to create second user with same user -> check that an error
     // is thrown
@@ -115,6 +115,43 @@ public class UserServiceTest {
         // then
         verify(userRepository, Mockito.times(1)).delete(user);
     }
+
+    @Test
+    public void testUpdateUserSuccess() throws Exception {
+        User existingUser = mock(User.class);
+        User newUser = new User();
+        newUser.setUsername("newUsername");
+        newUser.setUserEmail("new@example.com");
+
+        doNothing().when(existingUser).update(newUser);
+        when(userRepository.saveAndFlush(existingUser)).thenReturn(existingUser);
+
+        assertDoesNotThrow(() -> userService.updateUser(existingUser, newUser));
+
+        verify(existingUser).update(newUser);
+        verify(userRepository).saveAndFlush(existingUser);
+    }
+
+    @Test
+    public void testUpdateUserThrowsException() {
+        User existingUser = mock(User.class);
+        User newUser = new User();
+        newUser.setUsername("newUsername");
+        newUser.setUserEmail("new@example.com");
+
+        doThrow(new DataIntegrityViolationException("Unique constraint violation")).when(existingUser).update(newUser);
+
+        Exception exception = assertThrows(ResponseStatusException.class, () -> {
+            userService.updateUser(existingUser, newUser);
+        });
+
+        assertEquals(HttpStatus.CONFLICT, ((ResponseStatusException) exception).getStatus());
+        assertTrue(exception.getMessage().contains("Could not update User"));
+
+        verify(existingUser).update(newUser);
+        verify(userRepository, never()).saveAndFlush(existingUser);
+    }
+
 
 
 
