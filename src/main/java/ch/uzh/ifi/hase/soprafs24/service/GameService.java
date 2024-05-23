@@ -12,7 +12,7 @@ import java.util.List;
 
 public class GameService {
 
-    private final static String API_KEY = "AIzaSyCulQbj2J2o73qi_k7CIerQ-2NA5ExC7Lw";
+    private final static String API_KEY = "AIzaSyCSCKEJZ9BWDpA2lul7Crnjw_J2afXfr9s";
     private final RestTemplate restTemplate;
 
     public GameService(RestTemplate restTemplate) {
