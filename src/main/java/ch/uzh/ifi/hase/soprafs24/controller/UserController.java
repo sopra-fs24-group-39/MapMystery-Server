@@ -311,12 +311,17 @@ public class UserController {
     @PutMapping("/settings/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public void updateuser(@PathVariable long userId, @RequestBody SettingsPutDTO settingsPutDTO, @RequestHeader(value = "Authorization") String token) throws Exception{
+    public Map<String, String> updateuser(@PathVariable long userId, @RequestBody SettingsPutDTO settingsPutDTO, @RequestHeader(value = "Authorization") String token) throws Exception{
             User user = userService.getUser(userId);
             User updated_user = DTOMapper.INSTANCE.convertSettingsPutDTOtoEntity(settingsPutDTO);
             userService.updateUserSettings(user,updated_user);
+            Map<String, String> response = new HashMap<>();
+            response.put("token", user.getToken());
+
+            return response;
 
     }
+
 // ##################################### End Settings Section #################################################################
 
 // ##################################### Start Rankings Section #################################################################
