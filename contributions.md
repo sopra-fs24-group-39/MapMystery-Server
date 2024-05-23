@@ -78,39 +78,7 @@ completed for 24.05.2024
 - Uniqueness check for email and username when updating / creating a profile
 #### What are the obstacles to progress?
 - Deciding on which functionalities should be carried out by the server or by the client
-### Tim:
-#### What did I do last week?
-(issues: #10, #14, #15, #16, #17)
-- Components [#10](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/10)
-    - created Title component
-    - created Logo component
-    - created base element component
-    - added generated profile pictures based on username
-    - changed things navigation bar (added Profile Picture and Logo)
-    - created searchbar component
-    - created tab selection component
-    - added background to base container
-- Settings Page [#14](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/14)
-    - created and populated settings page
-    - added content to the base element in settings
-
-- Landing Page [#17](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/17)
-    - created and populated landing page
-
-- Rankings Page [#16](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/16)
-    - created and populated rankings page
-    - add content to the base element in rankings
-
-- Friends Page [#15](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/15)
-    - created and populated friends page
-    - add content to the base element in friends
-#### What will I do this week?
-- Components for the Game modes
-- create a chat component in various forms (open, closed, button).
-- create a dropdown menu and integrate it with the profile picture so that it appears when pressed.
-- fix small things like cursor = pointer in navbar, buttons animation on click, not hover
-#### What are the obstacles to progress?
-- none
+- 
 ## M3 12.04.2024 - 19.04.2024:
 ### Nils:
 #### What did I do last week?
@@ -137,22 +105,7 @@ completed for 24.05.2024
 #### What will I do this week?
 - Create an interactive Map so that one can take a guess of the current location
 #### What are the obstacles to progress?
-- Integrating a functional module into a system
-### Tim:
-#### What did I do last week?
-- Component that clalcualtes the distance between two points, given in latitude and longitude, on a sphere which can output the distnace in any unit of measurement for distance (m, km in, yd etc.) [#30](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/30)
-- Scoreboard component that keeps track of points, time and rounds [#29](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/29)
-- Generall Maintancance work on components that had bugs:[#34](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/34)
-    - Updated the AppRouter
-    - Changed the Buttons to be animated on press not hover, fixed the 3D look of them, centred their text
-    - Updated the Navbar to have change the text on hover and made everything links
-    - Settings menue became interactable
-    - fixed the formation bug in the Login and Register
-- Create a component that retrieves the google map, and makes it interactablke, with markers which return their coordiantes[#35](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/35)
-#### What will I do this week?
-- Bring the Google Maps and Google StreetView components to craete the game component
-- Fix the Google Street View API Call to work with the GoogleMapsContext and make it look for another streetview point if on extact coords not avvaiable
-- Create a GoogleMapsContext to manage all the API calls.
+- Integrating a functional module into a system, i.e. when having a complete working of the Geoguesser running in a module, how to integrate it into the Map Mystery System.
 
 
 ## M3 19.04.2024 - 25.04.2024:
@@ -185,29 +138,7 @@ completed for 24.05.2024
 
 #### What are the obstacles to progress?
 
-
-### Tim
-#### What did I do last week?
-- Redid the StreetView component to work with the GoogleMaps Context and to now check if there is a streetview nearby if not directly at coordinates[#42](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/42)
-- Context for Google API calls[#41](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/41)
-- Made interactive fields to switch between componetns during the game[#31](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/31)
-- Added timer and round to game [#32](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/32)
-#### What will I do this week?
-- connecting all the conpoments that need to communicate and enable the to communicate to each other and with the backend (WebSockets and REST)[#33](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/33)
-- Craeted Conent into Lobby, and made it update with points and names of playdrs in lobby [#39](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/39)
-[#40](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/40)
-
 ## M4 29.04.2024 - 3.05.2024:
-
-### Tim
-#### What did I do this week?
-[#50](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/50)
-[#51](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/51)
-[#52](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/52)
-[#54](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/54)
-[#55](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/55)
-#### What will I do next week?
-
 ### Joshua
 #### What did I do this week?
 [#115](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/115)
@@ -216,6 +147,8 @@ completed for 24.05.2024
 
 ### What will I do next week?
 - Implement a more casual - play promoting points distribution inbewtween player while ensuring that the global leaderboard doesnt overflow
+#### What are the obstacles to progress?
+- Thinking about all of the functionalities first before starting to implement the friends-system. For instance, I forgot that if a user adds another user as a friend, the second user should have the the first user as a friend as well.
 
 
 ### Nils
@@ -239,22 +172,13 @@ completed for 24.05.2024
 [#128](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/128)
 
 ### What will I do next week?
-
- - Do a new Points System
+ - Fix & Refine the Point System
  - Try different features for settings
+   
+#### What are the obstacles to progress?
+- Ensuring that the output of the points-calculation function behaves as expected.
 
 ### Tim:
-#### What did I do this week?
-[#58](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/58)
-[#59](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/59)
-[#60](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/60)
-[#61](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/61)
-[#63](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/63)
-[#62](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/62)
-[#66](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/66)
-
-#### What will I do next week?
-
 ### Nils:
 #### What did I do this week?
 [#47](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/47)
@@ -269,20 +193,14 @@ completed for 24.05.2024
 - The needle in the haystack situation
 
 ## M4: 11.05.2024-17.05.2024
-### Tim
-#### What did I do:
-[#53](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/53)
-[#64](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/64)
-[#67](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/67)
-[#68](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/68)
-[#71](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/71)
-[#74](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/74)
-[#75](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/75)
-
 ### Joshua
 #### What did I do this week?
 [#129](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/129)
 [#125](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/125)
+
+#### What are the obstacles to progress?
+- Testing the Scheduling function
+- Null value handling
 
 ### Nils
 #### What did I do this week?
@@ -303,25 +221,25 @@ completed for 24.05.2024
 
 
 ## M4: 18.05.2024-25.05.2024
-### Tim
-#### What did I do:
-[#77](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/77)
-[#78](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/78)
-[#81](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/81)
-[#82](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/82)
-[#83](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/83)
-[#84](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/84)
-[#86](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/86)
-[#87](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/87)
-[#91](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/91)
-[#92](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/92)
-
-
 ### Joshua
 #### What did I do:
 [#141](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/141)
 [#142](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/142)
 [#94](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/94)
+#### What are the obstacles to progress?
+- None
+
+### Nils
+#### What did I do:
+[#98](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/98)
+[#72](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/72)
+[#95](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/95)
+
+### What will I do next week?
+- The presentation! 🥳
+
+### What are the obstacles in the progress?
+- No particular obstacles in the process
 
 
 
@@ -371,3 +289,92 @@ completed for 26.05.2024
 - Backend Now returns Player list (https://github.com/sopra-fs24-group-39/MapMystery-Server/commit/5249e8e93bfe4acf06a9bc70f8942d2d7d6e0fe8)
 - Licensing + README - (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/133#issue-2305556832)
 - Creation of Powerpoint for Presentation
+
+# Tim
+## What Have I done in Total?
+
+completed for  12.04.2024
+(issues: #10, #14, #15, #16, #17)
+- Components [#10](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/10)
+    - created Title component
+    - created Logo component
+    - created base element component
+    - added generated profile pictures based on username
+    - changed things navigation bar (added Profile Picture and Logo)
+    - created searchbar component
+    - created tab selection component
+    - added background to base container
+- Settings Page [#14](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/14)
+    - created and populated settings page
+    - added content to the base element in settings
+
+- Landing Page [#17](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/17)
+    - created and populated landing page
+
+- Rankings Page [#16](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/16)
+    - created and populated rankings page
+    - add content to the base element in rankings
+
+- Friends Page [#15](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/15)
+    - created and populated friends page
+    - add content to the base element in friends
+
+completed for 19.04.2024
+- Component that clalcualtes the distance between two points, given in latitude and longitude, on a sphere which can output the distnace in any unit of measurement for distance (m, km in, yd etc.) [#30](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/30)
+- Scoreboard component that keeps track of points, time and rounds [#29](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/29)
+- Generall Maintancance work on components that had bugs:[#34](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/34)
+    - Updated the AppRouter
+    - Changed the Buttons to be animated on press not hover, fixed the 3D look of them, centred their text
+    - Updated the Navbar to have change the text on hover and made everything links
+    - Settings menue became interactable
+    - fixed the formation bug in the Login and Register
+- Create a component that retrieves the google map, and makes it interactablke, with markers which return their coordiantes[#35](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/35)
+
+completed for 26.04.2024
+- Redid the StreetView component to work with the GoogleMaps Context and to now check if there is a streetview nearby if not directly at coordinates[#42](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/42)
+- Context for Google API calls[#41](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/41)
+- Made interactive fields to switch between componetns during the game[#31](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/31)
+- Added timer and round to game [#32](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/32)
+- connecting all the conpoments that need to communicate and enable the to communicate to each other and with the backend (WebSockets and REST)[#33](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/33)
+- Craeted Conent into Lobby, and made it update with points and names of playdrs in lobby [#39](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/39)
+[#40](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/40)
+
+completed for 03.05.2024
+[#50](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/50)
+[#51](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/51)
+[#52](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/52)
+[#54](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/54)
+[#55](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/55)
+
+completed for 10.05.2024
+[#58](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/58)
+[#59](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/59)
+[#60](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/60)
+[#61](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/61)
+[#63](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/63)
+[#62](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/62)
+[#66](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/66)
+
+completed for 19.05.2024
+[#53](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/53)
+[#64](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/64)
+[#67](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/67)
+[#68](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/68)
+[#71](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/71)
+[#74](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/74)
+[#75](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/75)
+
+completed for 26.05.2024    
+[#77](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/77)
+[#78](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/78)
+[#81](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/81)
+[#82](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/82)
+[#83](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/83)
+[#84](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/84)
+[#86](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/86)
+[#87](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/87)
+[#91](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/91)
+[#92](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/92)
+
+
+
