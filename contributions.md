@@ -28,14 +28,9 @@
 
 
 #### What are the obstacles to progress?
+
 ### David:
-#### What did I do last week?
-this issue (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
-that issue (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
-#### What will I do this week?
-REST API endpoint for players who want to leave a lobby
-Desgining and implementing an exception system for the backend, such that people can actually understand why
-a request might fail.
+
 #### What have I done in total?
 
  copmleted for 05.04.2024
@@ -61,6 +56,16 @@ copmleted for 03.05.2024
 completed for 09.05.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/118)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/119)
+
+completed for 16.05.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/121)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/122)
+
+completed for 24.05.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/130)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/131)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/143)
+
 
 #### What are the obstacles to progress?
 ### Joshua:
@@ -125,7 +130,6 @@ completed for 09.05.2024
 - Tally Points for players
 - Function to get coordinates https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/5#issue-2192439339
 
-### David:
 ### Joshua:
 #### What did I do last week?
 - Google Street View API call (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/43)
@@ -278,6 +282,7 @@ completed for 09.05.2024
 ### Joshua
 #### What did I do this week?
 [#129](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/129)
+[#125](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/125)
 
 ### Nils
 #### What did I do this week?
@@ -303,6 +308,7 @@ completed for 09.05.2024
 [#77](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/77)
 [#78](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/78)
 [#81](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/81)
+[#82](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/82)
 [#83](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/83)
 [#84](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/84)
 [#86](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/86)
@@ -310,6 +316,12 @@ completed for 09.05.2024
 [#91](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/91)
 [#92](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/92)
 
+
+### Joshua
+#### What did I do:
+[#141](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/141)
+[#142](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/142)
+[#94](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/94)
 
 
 
