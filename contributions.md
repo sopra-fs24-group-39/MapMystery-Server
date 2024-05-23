@@ -28,14 +28,9 @@
 
 
 #### What are the obstacles to progress?
+
 ### David:
-#### What did I do last week?
-this issue (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
-that issue (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
-#### What will I do this week?
-REST API endpoint for players who want to leave a lobby
-Desgining and implementing an exception system for the backend, such that people can actually understand why
-a request might fail.
+
 #### What have I done in total?
 
  copmleted for 05.04.2024
@@ -63,6 +58,13 @@ completed for 09.05.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/119)
 
 completed for 16.05.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/121)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/122)
+
+completed for 24.05.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/130)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/131)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/143)
 
 
 #### What are the obstacles to progress?
