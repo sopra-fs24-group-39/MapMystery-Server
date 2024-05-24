@@ -30,41 +30,15 @@
 #### What are the obstacles to progress?
 
 ### David:
-
-#### What have I done in total?
-
- copmleted for 05.04.2024
+click on the issues to read description
+last week
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/23)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/24)
 
-copmleted for  12.04.2024
+this week
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/26)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/27)
 
-copmleted for 19.04.2024
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/63)
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/65)
-
-copmleted for 26.04.2024
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
-
-copmleted for 03.05.2024
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/111)
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/112)
-
-completed for 09.05.2024
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/118)
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/119)
-
-completed for 16.05.2024
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/121)
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/122)
-
-completed for 24.05.2024
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/130)
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/131)
-(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/143)
 
 
 #### What are the obstacles to progress?
@@ -80,6 +54,16 @@ completed for 24.05.2024
 - Deciding on which functionalities should be carried out by the server or by the client
 - 
 ## M3 12.04.2024 - 19.04.2024:
+### David:
+click on the issues to read description
+last week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/26)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/27)
+
+this week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/63)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/65)
+
 ### Nils:
 #### What did I do last week?
 - Finished work on the Game component [#23](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/23#issue-2242276792) [#22](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/22#issue-2242276458)
@@ -109,6 +93,16 @@ completed for 24.05.2024
 
 
 ## M3 19.04.2024 - 25.04.2024:
+### David:
+click on the issues to read description
+last week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/63)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/65)
+
+this week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
+
 ### Nils
 #### What did I do last week?
 - Created a Lobby component [#21](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/21#issue-2242261821)
@@ -139,6 +133,16 @@ completed for 24.05.2024
 #### What are the obstacles to progress?
 
 ## M4 29.04.2024 - 3.05.2024:
+### David:
+click on the issues to read description
+last week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
+
+this week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/111)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/112)
+
 ### Joshua
 #### What did I do this week?
 [#115](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/115)
@@ -165,6 +169,15 @@ completed for 24.05.2024
 - Working with websockets
 
 ## M4 04.05.2024 - 10.05.2024:
+### David:
+click on the issues to read description
+last week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/111)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/112)
+
+this week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/118)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/119)
 
 ### Joshua
 #### What did I do this week?
@@ -193,6 +206,16 @@ completed for 24.05.2024
 - The needle in the haystack situation
 
 ## M4: 11.05.2024-17.05.2024
+### David:
+click on the issues to read description
+last week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/118)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/119)
+
+this week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/121)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/122)
+
 ### Joshua
 #### What did I do this week?
 [#129](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/129)
@@ -221,6 +244,18 @@ completed for 24.05.2024
 
 
 ## M4: 18.05.2024-25.05.2024
+### David:
+click on the issues to read description
+last week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/121)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/122)
+
+this week
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/130)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/131)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/143)
+
+
 ### Joshua
 #### What did I do:
 [#141](https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/141)
@@ -382,5 +417,40 @@ completed for 26.05.2024
 - Fixint the problem with people not getting logged out because of old tokens [#92](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/92)
 - Adding the things from the feedabck [#102](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/102)
 
+### David:
 
+#### What have I done in total?
+
+ copmleted for 05.04.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/23)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/24)
+
+copmleted for  12.04.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/26)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/27)
+
+copmleted for 19.04.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/63)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/65)
+
+copmleted for 26.04.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/92)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/93)
+
+copmleted for 03.05.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/111)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/112)
+
+completed for 09.05.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/118)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/119)
+
+completed for 16.05.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/121)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/122)
+
+completed for 24.05.2024
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/130)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/131)
+(https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/143)
 
