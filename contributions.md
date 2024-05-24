@@ -441,11 +441,11 @@ copmleted for 03.05.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/111)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/112)
 
-completed for 09.05.2024
+completed for 10.05.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/118)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/119)
 
-completed for 16.05.2024
+completed for 17.05.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/121)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/122)
 
@@ -453,4 +453,45 @@ completed for 24.05.2024
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/130)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/131)
 (https://github.com/sopra-fs24-group-39/MapMystery-Server/issues/143)
+
+### Nils 
+#### What have I done in total
+
+Completed for 12.04.2024
+[#9](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/9)
+[#13](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/13)
+[#18](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/18)
+[#19](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/19)
+[#20](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/20)
+Completed for 19.04.2024
+[#22](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/22)
+[#23](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/23)
+[#25](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/25)
+[#27](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/27)
+Completed for 26.04.2024
+[#21](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/21)
+[#28](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/28)
+[#36](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/36)
+copmleted for 03.05.2024
+[#44](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/44)
+[#45](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/45)
+[#46](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/46)
+[#48](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/48)
+[#49](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/49)
+completed for 10.05.2024
+[#47](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/47)
+[#56](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/56)
+[#57](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/57)
+[#65](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/65)
+completed for 17.05.2024
+[#69](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/69)
+[#70](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/70)
+[#73](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/73)
+[#79](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/79)
+[#80](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/80)
+completed for 24.05.2024
+[#98](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/98)
+[#72](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/72)
+[#95](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/95)
+Also added the README.md file
 
