@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -88,4 +89,30 @@ public class FriendSystemTests {
         assertFalse(friend1.getFriends().contains("friend2"));
         assertFalse(friend2.getFriends().contains("friend1"));
     }
+    @Test
+    public void testAddFriendRequest_UserNotExists() throws Exception {
+        User sender = new User();
+        sender.setUsername("sender");
+
+        when(userRepository.findByUsername("nonexistentUser")).thenReturn(null);
+
+        assertThrows(ResponseStatusException.class, () -> userService.addfriendrequest(new User(), sender));
+    }
+
+    @Test
+    public void testRemoveFriend_UserNotInFriendList() throws Exception {
+        User friend1 = new User();
+        friend1.setUsername("friend1");
+        friend1.setFriends(new ArrayList<>()); // No friends initially
+
+        User friend2 = new User();
+        friend2.setUsername("friend2");
+        friend2.setFriends(new ArrayList<>(List.of("friend1"))); // friend2 has friend1, but friend1 doesn't have friend2
+
+        when(userRepository.findByUsername("friend1")).thenReturn(friend1);
+        when(userRepository.findByUsername("friend2")).thenReturn(friend2);
+
+        assertThrows(ResponseStatusException.class, () -> userService.removefriendship(friend1, friend2));
+    }
+
 }
