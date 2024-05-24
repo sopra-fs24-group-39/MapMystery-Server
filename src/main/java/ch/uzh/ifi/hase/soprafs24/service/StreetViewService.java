@@ -12,7 +12,7 @@ import javax.xml.bind.Unmarshaller;
 import java.io.StringReader;
 
 public class StreetViewService {
-    private final static String API_KEY = "AIzaSyDzvhs747l7Z6kaNQZNAis23n_YPuF1W-s";
+    private final static String API_KEY = "AIzaSyCSCKEJZ9BWDpA2lul7Crnjw_J2afXfr9s";
 
     private final RestTemplate restTemplate;
 
@@ -29,7 +29,6 @@ public class StreetViewService {
         Nearest nearest = coordResponse.getNearest();
 
         return nearest; // RETURNS ENTITY coordResponse
-
     }
 
     private CoordResponse parseXmlResponse(String xmlResponse){

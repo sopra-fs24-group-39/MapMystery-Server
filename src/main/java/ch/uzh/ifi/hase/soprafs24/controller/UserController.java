@@ -45,10 +45,15 @@ public class UserController {
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public List<UserGetDTO> allUsersGet() throws Exception{
+        
+
 
       // fetch all users in the internal representation
       List<User> users = userService.getUsers();
       List<UserGetDTO> userGetDTOs = new ArrayList<>();
+
+      // String secretKey = appConfig.getSecretKey();
+      // System.err.println("the secretKey is "+secretKey);
 
       // convert each user to the API representation
       for (User user : users) {

@@ -30,6 +30,8 @@ import java.util.List;
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.doNothing;
@@ -61,6 +63,7 @@ public class UserControllerTest {
   @MockBean
   private UtilityService utilityService;
 
+  
 
   @Test
   public void testGET_users_userid_success() throws Exception {
@@ -277,5 +280,166 @@ public class UserControllerTest {
         mockMvc.perform(Request)
                 .andExpect(status().isNotFound());
     }
+
+    @Test
+public void testGET_activeUsers_success() throws Exception {
+    // given
+    User user1 = new User();
+    user1.setUsername("user1");
+    user1.setStatus("ONLINE");
+    long userId = 1L;
+    user1.setId(userId);
+    String token = user1.getToken();
+
+    User user2 = new User();
+    user2.setUsername("user2");
+    user2.setStatus("OFFLINE");
+
+    List<User> allUsers = Arrays.asList(user1, user2);
+
+    given(userService.getUser(userId)).willReturn(user1);
+    given(userService.getUsers()).willReturn(allUsers);
+
+    // when
+    MockHttpServletRequestBuilder getRequest = get("/active-users")
+    .param("userId", String.valueOf(userId))
+    .header("Authorization", token)
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(getRequest)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.Users", hasSize(1)))
+        .andExpect(jsonPath("$.Users[0]", is(user1.getUsername())));
+}
+
+@Test
+public void testGET_activeUsers_failure() throws Exception {
+    // given
+    long userId = 1L;
+    String token = "invalidToken";
+
+    given(userService.getUser(userId)).willThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+
+    // when
+    MockHttpServletRequestBuilder getRequest = get("/active-users")
+    .param("userId", String.valueOf(userId))
+    .header("Authorization", token)
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(getRequest)
+        .andExpect(status().isUnauthorized());
+}
+
+@Test
+public void testPUT_users_login_success() throws Exception {
+    // given
+    CredPostDTO credentials = new CredPostDTO();
+    credentials.setUsername("user1");
+    credentials.setPassword("password");
+
+    User user = new User();
+    user.setUsername("user1");
+    user.setPassword("password");
+    user.setStatus("OFFLINE");
+    String token = user.getToken();
+
+    given(userService.getUser(credentials.getUsername())).willReturn(user);
+
+    // when
+    MockHttpServletRequestBuilder putRequest = put("/users/login")
+    .contentType(MediaType.APPLICATION_JSON)
+    .content(new ObjectMapper().writeValueAsString(credentials));
+
+    // then
+    mockMvc.perform(putRequest)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$.user.username", is(user.getUsername())))
+        .andExpect(jsonPath("$.token", is(token)));
+}
+
+@Test
+public void testPUT_users_login_failure() throws Exception {
+    // given
+    CredPostDTO credentials = new CredPostDTO();
+    credentials.setUsername("user1");
+    credentials.setPassword("wrongPassword");
+
+    User user = new User();
+    user.setUsername("user1");
+    user.setPassword("password");
+    user.setStatus("OFFLINE");
+
+    given(userService.getUser(credentials.getUsername())).willReturn(user);
+
+    // when
+    MockHttpServletRequestBuilder putRequest = put("/users/login")
+    .contentType(MediaType.APPLICATION_JSON)
+    .content(new ObjectMapper().writeValueAsString(credentials));
+
+    // then
+    mockMvc.perform(putRequest)
+        .andExpect(status().isUnauthorized());
+}
+
+@Test
+public void testGET_verifyAccount_success() throws Exception {
+    // given
+    String token = "validToken";
+    User user = new User();
+    user.setVerified(false);
+
+    given(userService.getUserByVerificationToken(token)).willReturn(user);
+
+    // when
+    MockHttpServletRequestBuilder getRequest = get("/verify-account")
+    .param("token", token)
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(getRequest)
+        .andExpect(status().isOk())
+        .andExpect(jsonPath("$", is("Account verified successfully.")));
+}
+
+@Test
+public void testGET_verifyAccount_failure() throws Exception {
+    // given
+    String token = "invalidToken";
+
+    given(userService.getUserByVerificationToken(token)).willReturn(null);
+
+    // when
+    MockHttpServletRequestBuilder getRequest = get("/verify-account")
+    .param("token", token)
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(getRequest)
+        .andExpect(status().isBadRequest())
+        .andExpect(jsonPath("$", is("Invalid verification token.")));
+}
+
+
+
+@Test
+public void testGET_friends_friendrequests_failure() throws Exception {
+    // given
+    long userId = 1L;
+    String token = "invalidToken";
+
+    given(userService.getUser(userId)).willThrow(new ResponseStatusException(HttpStatus.UNAUTHORIZED));
+
+    // when
+    MockHttpServletRequestBuilder getRequest = get("/friends/friendrequests/{userId}", userId)
+    .header("Authorization", token)
+    .contentType(MediaType.APPLICATION_JSON);
+
+    // then
+    mockMvc.perform(getRequest)
+        .andExpect(status().isUnauthorized());
+}
+
 
 }

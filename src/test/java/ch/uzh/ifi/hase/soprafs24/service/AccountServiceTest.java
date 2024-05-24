@@ -31,6 +31,7 @@ public class AccountServiceTest {
     public AccountServiceTest() {
         MockitoAnnotations.initMocks(this); // Initialize mocks
     }
+    private int int2;
 
     @Test
     public void testSendVerificationEmail() {
