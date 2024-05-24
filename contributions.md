@@ -375,6 +375,7 @@ completed for 26.05.2024
 [#87](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/87)
 [#91](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/91)
 [#92](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/92)
+[#102](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/102)
 
 
 
