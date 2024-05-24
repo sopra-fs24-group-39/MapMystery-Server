@@ -340,42 +340,47 @@ completed for 26.04.2024
 [#40](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/40)
 
 completed for 03.05.2024
-[#50](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/50)
-[#51](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/51)
-[#52](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/52)
-[#54](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/54)
-[#55](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/55)
+- Created a screen that shows the location of the guess as well as the target in a map. Above that is the distance between the two points.  [#50](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/50)
+- Created an unload function, that kicks the plaer out of the lobbies/games if they, close the browser, if the close the tab or if they reload [#51](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/51)
+- General maintenance:[#52](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/52)
+    - Added warning/disabled starting a game without gamemode selection
+    - Fixing the rounds counter
+    - scrolling issues in the freindscontainer fixed
+    - saturation and lightness of the profile picture are calcualted based on hasehd name
+    - Logout is now button in drowpdown
+- New Gameflow, because of addition of distance screen [#54](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/54)
+- Google Maps component that return the country in which the marker was placed [#55](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/55)
 
 completed for 10.05.2024
-[#58](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/58)
-[#59](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/59)
-[#60](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/60)
-[#61](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/61)
-[#63](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/63)
-[#62](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/62)
-[#66](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/66)
+- Adding time the guess took to the points endpoint [#58](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/58)
+- FlagApi call [#59](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/59)
+- created flagfinder gamemode [#60](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/60)
+- Geocoding api did not always find a country, now it des by also looking nearby [#61](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/61)
+- Created the friendrequest page and interface [#63](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/63)
+- Connected the friends/friendrequest page to the backend [#62](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/62)
+- Further things to make the game less breakable [#66](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/66)
 
 completed for 19.05.2024
-[#53](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/53)
-[#64](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/64)
-[#67](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/67)
-[#68](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/68)
-[#71](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/71)
-[#74](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/74)
-[#75](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/75)
+- Created a chat component [#53](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/53)
+- Addad a notigicaiton thingy [#64](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/64)
+- Created and connected the globeguesser singlepalyer [#67](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/67)
+- generall maintenance again [#68](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/68)
+- Added information for flagfinder game, in the dropdown [#71](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/71)
+- added notifications[#74](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/74)
+- Connected the caht component to the backend [#75](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/75)
 
 completed for 26.05.2024    
-[#77](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/77)
-[#78](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/78)
-[#81](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/81)
-[#82](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/82)
-[#83](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/83)
-[#84](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/84)
-[#86](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/86)
-[#87](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/87)
-[#91](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/91)
-[#92](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/92)
-[#102](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/102)
+- New final score screen for the multiplayer gamemodes, with animations [#77](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/77)
+- Adding styleing to the flgafinder game and score screen [#78](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/78)
+- Created the settings menues [#81](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/81)
+- Connected the settings menues [#82](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/82)
+- Distance now shows meters/kilometers and is more readable [#83](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/83)
+- Fixing the rankings page [#84](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/84)
+- Chat scss bug fixed [#86](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/86)
+- Fixed the active view things becaues the scss tags used were wrong and broke other things [#87](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/87)
+- Finally fixing the buttons [#91](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/91)
+- Fixint the problem with people not getting logged out because of old tokens [#92](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/92)
+- Adding the things from the feedabck [#102](https://github.com/sopra-fs24-group-39/MapMystery-client/issues/102)
 
 
 
