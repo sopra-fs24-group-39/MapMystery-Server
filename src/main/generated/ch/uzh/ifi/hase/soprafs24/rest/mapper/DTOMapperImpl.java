@@ -14,7 +14,7 @@ import javax.annotation.processing.Generated;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2024-05-20T14:03:54+0200",
+    date = "2024-05-24T09:47:26+0200",
     comments = "version: 1.3.1.Final, compiler: javac, environment: Java 17.0.9 (Oracle Corporation)"
 )
 public class DTOMapperImpl implements DTOMapper {
@@ -72,14 +72,20 @@ public class DTOMapperImpl implements DTOMapper {
         if ( settingsPutDTO.getPassword() != null ) {
             user.setPassword( settingsPutDTO.getPassword() );
         }
+        if ( settingsPutDTO.getAccept_friendrequests() != null ) {
+            user.setAccept_friendrequests( settingsPutDTO.getAccept_friendrequests() );
+        }
+        if ( settingsPutDTO.getProfilepicture() != null ) {
+            user.setProfilepicture( settingsPutDTO.getProfilepicture() );
+        }
         if ( settingsPutDTO.getUserEmail() != null ) {
             user.setUserEmail( settingsPutDTO.getUserEmail() );
         }
         if ( settingsPutDTO.getFeatured_in_rankings() != null ) {
             user.setFeatured_in_rankings( settingsPutDTO.getFeatured_in_rankings() );
         }
-        if ( settingsPutDTO.getAccept_friendrequests() != null ) {
-            user.setAccept_friendrequests( settingsPutDTO.getAccept_friendrequests() );
+        if ( settingsPutDTO.getStatus() != null ) {
+            user.setStatus( settingsPutDTO.getStatus() );
         }
         if ( settingsPutDTO.getUsername() != null ) {
             user.setUsername( settingsPutDTO.getUsername() );
@@ -111,6 +117,8 @@ public class DTOMapperImpl implements DTOMapper {
         userGetDTO.setId( user.getId() );
         userGetDTO.setUsername( user.getUsername() );
         userGetDTO.setStatus( user.getStatus() );
+        userGetDTO.setAccept_friendrequests( user.getAccept_friendrequests() );
+        userGetDTO.setProfilepicture( user.getProfilepicture() );
         List<String> list1 = user.getFriendrequests();
         if ( list1 != null ) {
             userGetDTO.setFriendrequests( new ArrayList<String>( list1 ) );
