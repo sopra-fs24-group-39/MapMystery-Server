@@ -114,5 +114,41 @@ public class FriendSystemTests {
 
         assertThrows(ResponseStatusException.class, () -> userService.removefriendship(friend1, friend2));
     }
+    @Test
+    public void declineFriendRequest_senderNotFound() {
+        // Test setup
+        User receiver = new User();
+        receiver.setUsername("receiver");
+
+        when(userRepository.findByUsername("receiver")).thenReturn(receiver);
+        when(userRepository.findByUsername("sender")).thenReturn(null);
+
+        // Method invocation and assertion
+        assertThrows(ResponseStatusException.class, () -> userService.declinefriendrequest(receiver, new User()));
+    }
+    @Test
+    public void declineFriendRequest_receiverNotFound() {
+        // Test setup
+        User sender = new User();
+        sender.setUsername("sender");
+
+        when(userRepository.findByUsername("sender")).thenReturn(sender);
+        when(userRepository.findByUsername("receiver")).thenReturn(null);
+
+        // Method invocation and assertion
+        assertThrows(ResponseStatusException.class, () -> userService.declinefriendrequest(new User(), sender));
+    }
+    @Test
+    public void removeFriend_oneUserNotFound() {
+        // Test setup
+        User friend1 = new User();
+        friend1.setUsername("friend1");
+
+        when(userRepository.findByUsername("friend1")).thenReturn(friend1);
+        when(userRepository.findByUsername("friend2")).thenReturn(null);
+
+        // Method invocation and assertion
+        assertThrows(ResponseStatusException.class, () -> userService.removefriendship(friend1, new User()));
+    }
 
 }
